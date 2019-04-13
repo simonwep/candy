@@ -1,0 +1,80 @@
+{
+    "name": "candy",
+    "version": "0.0.1",
+    "private": true,
+    "description": "",
+    "author": "Simon Reinisch",
+    "scripts": {
+        "electron:build": "vue-cli-service electron:build",
+        "electron:serve": "vue-cli-service electron:serve",
+        "postinstall": "electron-builder install-app-deps",
+        "postuninstall": "electron-builder install-app-deps",
+        "lint": "eslint ./src",
+        "lint:fix": "eslint ./src --fix"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.8.1",
+        "electron": "^4.1.4",
+        "normalize.css": "^8.0.1",
+        "vue": "^2.6.10",
+        "vue-electron": "^1.0.6",
+        "vue-router": "^3.0.4",
+        "vuex": "^3.1.0"
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
+        "@vue/cli-plugin-babel": "^3.5.5",
+        "@vue/cli-plugin-eslint": "^3.5.1",
+        "@vue/cli-service": "^3.5.3",
+        "cross-env": "^5.2.0",
+        "electron-builder": "^20.39.0",
+        "electron-debug": "^2.2.0",
+        "electron-devtools-installer": "^2.2.4",
+        "node-sass": "^4.11.0",
+        "sass-loader": "^7.1.0",
+        "sassyfication": "^0.1.0",
+        "vue-cli-plugin-electron-builder": "^1.2.0",
+        "vue-template-compiler": "^2.6.10"
+    },
+    "build": {
+        "productName": "Candy downloader",
+        "appId": "com.candy.candy",
+        "directories": {
+            "output": "build"
+        },
+        "files": [
+            "dist/electron/**/*"
+        ],
+        "dmg": {
+            "contents": [
+                {
+                    "x": 410,
+                    "y": 150,
+                    "type": "link",
+                    "path": "/Applications"
+                },
+                {
+                    "x": 130,
+                    "y": 150,
+                    "type": "file"
+                }
+            ]
+        },
+        "mac": {
+            "icon": "build/icons/icon.icns"
+        },
+        "win": {
+            "icon": "build/icons/icon.ico"
+        },
+        "linux": {
+            "icon": "build/icons"
+        }
+    },
+    "keywords": [],
+    "license": "MIT",
+    "main": "background.js",
+    "repository": {
+        "type": "git",
+        "url": ""
+    }
+}
