@@ -25,6 +25,7 @@ function createWindow() {
         win.loadURL('app://./index.html');
     }
 
+    win.setMenuBarVisibility(false);
     win.on('closed', () => win = null);
 }
 

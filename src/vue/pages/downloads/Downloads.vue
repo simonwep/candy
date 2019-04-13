@@ -1,6 +1,6 @@
 <template>
-    <div>
-        Hello World!
+    <div class="downloads">
+        Downloads
     </div>
 </template>
 
@@ -11,11 +11,14 @@
         data() {
             return {};
         }
-
     };
 
 </script>
 
 <style lang="scss" scoped>
+
+    .downloads {
+
+    }
 
 </style>
