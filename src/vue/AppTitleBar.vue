@@ -1,6 +1,6 @@
 <template>
     <div class="title-bar">
-        <p class="title">YouTube downloader</p>
+        <p class="title">Downloader</p>
 
         <div class="drag"></div>
 
@@ -47,14 +47,15 @@
         @include flex(row, center);
         background: darken($palette-theme-primary, 9);
         box-shadow: 0 0 0.25em rgba(black, 0.1);
-        height: 0.75em;
-        padding: 0.5em 0.75em;
+        height: 1.75em;
+        padding: 0 0.75em;
         z-index: 100;
         box-sizing: content-box;
     }
 
     .title {
         @include font(600, 0.8em);
+        margin-left: 0.25em;
         color: white;
     }
 
@@ -69,9 +70,10 @@
         align-self: stretch;
 
         div {
-            @include size(0.75em);
+            @include size(100%, 1em);
             position: relative;
-            margin-left: 1em;
+            padding: 0 0.8em 0 0.7em;
+            margin-left: 0.25em;
             cursor: pointer;
             transition: all 0.3s;
 
@@ -83,27 +85,28 @@
             &::after {
                 @include pseudo();
                 @include position(0, 0, 0, 0);
-                @include size(100%);
                 margin: auto;
             }
         }
 
         .minimize::before {
-            top: auto;
+            @include size(2px, 0.75em);
             background: white;
-            height: 2px;
+            top: 9px;
         }
 
-        .min-max {
+        .min-max::before {
+            @include size(0.5em);
             border: 2px solid white;
+            border-radius: 0.1em;
         }
 
         .close {
             position: relative;
-            @include size(0.85em);
 
             &::before,
             &::after {
+                @include size(0.8em);
                 height: 2px;
                 background: white;
             }
