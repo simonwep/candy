@@ -14,19 +14,19 @@
 
         <div class="divider"></div>
 
-        <expandable-section v-for="menu of menus"
-                            :route="menu.route"
-                            :title="menu.title"
-                            :subs="menu.subs"
-                            class="downloads"
-                            v-slot="{item}">
+        <!-- Downloads -->
+        <nav-item v-for="menu of menus"
+                  :route="menu.route"
+                  :title="menu.title"
+                  :subs="menu.subs"
+                  class="downloads"
+                  v-slot="{item}">
 
             <p class="list-item">
                 <span class="text">{{ item.text }}</span>
                 <span class="value">{{ item.value }}</span>
             </p>
-
-        </expandable-section>
+        </nav-item>
 
     </section>
 </template>
@@ -34,11 +34,11 @@
 <script>
 
     // Components
-    import ExpandableSection from './ExpandableSection';
+    import NavItem from './NavItem';
 
     export default {
 
-        components: {ExpandableSection},
+        components: {NavItem},
 
         data() {
             return {
@@ -76,13 +76,14 @@
     .divider {
         @include size(1px, 60%);
         background: rgba(white, 0.1);
-        margin: 0.5em 0;
+        margin: 0.5em 0 1em;
     }
 
     .downloads {
 
         .list-item {
             @include flex(row, center);
+            font-size: 0.9em;
 
             .value {
                 background: $palette-theme-tertiary;

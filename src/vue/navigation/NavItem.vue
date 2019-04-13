@@ -60,7 +60,7 @@
     .topic {
         cursor: pointer;
         color: white;
-        padding: 0.75em 1.5em;
+        padding: 0.75em 2em;
         @include font(600, 0.85em);
         transition: all 0.15s;
 
@@ -78,9 +78,9 @@
         li {
             list-style: none;
             margin: 0.75em 0;
-            padding: 0.25em 1.5em;
+            padding: 0.25em 2em;
             color: rgba(white, 0.85);
-            @include font(600, 0.75em);
+            @include font(600, 0.85em);
         }
     }
 

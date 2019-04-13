@@ -1,7 +1,15 @@
 <template>
     <div id="app">
-        <navigation/>
-        <router-view class="router"/>
+
+        <!-- Customiued title bar -->
+        <app-title-bar/>
+
+        <!-- Actual content -->
+        <div class="content">
+            <navigation/>
+            <router-view class="router"/>
+        </div>
+
     </div>
 </template>
 
@@ -12,11 +20,12 @@
     import 'normalize.css';
 
     // Components
+    import AppTitleBar from './AppTitleBar';
     import Navigation from './navigation/Navigation';
 
     export default {
 
-        components: {Navigation},
+        components: {AppTitleBar, Navigation},
 
         data() {
             return {};
@@ -31,15 +40,24 @@
     #app {
         position: fixed;
         @include position(0, 0, 0, 0);
-        @include flex(row);
+        @include flex(column);
         font-family: 'Open Sans', sans-serif;
         background: $palette-theme-tertiary;
         user-select: none;
+    }
+
+    .content {
+        @include flex(row);
+        height: 100%;
+        flex-grow: 1;
+
+        .navigation {
+            height: 100%;
+        }
 
         .router {
             flex-grow: 1;
         }
     }
-
 
 </style>

@@ -14,7 +14,8 @@ protocol.registerStandardSchemes(['app'], {secure: true});
 function createWindow() {
     win = new BrowserWindow({
         width: 800,
-        height: 600
+        height: 600,
+        frame: false
     });
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {

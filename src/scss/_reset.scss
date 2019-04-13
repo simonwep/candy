@@ -6,6 +6,15 @@
 }
 
 a {
-    color: inherit;
-    text-decoration: none;
+    color: unset;
+    text-decoration: unset;
+}
+
+
+button,
+input,
+textarea {
+    border: unset;
+    background: unset;
+    color: unset;
 }
