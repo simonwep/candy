@@ -24,6 +24,12 @@
                              item-value="bitrate"
                              v-model="bitrate"/>
 
+        <!-- Start download -->
+        <button v-if="target" @click="startDownload">
+            <span>Download</span>
+            <span class="size">({{ utils.readableByteCount(Number(target.clen)) }})</span>
+        </button>
+
     </div>
 </template>
 
@@ -31,6 +37,9 @@
 
     // Components
     import DropDownSelection from '../../../ui/DropDownSelection';
+
+    // IPC Client
+    import ipcClient from '../../../ipc/client';
 
     export default {
 
@@ -43,8 +52,20 @@
         computed: {
 
             formatItems() {
-                const format = this.format.split(';')[0];
+                const format = this.format && this.format.split(';')[0];
                 return this.video.formats.filter(v => v.type.startsWith(format));
+            },
+
+            target() {
+                const {quality, bitrate, formatItems} = this;
+
+                if (quality) {
+                    return formatItems.find(v => v.quality_label === quality);
+                } else if (bitrate) {
+                    return formatItems.find(v => v.bitrate === bitrate);
+                }
+
+                return null;
             }
         },
 
@@ -76,6 +97,18 @@
 
             bitrateFilter(v) {
                 return `${Math.floor(Number(v) / 1000)}k`;
+            },
+
+            startDownload() {
+                if (this.target) {
+                    ipcClient.request('startDownload', {
+                        format: this.target,
+                        basicInfo: this.video
+                    });
+                } else {
+                    /* eslint-disable no-console */
+                    console.error('[DOWNLOAD] Tried to download without a resolved target', this.format, this.quality, this.bitrate);
+                }
             }
         }
     };
@@ -89,6 +122,26 @@
 
         .drop-down-selection {
             margin-right: 1em;
+            align-self: stretch;
+        }
+
+        > button {
+            @include flex(row, center);
+            color: $palette-theme-primary;
+            background: $palette-turquoise;
+            align-self: stretch;
+            border-radius: 0.15em;
+            padding: 0 0.75em;
+            font-size: 0.8em;
+
+            span {
+                font-weight: 600;
+            }
+
+            .size {
+                font-size: 0.95em;
+                margin-left: 0.5em;
+            }
         }
     }
 

@@ -1,10 +1,10 @@
 <template>
     <div :class="{'drop-down-selection': 1, open}">
 
-        <p class="activator" @click="open = !open">
+        <button @click="open = !open">
             <i class="fas fa-fw fa-angle-down"></i>
             <span>{{ value ? (itemValueFilter ? itemValueFilter(value) : value) : title }}</span>
-        </p>
+        </button>
 
         <div class="items">
             <p v-for="item of preparedItems" @click="select(item)">{{ item.modified }}</p>
@@ -74,7 +74,7 @@
 
         &.open {
 
-            .activator i {
+            button i {
                 transform: rotate(180deg) translateY(0.1em);
             }
 
@@ -86,9 +86,10 @@
         }
     }
 
-    .activator {
+    button {
         @include font(600, 0.8em);
         @include flex(row, center);
+        align-self: stretch;
         display: inline-block;
         cursor: pointer;
         border: 1px solid rgba(black, 0.2);
