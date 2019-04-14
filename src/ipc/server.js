@@ -5,7 +5,7 @@ for (const [key, val] of Object.entries(events)) {
 
     // Validate
     /* eslint-disable no-console */
-    if (typeof key !== 'number' || typeof val !== 'function') {
+    if (typeof key !== 'string' || typeof val !== 'function') {
         console.error('[IPC-SERVER] Invalid construct: ', key, val);
     }
 
@@ -13,9 +13,8 @@ for (const [key, val] of Object.entries(events)) {
     ipcMain.on(key, (event, {data, id}) => {
 
         // Fire handler
-        val(data).then(data => {
+        val(data, event).then(data => {
             event.sender.send('response', {id, data});
         });
     });
 }
-

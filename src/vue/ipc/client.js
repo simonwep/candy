@@ -1,4 +1,6 @@
 import {ipcRenderer} from 'electron';
+import store         from '../store/index';
+import * as _        from '../../js/utils';
 
 const map = {};
 
@@ -17,10 +19,13 @@ ipcRenderer.on('response', (event, {id, data}) => {
     resolver(data);
 });
 
+ipcRenderer.on('add-download', (event, data) => store.commit('downloads/add', data));
+ipcRenderer.on('update-download', (event, data) => store.commit('downloads/update', data));
+
 export default {
 
     async request(channel, data) {
-        const id = Math.round(Math.random() * 1e15).toString(16) + Date.now().toString(16);
+        const id = _.createUID();
         ipcRenderer.send(channel, {data, id});
         return new Promise(resolve => map[id] = resolve);
     }

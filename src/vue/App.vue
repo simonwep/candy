@@ -21,7 +21,7 @@
 
     // Components
     import AppTitleBar from './AppTitleBar';
-    import Navigation from './navigation/Navigation';
+    import Navigation  from './navigation/Navigation';
 
     export default {
 

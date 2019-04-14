@@ -58,7 +58,7 @@
                 position: absolute;
                 @include position(auto, 0.5em, 0.75em, auto);
                 @include font(400, 0.75em);
-                padding: 0.15em 0.4em 0.2em;
+                padding: 0.15em 0.4em;
                 border-radius: 0.15em;
                 background: $palette-theme-primary;
                 box-shadow: 0 1px 3px rgba(black, 0.2);

@@ -14,6 +14,9 @@
         <!-- Video info -->
         <download-box v-if="videoStats" :video="videoStats"/>
 
+        <!-- Download list -->
+        <download-list/>
+
     </div>
 </template>
 
@@ -23,16 +26,21 @@
     import ipcClient from '../../ipc/client';
 
     // Components
-    import DownloadBox from './download/DownloadBox';
+    import DownloadBox  from './download/DownloadBox';
+    import DownloadList from './download-list/DownloadList';
 
     export default {
 
-        components: {DownloadBox},
+        components: {DownloadBox, DownloadList},
 
         data() {
             return {
                 videoStats: null
             };
+        },
+
+        mounted() {
+            this.checkAvailableDownload({target: {value: 'https://www.youtube.com/watch?v=p_8yK2kmxoo'}});
         },
 
         methods: {

@@ -83,3 +83,33 @@ export function readableByteCount(bytes, mapValue = v => v) {
 
     return `${bytes} B`;
 }
+
+/**
+ * Creates a uid
+ * @returns {string}
+ */
+export function createUID() {
+    return Math.round(Math.random() * 1e15).toString(16) + Date.now().toString(16);
+}
+
+/**
+ * Throttles the call of a function
+ * @param fn
+ * @param ms
+ * @returns {Function}
+ */
+export function throttleEvent(fn, ms = 1000) {
+    let lastCall = 0;
+    let timeout = 0;
+
+    return () => {
+
+        clearTimeout(timeout);
+        if (Date.now() - lastCall > ms) {
+            lastCall = Date.now();
+            fn();
+        }
+
+        timeout = setTimeout(() => fn(), ms);
+    };
+}
