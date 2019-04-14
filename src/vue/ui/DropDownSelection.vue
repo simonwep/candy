@@ -127,6 +127,7 @@
             padding: 0.5em 0.85em;
             transition: all 0.3s;
             cursor: pointer;
+            text-transform: capitalize;
 
             &:hover {
                 background: rgba(black, 0.075);

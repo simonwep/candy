@@ -21,7 +21,7 @@
                   :subs="downloadSubs"
                   v-slot="{item}">
 
-            <p class="list-item">
+            <p class="list-item" :data-text="item.text">
                 <span class="text">{{ item.text }}</span>
                 <span class="value">{{ item.value }}</span>
             </p>
@@ -38,19 +38,30 @@
     // Components
     import NavItem from './NavItem';
 
+    // Vuex stuff
+    import {mapState} from 'vuex';
+
     export default {
 
         components: {NavItem},
 
+        computed: {
+            ...mapState(['downloads']),
+
+            downloadSubs() {
+                const {downloads} = this;
+
+                return [
+                    {text: 'All', value: downloads.length},
+                    {text: 'Active', value: downloads.filter(v => v.status === 'progress').length},
+                    {text: 'Done', value: downloads.filter(v => v.status === 'finish').length},
+                    {text: 'Failed', value: downloads.filter(v => v.status === 'errored').length}
+                ];
+            }
+        },
+
         data() {
-            return {
-                downloadSubs: [
-                    {text: 'All', value: 20},
-                    {text: 'Active', value: 8},
-                    {text: 'Done', value: 10},
-                    {text: 'Paused', value: 2}
-                ]
-            };
+            return {};
         }
     };
 
@@ -82,16 +93,34 @@
             @include flex(row, center);
             font-size: 0.9em;
 
+            &[data-text='All'] .value {
+                background: $palette-cloud-blue;
+            }
+
+            &[data-text='Active'] .value {
+                background: $palette-nature-orange;
+            }
+
+            &[data-text='Done'] .value {
+                background: $palette-success-green;
+            }
+
+            &[data-text='Failed'] .value {
+                background: $palette-bright-red;
+            }
+
             .value {
+                @include font(700, 0.85em);
                 background: $palette-theme-tertiary;
                 padding: 0.2em 0.8em 0.2em;
                 border-radius: 100em;
+                text-shadow: 0 1px 3px rgba(black, 0.5);
                 text-align: center;
-                @include font(700, 0.85em);
+                margin-left: auto;
             }
 
             .text {
-                margin-right: 0.75em;
+                margin-right: 1.5em;
             }
         }
     }
