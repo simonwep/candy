@@ -12,7 +12,7 @@
         </div>
 
         <!-- Video info -->
-        <download-box v-if="videoStats" :video="videoStats"/>
+        <download-form v-if="videoStats" :video="videoStats"/>
 
         <!-- Download list -->
         <download-list/>
@@ -26,12 +26,12 @@
     import ipcClient from '../../ipc/client';
 
     // Components
-    import DownloadBox  from './download/DownloadBox';
+    import DownloadForm from './download-form/DownloadForm';
     import DownloadList from './download-list/DownloadList';
 
     export default {
 
-        components: {DownloadBox, DownloadList},
+        components: {DownloadForm, DownloadList},
 
         data() {
             return {

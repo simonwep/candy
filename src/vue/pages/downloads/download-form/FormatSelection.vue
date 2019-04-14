@@ -2,32 +2,31 @@
     <div class="format-selection">
 
         <!-- Video codec and format -->
-        <drop-down-selection :title="format || 'Choose format'"
+        <drop-down-selection :title="content || 'Choose format'"
                              :items="video.formats"
                              :item-value-filter="formatFilter"
-                             item-value="type"
-                             v-model="format"/>
+                             item-value="content"
+                             v-model="content"/>
 
         <!-- If video - quality  -->
-        <drop-down-selection v-if="format && format.startsWith('video')"
-                             :title="quality || 'Choose quality'"
+        <drop-down-selection v-if="['video', 'audio/video'].includes(content)"
+                             :title="resolution || 'Choose quality'"
                              :items="formatItems"
                              :item-value-filter="qualityFilter"
-                             item-value="quality_label"
-                             v-model="quality"/>
+                             item-value="resolution"
+                             v-model="resolution"/>
 
         <!-- If audio - bitrate -->
-        <drop-down-selection v-if="format && format.startsWith('audio')"
+        <drop-down-selection v-if="content === 'audio'"
                              :title="bitrate || 'Choose bitrate'"
                              :items="formatItems"
-                             :item-value-filter="bitrateFilter"
                              item-value="bitrate"
                              v-model="bitrate"/>
 
         <!-- Start download -->
         <button v-if="target" @click="startDownload">
             <span>Download</span>
-            <span class="size">({{ utils.readableByteCount(Number(target.clen)) }})</span>
+            <span class="size" v-if="target.clen">({{ utils.readableByteCount(Number(target.clen)) }})</span>
         </button>
 
     </div>
@@ -52,15 +51,14 @@
         computed: {
 
             formatItems() {
-                const format = this.format && this.format.split(';')[0];
-                return this.video.formats.filter(v => v.type.startsWith(format));
+                return this.video.formats.filter(v => v.content === this.content);
             },
 
             target() {
-                const {quality, bitrate, formatItems} = this;
+                const {resolution, bitrate, formatItems} = this;
 
-                if (quality) {
-                    return formatItems.find(v => v.quality_label === quality);
+                if (resolution) {
+                    return formatItems.find(v => v.resolution === resolution);
                 } else if (bitrate) {
                     return formatItems.find(v => v.bitrate === bitrate);
                 }
@@ -71,32 +69,26 @@
 
         data() {
             return {
-                format: null,
-                quality: null,
+                content: null,
+                resolution: null,
                 bitrate: null
             };
         },
 
         watch: {
-            format() {
-                this.quality = this.bitrate = null;
+            content() {
+                this.resolution = this.bitrate = null;
             }
         },
 
         methods: {
             formatFilter(v) {
-                const [type] = v.split(';');
-                const [group, format] = type.split('/');
-                return `${group} (${format})`;
+                return v.replace('/', ' & ');
             },
 
             qualityFilter(v) {
                 const [res, fps] = v.split('p');
                 return `${res}p / ${fps || 30}fps`;
-            },
-
-            bitrateFilter(v) {
-                return `${Math.floor(Number(v) / 1000)}k`;
             },
 
             startDownload() {
@@ -107,7 +99,7 @@
                     });
                 } else {
                     /* eslint-disable no-console */
-                    console.error('[DOWNLOAD] Tried to download without a resolved target', this.format, this.quality, this.bitrate);
+                    console.error('[DOWNLOAD] Tried to download without a resolved target', this.format, this.resolution, this.bitrate);
                 }
             }
         }

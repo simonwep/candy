@@ -102,14 +102,14 @@ export function throttleEvent(fn, ms = 1000) {
     let lastCall = 0;
     let timeout = 0;
 
-    return () => {
+    return (...args) => {
 
         clearTimeout(timeout);
         if (Date.now() - lastCall > ms) {
             lastCall = Date.now();
-            fn();
+            fn(...args);
         }
 
-        timeout = setTimeout(() => fn(), ms);
+        timeout = setTimeout(() => fn(...args), ms);
     };
 }

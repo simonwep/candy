@@ -1,4 +1,5 @@
 const config = require('../../config/config');
+const id3tags = require('../../config/id3tags');
 const _ = require('../js/utils');
 const ytdl = require('ytdl-core');
 const fs = require('fs');
@@ -6,24 +7,33 @@ const fs = require('fs');
 module.exports = {
 
     async getVideoInfo(url) {
-        return ytdl.getBasicInfo(url);
+        const info = await ytdl.getBasicInfo(url);
+        const resolvedFormats = [];
+
+        // Resolve itags
+        for (const {itag, clen, url} of info.formats) {
+            const format = itag && id3tags[itag];
+
+            if (format) {
+                resolvedFormats.push({
+                    ...format, clen, url, itag
+                });
+            }
+        }
+
+        info.formats = resolvedFormats;
+        return info;
     },
 
     async startDownload({basicInfo, format}, {sender}) {
-        const [container] = format.type.split(';');
-        const [, type] = container.split('/');
-
-        // Validate type
-        if (!type) {
-            throw `Cannot examine filetype. Got ${format.type} as type`;
-        }
+        const {container, itag} = format;
 
         // Build destination path
         const filteredTitle = basicInfo.title.replace(/[/\\?%*:|"<>]/g, ' ').replace(/ +/g, ' ');
-        const destination = `${config.downloadDirectory}\\${filteredTitle}.${type}`;
+        const destination = `${config.downloadDirectory}\\${filteredTitle}.${container}`;
 
         // Create streams and pipe stuff
-        const source = ytdl(basicInfo.video_url, {format});
+        const source = ytdl(basicInfo.video_url, {quality: itag});
         const stream = source.pipe(fs.createWriteStream(destination));
 
         // Create download id
@@ -33,7 +43,7 @@ module.exports = {
             id: downloadId,
             destination,
             format,
-            size: format.clen,
+            size: 0,
             progress: 0,
             status: 'progress',
             video: {
@@ -46,23 +56,15 @@ module.exports = {
         });
 
         // Watch for events
-        let progress = 0;
-        const update = _.throttleEvent(() => sender.send('update-download', {
+        const update = _.throttleEvent(props => sender.send('update-download', {
             id: downloadId,
-            props: {progress}
+            props
         }));
 
-        source.on('data', chunk => {
-            progress += chunk.length;
-            update();
-        });
-
-        stream.on('finish', () => sender.send('update-download', {
-            id: downloadId,
-            props: {
-                status: 'finish',
-                progress: format.clen
-            }
+        source.on('progress', (_, progress, size) => update({
+            progress,
+            size,
+            status: progress >= size ? 'finish' : 'progress'
         }));
 
         stream.on('error', () => sender.send('update-download', {

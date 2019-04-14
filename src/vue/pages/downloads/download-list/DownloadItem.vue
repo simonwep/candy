@@ -116,7 +116,7 @@
 
     .title {
         @include font(600, 0.75em);
-        max-width: 30%;
+        width: 30%;
         color: white;
         margin-left: 1em;
         line-height: 1.3em;
