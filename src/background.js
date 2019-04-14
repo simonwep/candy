@@ -54,7 +54,9 @@ app.on('ready', async () => {
             console.error('Vue Devtools failed to install: ', e.toString());
         }
     }
+
     createWindow();
+    require('./ipc/server');
 });
 
 // Exit cleanly on request from parent process in development mode.
