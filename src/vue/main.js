@@ -10,7 +10,10 @@ if (!process.env.IS_WEB) {
     Vue.use(require('vue-electron'));
 }
 
+import * as _ from '../js/utils';
+
 Vue.config.productionTip = false;
+Vue.prototype.utils = _;
 
 new Vue({
     render: h => h(App),

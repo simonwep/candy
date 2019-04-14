@@ -68,6 +68,7 @@
     .window-actions {
         @include flex(row, center);
         align-self: stretch;
+        $icon-color: rgba(white, 0.85);
 
         div {
             @include size(100%, 1em);
@@ -91,13 +92,13 @@
 
         .minimize::before {
             @include size(2px, 0.75em);
-            background: white;
+            background: $icon-color;
             top: 9px;
         }
 
         .min-max::before {
             @include size(0.5em);
-            border: 2px solid white;
+            border: 2px solid $icon-color;
             border-radius: 0.1em;
         }
 
@@ -108,7 +109,7 @@
             &::after {
                 @include size(0.8em);
                 height: 2px;
-                background: white;
+                background: $icon-color;
             }
 
             &::after {

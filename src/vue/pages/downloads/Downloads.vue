@@ -1,22 +1,52 @@
 <template>
     <div class="downloads">
 
+        <!-- Header with url - input field -->
         <div class="header">
             <div class="url-input">
                 <i class="fas fa-fw fa-search"></i>
-                <input type="text" placeholder="Enter video or playlist url">
+                <input type="text"
+                       placeholder="Enter video or playlist url"
+                       @input="checkAvailableDownload">
             </div>
         </div>
+
+        <!-- Video info -->
+        <download-box v-if="videoStats" :video="videoStats"/>
 
     </div>
 </template>
 
 <script>
 
+    // IPC Client
+    import ipcClient from '../../ipc/client';
+
+    // Components
+    import DownloadBox from './download/DownloadBox';
+
     export default {
 
+        components: {DownloadBox},
+
         data() {
-            return {};
+            return {
+                videoStats: null
+            };
+        },
+
+        methods: {
+
+            checkAvailableDownload({target: {value}}) {
+
+                // Validate url
+                const match = value.match(/^((https?):\/\/www\.youtube.com\/watch\?v=.*?)(&|$)/);
+                if (match && match[1]) {
+                    ipcClient.request('getVideoInfo', match[1]).then(res => {
+                        this.videoStats = res;
+                    });
+                }
+            }
         }
     };
 
@@ -25,13 +55,14 @@
 <style lang="scss" scoped>
 
     .downloads {
+        position: relative;
         @include flex(column);
+        border-left: 1px solid $palette-theme-tertiary;
     }
 
     .header {
         flex-shrink: 0;
         background: $palette-theme-secondary;
-        border-left: 1px solid $palette-theme-tertiary;
         padding: 1em 2em;
 
         .url-input {
@@ -63,6 +94,11 @@
                 }
             }
         }
+    }
+
+    .download-box {
+        margin-top: 1px;
+
     }
 
 </style>

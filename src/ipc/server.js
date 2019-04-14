@@ -4,6 +4,7 @@ const events = require('./events');
 for (const [key, val] of Object.entries(events)) {
 
     // Validate
+    /* eslint-disable no-console */
     if (typeof key !== 'number' || typeof val !== 'function') {
         console.error('[IPC-SERVER] Invalid construct: ', key, val);
     }
