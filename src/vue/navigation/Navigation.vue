@@ -15,11 +15,10 @@
         <div class="divider"></div>
 
         <!-- Downloads -->
-        <nav-item v-for="menu of menus"
-                  :route="menu.route"
-                  :title="menu.title"
-                  :subs="menu.subs"
+        <nav-item to="/downloads"
+                  title="Downloads"
                   class="downloads"
+                  :subs="downloadSubs"
                   v-slot="{item}">
 
             <p class="list-item">
@@ -27,6 +26,9 @@
                 <span class="value">{{ item.value }}</span>
             </p>
         </nav-item>
+
+        <!-- Settings -->
+        <nav-item title="Settings" to="/settings" class="settings"></nav-item>
 
     </section>
 </template>
@@ -42,17 +44,11 @@
 
         data() {
             return {
-                menus: [
-                    {
-                        title: 'Downloads',
-                        route: '/downloads',
-                        subs: [
-                            {text: 'All', value: 20},
-                            {text: 'Active', value: 8},
-                            {text: 'Done', value: 10},
-                            {text: 'Paused', value: 2}
-                        ]
-                    }
+                downloadSubs: [
+                    {text: 'All', value: 20},
+                    {text: 'Active', value: 8},
+                    {text: 'Done', value: 10},
+                    {text: 'Paused', value: 2}
                 ]
             };
         }
@@ -65,11 +61,12 @@
     .navigation {
         @include flex(column, center);
         background: $palette-theme-secondary;
+        padding: 0.75em 0;
 
         > svg {
             fill: $palette-turquoise;
             @include size(5em);
-            margin: 1em 0;
+            margin: 0.5em 0 1em;
         }
     }
 
@@ -97,6 +94,10 @@
                 margin-right: 0.75em;
             }
         }
+    }
+
+    .settings {
+        margin-top: auto;
     }
 
 </style>

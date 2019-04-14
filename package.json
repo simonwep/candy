@@ -4,6 +4,13 @@
     "private": true,
     "description": "",
     "author": "Simon Reinisch",
+    "keywords": [],
+    "license": "MIT",
+    "main": "background.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Simonwep/Candy"
+    },
     "scripts": {
         "electron:build": "vue-cli-service electron:build",
         "electron:serve": "vue-cli-service electron:serve",
@@ -70,12 +77,5 @@
         "linux": {
             "icon": "build/icons"
         }
-    },
-    "keywords": [],
-    "license": "MIT",
-    "main": "background.js",
-    "repository": {
-        "type": "git",
-        "url": ""
     }
 }

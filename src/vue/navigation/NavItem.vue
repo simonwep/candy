@@ -2,7 +2,7 @@
     <div :class="{'expandable-section': 1, active}">
 
         <!-- Topic header -->
-        <router-link class="topic" :to="route">{{ title }}</router-link>
+        <router-link class="topic" :to="to">{{ title }}</router-link>
 
         <!-- Expandable link secion -->
         <ul v-if="subs.length && $scopedSlots.default" class="items">
@@ -19,14 +19,14 @@
 
         props: {
             title: {type: String, required: true},
-            route: {type: String, required: true},
-            subs: {type: Array, default: []}
+            to: {type: String, required: true},
+            subs: {type: Array, default: () => []}
         },
 
         computed: {
 
             active() {
-                return this.$route.path.startsWith(this.route);
+                return this.$route.path.startsWith(this.to);
             }
         },
 
@@ -43,6 +43,7 @@
         @include flex(column);
         border-left: 2px solid transparent;
         transition: all 0.15s;
+        width: 100%;
 
         &.active {
             border-color: $palette-cloud-blue;
@@ -52,7 +53,7 @@
             }
 
             .items {
-                max-height: 100vh;
+                max-height: 50vh;
             }
         }
     }
@@ -60,8 +61,8 @@
     .topic {
         cursor: pointer;
         color: white;
-        padding: 0.75em 2em;
-        @include font(600, 0.85em);
+        padding: 0.85em 2em;
+        @include font(600, 0.8em);
         transition: all 0.15s;
 
         &:hover {
@@ -72,7 +73,7 @@
     .items {
         background: $palette-theme-primary;
         max-height: 0;
-        transition: all 0.15s;
+        transition: all 0.3s;
         overflow: hidden;
 
         li {
