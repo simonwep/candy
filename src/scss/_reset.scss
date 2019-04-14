@@ -28,3 +28,13 @@ textarea {
     background: unset;
     color: unset;
 }
+
+::-webkit-scrollbar {
+    width: 0.4em;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(white, 0.3);
+    border-radius: 50em;
+}
