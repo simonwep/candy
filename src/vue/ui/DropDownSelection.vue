@@ -1,12 +1,12 @@
 <template>
     <div :class="{'drop-down-selection': 1, open}">
 
-        <button @click="open = !open">
+        <button ref="activator">
             <i class="fas fa-fw fa-angle-down"></i>
             <span>{{ value ? (itemValueFilter ? itemValueFilter(value) : value) : title }}</span>
         </button>
 
-        <div class="items">
+        <div class="items" ref="items">
             <p v-for="item of preparedItems" @click="select(item)">{{ item.modified }}</p>
         </div>
 
@@ -28,8 +28,26 @@
         data() {
             return {
                 open: false,
-                replacedTitle: null
+                replacedTitle: null,
+                outsideClickArguments: null
             };
+        },
+
+        mounted() {
+            const {items, activator} = this.$refs;
+
+            // Detect clicks outside of it and close it afterwards
+            this.outsideClickArguments = this.utils.on(window, 'click', ({path}) => {
+                if (path.includes(activator)) {
+                    this.open = !this.open;
+                } else if (!path.includes(items)) {
+                    this.open = false;
+                }
+            });
+        },
+
+        destroyed() {
+            this.utils.off(...this.outsideClickArguments);
         },
 
         computed: {
