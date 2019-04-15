@@ -7,8 +7,15 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
+const activeDownloads = {};
+
 module.exports = {
 
+    /**
+     * Fetches all available informations (including available streams) of a video
+     * @param url
+     * @returns {Promise<videoInfo>}
+     */
     async getVideoInfo(url) {
         const info = await ytdl.getBasicInfo(url);
         const resolvedFormats = [];
@@ -28,6 +35,13 @@ module.exports = {
         return info;
     },
 
+    /**
+     * Starts the download of channel/s
+     * @param basicInfo The videos basic info gathered by getVideoInfo
+     * @param sources Channels
+     * @param sender
+     * @returns {Promise<string>}
+     */
     async startDownload({basicInfo, sources}, {sender}) {
 
         // Create temporary folder
@@ -126,7 +140,10 @@ module.exports = {
                     // Wait until done
                     prom.then(() => {
                         update({status: 'finish'});
-                    }).catch(() => {
+                    }).catch(e => {
+
+                        /* eslint-disable no-console */
+                        console.error(e);
                         update({status: 'errored'});
                     }).finally(() => {
 
@@ -136,15 +153,39 @@ module.exports = {
                 }
             });
 
-            sourceStream.on('error', () => {
-                sourceStreams.forEach(s => s.close());
-                sender.send('update-download', {
-                    id: downloadId,
-                    props: {status: 'errored'}
-                });
+            sourceStream.on('error', e => {
+
+                /* eslint-disable no-console */
+                console.error(e);
+
+                if (e !== 'cancelled') {
+                    sourceStreams.forEach(s => s.destroy());
+                    destiantions.forEach(fs.unlinkSync);
+                    update({status: e === 'cancelled' ? e : 'errored'});
+                }
             });
         }
 
+        // Expose download functions
+        activeDownloads[downloadId] = {
+            cancel() {
+                sourceStreams.forEach(s => s.destroy('cancelled'));
+                update({status: 'cancelled'});
+            }
+        };
+
+        return 'ok';
+    },
+
+    /**
+     * Cancels a download. Deletes all remaining temporary files.
+     * Only effective if in progress mode
+     * @param downloadId
+     * @returns {Promise<string>}
+     */
+    async cancelDownload({downloadId}) {
+        const item = activeDownloads[downloadId];
+        item && item.cancel();
         return 'ok';
     }
 };

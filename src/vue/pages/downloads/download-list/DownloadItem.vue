@@ -16,22 +16,33 @@
 
         <!-- Download progress -->
         <div class="progress">
-            <p>
-                <b>{{ utils.readableByteCount(download.progress) }}</b> /
-                <b>{{ utils.readableByteCount(download.size) }} ({{ percentualProgress }})</b> -
+
+            <div class="info-text">
+                <p v-if="download.status !== 'cancelled'" >
+                    <b>{{ utils.readableByteCount(download.progress) }}</b> /
+                    <b>{{ utils.readableByteCount(download.size) }} ({{ percentualProgress }})</b> -
+                </p>
                 <b>{{ statusText }}</b>
-            </p>
+            </div>
 
             <div class="progress-bar" :data-status="download.status">
-                <div :style="{width: `${(download.progress / download.size) * 100}%`}"></div>
+                <div v-if="download.status !== 'cancelled'" :style="{width: `${(download.progress / download.size) * 100}%`}"></div>
             </div>
+
         </div>
 
+        <!-- Actions -->
+        <div class="actions">
+            <button v-if="download.status === 'progress'" class="cancel" @click="cancelDownload">Cancel</button>
+        </div>
 
     </div>
 </template>
 
 <script>
+
+    // IPC Client
+    import ipcClient from '../../../ipc/client';
 
     export default {
 
@@ -55,19 +66,28 @@
                         return 'Done!';
                     case 'convert':
                         return 'Converting...';
-                    case 'error':
+                    case 'errored':
                         return 'Ooops, try again later.';
+                    case 'cancelled':
+                        return 'Download cancelled.';
                 }
             },
 
-            percentualProgress(){
+            percentualProgress() {
                 const {size, progress} = this.download;
-                return `${Number(((progress / size) * 100).toFixed(1))}%`;
+                return `${Number(((progress / size) * 100).toFixed(1)) || 0}%`;
             }
         },
 
         data() {
             return {};
+        },
+
+        methods: {
+
+            cancelDownload() {
+                ipcClient.request('cancelDownload', {downloadId: this.download.id});
+            }
         }
     };
 
@@ -187,13 +207,18 @@
         flex-grow: 1;
         margin-left: 1em;
 
-        > p {
+        .info-text {
             font-size: 0.75em;
             margin-bottom: 0.5em;
             color: white;
 
             b {
                 font-weight: 600;
+            }
+
+            &.cancelled {
+                @include font(600, 0.8em);
+                color: $palette-theme-secondary;
             }
         }
 
@@ -233,5 +258,28 @@
         }
     }
 
+    .actions {
+        @include flex(row, center);
+        margin: 0 1.25em 0 2em;
+
+        button {
+            @include font(600, 0.75em);
+            padding: 0.5em 1em;
+            border: 1px solid $palette-theme-tertiary;
+            transition: all 0.3s;
+            color: $palette-theme-tertiary;
+            border-radius: 0.15em;
+
+            &.cancel {
+                color: $palette-bright-red;
+                border-color: $palette-bright-red;
+
+                &:hover {
+                    background: $palette-bright-red;
+                    color: $palette-theme-tertiary;
+                }
+            }
+        }
+    }
 
 </style>
