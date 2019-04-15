@@ -168,4 +168,4 @@ module.exports.pick = (object, props) => {
     }
 
     return newObj;
-}
+};

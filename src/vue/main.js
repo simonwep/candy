@@ -6,10 +6,6 @@ import store  from './store';
 
 import 'typeface-open-sans';
 
-if (!process.env.IS_WEB) {
-    Vue.use(require('vue-electron'));
-}
-
 import * as _ from '../js/utils';
 
 Vue.config.productionTip = false;

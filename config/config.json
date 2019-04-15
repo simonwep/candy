@@ -1,4 +1,5 @@
 {
     "binaryPrefix": true,
+    "tmpFolderName": "downloader",
     "downloadDirectory": "C:\\Users\\root\\Downloads\\"
 }

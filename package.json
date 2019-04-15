@@ -22,11 +22,13 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.8.1",
         "electron": "^4.1.4",
+        "ffmpeg-static": "^2.4.0",
+        "ffprobe-static": "^3.0.0",
+        "fluent-ffmpeg": "^2.1.2",
         "normalize.css": "^8.0.1",
         "simple-youtube-api": "^5.1.1",
         "typeface-open-sans": "^0.0.54",
         "vue": "^2.6.10",
-        "vue-electron": "^1.0.6",
         "vue-router": "^3.0.4",
         "vuex": "^3.1.0",
         "ytdl-core": "^0.29.1"

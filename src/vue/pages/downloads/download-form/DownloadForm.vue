@@ -1,5 +1,5 @@
 <template>
-    <div class="download-box">
+    <div class="download-form">
         <video-summary :video="video"/>
         <div class="divider"></div>
         <format-selection :video="video"/>
@@ -29,7 +29,7 @@
 
 <style lang="scss" scoped>
 
-    .download-box {
+    .download-form {
         @include flex(column);
         background: $palette-theme-secondary;
         padding: 0.5em 1em;

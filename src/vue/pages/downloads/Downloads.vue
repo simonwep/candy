@@ -39,10 +39,6 @@
             };
         },
 
-        mounted() {
-            this.checkAvailableDownload({target: {value: 'https://www.youtube.com/watch?v=p_8yK2kmxoo'}});
-        },
-
         methods: {
 
             checkAvailableDownload({target: {value}}) {
@@ -53,6 +49,8 @@
                     ipcClient.request('getVideoInfo', match[1]).then(res => {
                         this.videoStats = res;
                     });
+                } else {
+                    this.videoStats = null;
                 }
             }
         }
@@ -104,9 +102,19 @@
         }
     }
 
-    .download-box {
+    .download-form {
         margin-top: 1px;
 
+        @include animate('0.3s ease-in-out') {
+            from {
+                opacity: 0;
+                transform: translateY(-0.1em);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
     }
 
 </style>

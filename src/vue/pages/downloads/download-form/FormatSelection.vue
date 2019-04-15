@@ -2,7 +2,7 @@
     <div class="format-selection">
 
         <!-- Video codec and format -->
-        <drop-down-selection :title="content || 'Choose format'"
+        <drop-down-selection :title="content || 'choose format'"
                              :items="video.formats"
                              :item-value-filter="formatFilter"
                              item-value="content"
@@ -10,23 +10,23 @@
 
         <!-- If video - quality  -->
         <drop-down-selection v-if="['video', 'audio/video'].includes(content)"
-                             :title="resolution || 'Choose quality'"
-                             :items="formatItems"
+                             :title="resolution || 'choose quality'"
+                             :items="videoResolutions"
                              :item-value-filter="qualityFilter"
                              item-value="resolution"
                              v-model="resolution"/>
 
         <!-- If audio - bitrate -->
-        <drop-down-selection v-if="content === 'audio'"
-                             :title="bitrate || 'Choose bitrate'"
-                             :items="formatItems"
+        <drop-down-selection v-if="['audio', 'audio/video'].includes(content)"
+                             :title="bitrate || 'choose bitrate'"
+                             :items="audioBitrates"
                              item-value="bitrate"
                              v-model="bitrate"/>
 
         <!-- Start download -->
-        <button v-if="target" @click="startDownload">
+        <button v-if="sources" @click="startDownload">
             <span>Download</span>
-            <span class="size" v-if="target.clen">({{ utils.readableByteCount(Number(target.clen)) }})</span>
+            <span class="size" v-if="sources.clen">({{ utils.readableByteCount(Number(sources.clen)) }})</span>
         </button>
 
     </div>
@@ -50,20 +50,33 @@
 
         computed: {
 
-            formatItems() {
-                return this.video.formats.filter(v => v.content === this.content);
+            videoResolutions() {
+                return this.video.formats.filter(v => v.resolution);
             },
 
-            target() {
-                const {resolution, bitrate, formatItems} = this;
+            audioBitrates() {
+                return this.video.formats.filter(v => v.bitrate);
+            },
 
-                if (resolution) {
-                    return formatItems.find(v => v.resolution === resolution);
-                } else if (bitrate) {
-                    return formatItems.find(v => v.bitrate === bitrate);
+            sources() {
+                const {content, resolution, bitrate, video} = this;
+                const getVideoChannel = () => resolution ? video.formats.find(v => v.resolution === resolution) : null;
+                const getAudioChannel = () => bitrate ? video.formats.find(v => v.bitrate === bitrate) : null;
+
+                switch (content) {
+                    case 'audio/video': {
+                        const [video, audio] = [getVideoChannel(), getAudioChannel()];
+                        return (video && audio) ? [video, audio] : null;
+                    }
+                    case 'audio': {
+                        const audio = getAudioChannel();
+                        return audio ? [audio] : null;
+                    }
+                    case 'video': {
+                        const video = getVideoChannel();
+                        return video ? [video] : null;
+                    }
                 }
-
-                return null;
             }
         },
 
@@ -83,7 +96,11 @@
 
         methods: {
             formatFilter(v) {
-                return v.replace('/', ' & ');
+                return ({
+                    'video': 'Video only',
+                    'audio': 'Audio only',
+                    'audio/video': 'Video & Audio'
+                })[v];
             },
 
             qualityFilter(v) {
@@ -92,9 +109,9 @@
             },
 
             startDownload() {
-                if (this.target) {
+                if (this.sources) {
                     ipcClient.request('startDownload', {
-                        format: this.target,
+                        sources: this.sources,
                         basicInfo: this.video
                     });
                 } else {

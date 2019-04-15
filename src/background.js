@@ -14,7 +14,7 @@ protocol.registerStandardSchemes(['app'], {secure: true});
 function createWindow() {
     win = new BrowserWindow({
         width: 800,
-        height: 600,
+        height: 900,
         frame: false
     });
 
@@ -56,7 +56,7 @@ app.on('ready', async () => {
     }
 
     createWindow();
-    require('./ipc/server');
+    require('./elec/ipc/server');
 });
 
 // Exit cleanly on request from parent process in development mode.
