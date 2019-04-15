@@ -131,14 +131,14 @@
             overflow: hidden;
 
             svg {
-                @include size(19px);
+                @include size(16px);
                 fill: $palette-theme-tertiary;
                 transition: all 0.3s;
             }
 
             > div {
                 @include flex(row, center, center);
-                @include size(100%, 2em);
+                @include size(100%, 2.5em);
                 transition: all 0.3s;
                 cursor: pointer;
                 border: 1px solid $palette-theme-tertiary;

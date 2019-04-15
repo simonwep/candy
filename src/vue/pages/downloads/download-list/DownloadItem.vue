@@ -18,10 +18,10 @@
         <div class="progress">
 
             <div class="info-text">
-                <p v-if="download.status !== 'cancelled'" >
+                <span v-if="download.status !== 'cancelled'">
                     <b>{{ utils.readableByteCount(download.progress) }}</b> /
                     <b>{{ utils.readableByteCount(download.size) }} ({{ percentualProgress }})</b> -
-                </p>
+                </span>
                 <b>{{ statusText }}</b>
             </div>
 
@@ -101,6 +101,15 @@
         padding: 0.5em;
         border-radius: 0.15em;
         box-shadow: 0 0.1em 0.5em rgba(black, 0.1);
+
+        @include animate('0.15s ease-in-out') {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
         &[data-card-size='mid'] {
             .thumbnail,
