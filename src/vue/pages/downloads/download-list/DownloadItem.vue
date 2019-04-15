@@ -18,7 +18,8 @@
         <div class="progress">
             <p>
                 <b>{{ utils.readableByteCount(download.progress) }}</b> /
-                <b>{{ utils.readableByteCount(download.size) }}</b>
+                <b>{{ utils.readableByteCount(download.size) }} ({{ percentualProgress }})</b> -
+                <b>{{ statusText }}</b>
             </p>
 
             <div class="progress-bar" :data-status="download.status">
@@ -41,6 +42,27 @@
                 validator(v) {
                     return typeof v === 'string' && ['big', 'mid'].includes(v);
                 }
+            }
+        },
+
+        computed: {
+
+            statusText() {
+                switch (this.download.status) {
+                    case 'progress':
+                        return 'Downloading...';
+                    case 'finish':
+                        return 'Done!';
+                    case 'convert':
+                        return 'Converting...';
+                    case 'error':
+                        return 'Ooops, try again later.';
+                }
+            },
+
+            percentualProgress(){
+                const {size, progress} = this.download;
+                return `${Number(((progress / size) * 100).toFixed(1))}%`;
             }
         },
 
