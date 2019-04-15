@@ -5,6 +5,7 @@
         <div class="status-bar" :data-status="download.status">
             <i v-if="download.status === 'progress'" class="fas fa-fw fa-angle-down"></i>
             <i v-else-if="download.status === 'finish'" class="fas fa-fw fa-check"></i>
+            <i v-else-if="download.status === 'convert'" class="fas fa-fw fa-cog"></i>
             <i v-else-if="download.status === 'errored'" class="fas fa-fw fa-times"></i>
             <div></div>
         </div>
@@ -20,7 +21,7 @@
                 <b>{{ utils.readableByteCount(download.size) }}</b>
             </p>
 
-            <div :class="{'progress-bar': 1, done: download.status === 'finish'}">
+            <div class="progress-bar" :data-status="download.status">
                 <div :style="{width: `${(download.progress / download.size) * 100}%`}"></div>
             </div>
         </div>
@@ -84,6 +85,22 @@
 
             i {
                 color: $palette-nature-orange;
+            }
+        }
+
+        &[data-status='convert'] {
+            > div {
+                background: $palette-turquoise;
+            }
+
+            i {
+                color: $palette-turquoise;
+
+                @include animate('2s linear infinite') {
+                    to {
+                        transform: rotate(360deg);
+                    }
+                }
             }
         }
 
@@ -152,6 +169,22 @@
             }
 
             &.done > div {
+                background: $palette-success-green;
+            }
+
+            &[data-status='progress'] > div {
+                background: $palette-nature-orange;
+            }
+
+            &[data-status='convert'] > div {
+                background: $palette-turquoise;
+            }
+
+            &[data-status='errored'] > div {
+                background: $palette-bright-red;
+            }
+
+            &[data-status='finish'] > div {
                 background: $palette-success-green;
             }
         }

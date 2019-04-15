@@ -113,6 +113,7 @@
         border: 1px solid rgba(black, 0.2);
         border-radius: 0.15em;
         padding: 0.5em 0.75em;
+        text-transform: capitalize;
 
         i {
             margin-right: 0.5em;
