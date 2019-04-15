@@ -23,6 +23,7 @@
         "@fortawesome/fontawesome-free": "^5.8.1",
         "electron": "^4.1.4",
         "normalize.css": "^8.0.1",
+        "simple-youtube-api": "^5.1.1",
         "typeface-open-sans": "^0.0.54",
         "vue": "^2.6.10",
         "vue-electron": "^1.0.6",
