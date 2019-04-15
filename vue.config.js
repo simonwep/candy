@@ -1,9 +1,10 @@
 module.exports = {
     pages: {
         index: {
-            entry: 'src/vue/main.js',
+            entry: 'src/vue/main.js'
         }
     },
+
     css: {
         loaderOptions: {
             sass: {

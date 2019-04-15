@@ -1,5 +1,5 @@
 <template>
-    <div class="download-item">
+    <div class="download-item" :data-card-size="cardSize">
 
         <!-- Colored status bar -->
         <div class="status-bar" :data-status="download.status">
@@ -35,7 +35,13 @@
     export default {
 
         props: {
-            download: {type: Object, required: true}
+            download: {type: Object, required: true},
+            cardSize: {
+                default: 'big',
+                validator(v) {
+                    return typeof v === 'string' && ['big', 'mid'].includes(v);
+                }
+            }
         },
 
         data() {
@@ -53,6 +59,21 @@
         padding: 0.5em;
         border-radius: 0.15em;
         box-shadow: 0 0.1em 0.5em rgba(black, 0.1);
+
+        &[data-card-size='mid'] {
+            .thumbnail,
+            .status-bar > div {
+                display: none;
+            }
+
+            .status-bar {
+                justify-content: center;
+
+                i {
+                    margin: 0;
+                }
+            }
+        }
     }
 
     .status-bar {
@@ -61,7 +82,7 @@
 
         > div {
             flex-grow: 1;
-            background: rgba(black, 0.25);
+            background: $palette-theme-tertiary;
             border-radius: 100em;
             width: 5px;
             transition: all 0.3s;
@@ -157,7 +178,7 @@
         .progress-bar {
             @include size(5px, 100%);
             position: relative;
-            background: rgba(black, 0.25);
+            background: $palette-theme-tertiary;
             border-radius: 5em;
             overflow: hidden;
 

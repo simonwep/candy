@@ -3,11 +3,30 @@
 
         <!-- Header with url - input field -->
         <div class="header">
+
             <div class="url-input">
                 <i class="fas fa-fw fa-search"></i>
                 <input type="text"
                        placeholder="Enter video or playlist url"
                        @input="checkAvailableDownload">
+            </div>
+
+            <div class="views">
+
+                <div :class="{active: viewType === 'big'}" @click="viewType = 'big'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11 11">
+                        <rect y="6" width="11" height="5"></rect>
+                        <rect width="11" height="5"></rect>
+                    </svg>
+                </div>
+
+                <div :class="{active: viewType === 'mid'}" @click="viewType = 'mid'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11 11">
+                        <rect y="8" width="11" height="3"></rect>
+                        <rect width="11" height="3"></rect>
+                        <rect y="4" width="11" height="3"></rect>
+                    </svg>
+                </div>
             </div>
         </div>
 
@@ -15,7 +34,7 @@
         <download-form v-if="videoStats" :video="videoStats"/>
 
         <!-- Download list -->
-        <download-list/>
+        <download-list :card-size="viewType"/>
 
     </div>
 </template>
@@ -26,16 +45,18 @@
     import ipcClient from '../../ipc/client';
 
     // Components
+    import SwitchButton from './../../ui/SwitchButton';
     import DownloadForm from './download-form/DownloadForm';
     import DownloadList from './download-list/DownloadList';
 
     export default {
 
-        components: {DownloadForm, DownloadList},
+        components: {SwitchButton, DownloadForm, DownloadList},
 
         data() {
             return {
-                videoStats: null
+                videoStats: null,
+                viewType: 'big'
             };
         },
 
@@ -67,6 +88,7 @@
     }
 
     .header {
+        @include flex(row, center, space-between);
         flex-shrink: 0;
         background: $palette-theme-secondary;
         padding: 1em 2em;
@@ -97,6 +119,37 @@
 
                 &::placeholder {
                     color: rgba(white, 0.6);
+                }
+            }
+        }
+
+        .views {
+            @include flex(row, center);
+            margin-left: auto;
+            align-self: stretch;
+            border-radius: 0.15em;
+            overflow: hidden;
+
+            svg {
+                @include size(19px);
+                fill: $palette-theme-tertiary;
+                transition: all 0.3s;
+            }
+
+            > div {
+                @include flex(row, center, center);
+                @include size(100%, 2em);
+                transition: all 0.3s;
+                cursor: pointer;
+                border: 1px solid $palette-theme-tertiary;
+
+                &:not(:first-child) {
+                    border-left: none;
+                }
+
+                &.active {
+                    background: $palette-cloud-blue;
+                    border-color: $palette-cloud-blue;
                 }
             }
         }

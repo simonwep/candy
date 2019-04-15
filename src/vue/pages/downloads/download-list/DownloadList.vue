@@ -1,6 +1,6 @@
 <template>
     <div class="download-list">
-        <download-item v-for="download of downloads" :download="download"/>
+        <download-item v-for="download of downloads" :download="download" :card-size="cardSize"/>
     </div>
 </template>
 
@@ -14,6 +14,10 @@
 
     export default {
         components: {DownloadItem},
+
+        props: {
+            cardSize: {type: String, default: 'big'}
+        },
 
         data() {
             return {};

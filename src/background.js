@@ -56,7 +56,7 @@ app.on('ready', async () => {
     }
 
     createWindow();
-    require('./elec/ipc/server');
+    require('./electron/ipc/server');
 });
 
 // Exit cleanly on request from parent process in development mode.
