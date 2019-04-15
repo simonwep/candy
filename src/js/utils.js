@@ -1,4 +1,4 @@
-import config from '../../config/config';
+const config = require('../../config/config');
 
 function eventListener(method, elements, events, fn, options = {}) {
 
@@ -28,7 +28,7 @@ function eventListener(method, elements, events, fn, options = {}) {
  * @param options Optional options
  * @return Array passed arguments
  */
-export const on = eventListener.bind(null, 'addEventListener');
+module.exports.on = eventListener.bind(null, 'addEventListener');
 
 /**
  * Remove event(s) from element(s).
@@ -38,7 +38,7 @@ export const on = eventListener.bind(null, 'addEventListener');
  * @param options Optional options
  * @return Array passed arguments
  */
-export const off = eventListener.bind(null, 'removeEventListener');
+module.exports.off = eventListener.bind(null, 'removeEventListener');
 
 /**
  * Formats a date
@@ -47,7 +47,7 @@ export const off = eventListener.bind(null, 'removeEventListener');
  * @param locales
  * @returns {*}
  */
-export function formatDate(format, date = Date.now(), locales = 'en-us') {
+module.exports.formatDate = (format, date = Date.now(), locales = 'en-us') => {
 
     if (typeof date === 'number') {
         date = new Date(date);
@@ -82,20 +82,20 @@ export function formatDate(format, date = Date.now(), locales = 'en-us') {
         new RegExp(Object.keys(strMap).join('|'), 'g'),
         match => strMap[match] || ''
     );
-}
+};
 
 /**
  * Formats a duration specified in seconds
  * @param duration
  * @returns {string}
  */
-export function formatSeconds(duration = 0) {
+module.exports.formatSeconds = (duration = 0) => {
     return [
         Math.floor(duration / 3600),
         Math.floor(duration / 60),
         duration % 60
     ].map(v => v ? String(v).padStart(2, '0') : 0).filter(Boolean).join(':');
-}
+};
 
 /**
  * Convert a byte size to an human readable size.
@@ -104,7 +104,7 @@ export function formatSeconds(duration = 0) {
  * @param mapValue Optional mapper to manipulate the raw number
  * @returns {string}
  */
-export function readableByteCount(bytes, mapValue = v => v) {
+module.exports.readableByteCount = (bytes, mapValue = v => v) => {
     const si = config.binaryPrefix;
     const unit = si ? 1000 : 1024;
     const block = bytes / unit;
@@ -122,15 +122,15 @@ export function readableByteCount(bytes, mapValue = v => v) {
     }
 
     return `${bytes} B`;
-}
+};
 
 /**
  * Creates a uid
  * @returns {string}
  */
-export function createUID() {
+module.exports.createUID = () => {
     return Math.round(Math.random() * 1e15).toString(16) + Date.now().toString(16);
-}
+};
 
 /**
  * Throttles the call of a function
@@ -138,7 +138,7 @@ export function createUID() {
  * @param ms
  * @returns {Function}
  */
-export function throttleEvent(fn, ms = 1000) {
+module.exports.throttleEvent = (fn, ms = 1000) => {
     let lastCall = 0;
     let timeout = 0;
 
@@ -152,4 +152,4 @@ export function throttleEvent(fn, ms = 1000) {
 
         timeout = setTimeout(() => fn(...args), ms);
     };
-}
+};
