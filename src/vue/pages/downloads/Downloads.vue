@@ -156,6 +156,7 @@
     }
 
     .download-form {
+        flex-shrink: 0;
         margin-top: 1px;
 
         @include animate('0.3s ease-in-out') {
@@ -168,6 +169,10 @@
                 transform: none;
             }
         }
+    }
+
+    .download-list {
+        overflow: auto;
     }
 
 </style>

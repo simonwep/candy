@@ -14,13 +14,13 @@ export const downloads = {
             const video = state.find(v => v.id === id);
 
             if (video) {
-                const statusChanged = props.status !== video.status;
+                const statusChanged = props.status && props.status !== video.status;
                 Object.assign(video, props);
 
                 // Check if status has changed
                 if (statusChanged) {
                     const sortMap = ['errored', 'finish', 'convert', 'progress'];
-                    state.sort((a, b) => sortMap.indexOf(a.status) - sortMap.indexOf(b.status));
+                    state.sort((a, b) => sortMap.indexOf(b.status) - sortMap.indexOf(a.status));
                 }
             }
         }

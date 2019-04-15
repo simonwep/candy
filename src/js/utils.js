@@ -148,9 +148,9 @@ module.exports.throttleEvent = (fn, ms = 1000) => {
         if (Date.now() - lastCall > ms) {
             lastCall = Date.now();
             fn(...args);
+        } else {
+            timeout = setTimeout(() => fn(...args), ms);
         }
-
-        timeout = setTimeout(() => fn(...args), ms);
     };
 };
 
