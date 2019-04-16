@@ -59,7 +59,7 @@ module.exports = {
 
                 // Return error message
                 return [{
-                    errorMsg: "Can not save settings.",
+                    errorMsg: 'Can not save settings.',
                     validationError: e
                 }];
             }
