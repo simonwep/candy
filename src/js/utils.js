@@ -90,11 +90,12 @@ module.exports.formatDate = (format, date = Date.now(), locales = 'en-us') => {
  * @returns {string}
  */
 module.exports.formatSeconds = (duration = 0) => {
-    return [
+    const res = [
         Math.floor(duration / 3600),
         Math.floor(duration / 60),
         duration % 60
     ].map(v => v ? String(v).padStart(2, '0') : 0).filter(Boolean).join(':');
+    return res.length < 3 ? `${res}s` : res;
 };
 
 /**

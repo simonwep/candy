@@ -10,7 +10,7 @@
     import {mapState} from 'vuex';
 
     // Components
-    import DownloadItem from './DownloadItem';
+    import DownloadItem from './DownloadListItem';
 
     export default {
         components: {DownloadItem},

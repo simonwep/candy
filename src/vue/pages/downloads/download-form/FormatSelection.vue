@@ -73,9 +73,14 @@
             },
 
             sources() {
-                const {content, resolution, bitrate, video} = this;
+                const {format, content, resolution, bitrate, video} = this;
                 const getVideoChannel = () => resolution ? video.formats.find(v => v.resolution === resolution) : null;
                 const getAudioChannel = () => bitrate ? video.formats.find(v => v.bitrate === bitrate) : null;
+
+                // Format is universial but required
+                if (!format) {
+                    return null;
+                }
 
                 switch (content) {
                     case 'audio/video': {

@@ -116,6 +116,7 @@ module.exports = {
                     // Update render process
                     update({
                         progress: totalsize,
+                        size: totalsize,
                         status: 'convert'
                     });
 

@@ -6,6 +6,7 @@
             <i v-if="download.status === 'progress'" class="fas fa-fw fa-angle-down"></i>
             <i v-else-if="download.status === 'finish'" class="fas fa-fw fa-check"></i>
             <i v-else-if="download.status === 'convert'" class="fas fa-fw fa-cog"></i>
+            <i v-else-if="download.status === 'cancelled'" class="fas fa-fw fa-eject"></i>
             <i v-else-if="download.status === 'errored'" class="fas fa-fw fa-times"></i>
             <div></div>
         </div>
@@ -28,7 +29,6 @@
             <div class="progress-bar" :data-status="download.status">
                 <div v-if="download.status !== 'cancelled'" :style="{width: `${(download.progress / download.size) * 100}%`}"></div>
             </div>
-
         </div>
 
         <!-- Actions -->
@@ -144,6 +144,7 @@
             font-size: 0.7em;
             margin-bottom: 0.5em;
             transition: all 0.3s;
+            color: $palette-theme-tertiary;
 
             &.fa-check {
                 margin-left: 0.1em;
