@@ -25,6 +25,7 @@
         "ffmpeg-static": "^2.4.0",
         "ffprobe-static": "^3.0.0",
         "fluent-ffmpeg": "^2.1.2",
+        "jsonschema": "^1.2.4",
         "normalize.css": "^8.0.1",
         "simple-youtube-api": "^5.1.1",
         "typeface-open-sans": "^0.0.54",
