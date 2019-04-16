@@ -45,13 +45,12 @@
     import ipcClient from '../../ipc/client';
 
     // Components
-    import SwitchButton from './../../ui/SwitchButton';
     import DownloadForm from './download-form/DownloadForm';
     import DownloadList from './download-list/DownloadList';
 
     export default {
 
-        components: {SwitchButton, DownloadForm, DownloadList},
+        components: {DownloadForm, DownloadList},
 
         data() {
             return {

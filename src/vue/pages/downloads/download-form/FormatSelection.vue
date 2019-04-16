@@ -4,7 +4,7 @@
         <!-- Video codec and format -->
         <drop-down-selection :title="content || 'choose format'"
                              :items="video.formats"
-                             :item-value-filter="formatFilter"
+                             :item-value-filter="contentFilter"
                              item-value="content"
                              v-model="content"/>
 
@@ -22,6 +22,12 @@
                              :items="audioBitrates"
                              item-value="bitrate"
                              v-model="bitrate"/>
+
+        <drop-down-selection v-if="content"
+                             :title="format || 'choose file format'"
+                             :item-value-filter="formatFilter"
+                             :items="extensions"
+                             v-model="format"/>
 
         <!-- Start download -->
         <button v-if="sources" @click="startDownload">
@@ -58,6 +64,14 @@
                 return this.video.formats.filter(v => v.bitrate);
             },
 
+            extensions() {
+                if (this.content.includes('video')) {
+                    return ['mp4', '3gp', 'ogg', 'wmv', 'webm', 'flv', 'avi', 'vob'];
+                } else {
+                    return ['mp3', 'oog', 'aac', 'wma'];
+                }
+            },
+
             sources() {
                 const {content, resolution, bitrate, video} = this;
                 const getVideoChannel = () => resolution ? video.formats.find(v => v.resolution === resolution) : null;
@@ -84,23 +98,28 @@
             return {
                 content: null,
                 resolution: null,
-                bitrate: null
+                bitrate: null,
+                format: null
             };
         },
 
         watch: {
             content() {
-                this.resolution = this.bitrate = null;
+                this.resolution = this.bitrate = this.format = null;
             }
         },
 
         methods: {
-            formatFilter(v) {
+            contentFilter(v) {
                 return ({
                     'video': 'Video only',
                     'audio': 'Audio only',
                     'audio/video': 'Video & Audio'
                 })[v];
+            },
+
+            formatFilter(v) {
+                return v.toUpperCase();
             },
 
             qualityFilter(v) {
@@ -110,10 +129,8 @@
 
             startDownload() {
                 if (this.sources) {
-                    ipcClient.request('startDownload', {
-                        sources: this.sources,
-                        basicInfo: this.video
-                    });
+                    const {sources, video, format} = this;
+                    ipcClient.request('startDownload', {sources, video, format});
                 } else {
                     /* eslint-disable no-console */
                     console.error('[DOWNLOAD] Tried to download without a resolved target', this.format, this.resolution, this.bitrate);

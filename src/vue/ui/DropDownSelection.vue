@@ -139,6 +139,7 @@
         box-shadow: 0 0.05em 0.75em rgba(black, 0.25);
         max-height: 50vh;
         overflow: auto;
+        z-index: 100;
 
         p {
             @include font(400, 0.85em);

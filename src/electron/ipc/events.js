@@ -37,12 +37,13 @@ module.exports = {
 
     /**
      * Starts the download of channel/s
-     * @param basicInfo The videos basic info gathered by getVideoInfo
+     * @param format Media container
+     * @param video The videos basic info gathered by getVideoInfo
      * @param sources Channels
      * @param sender
      * @returns {Promise<string>}
      */
-    async startDownload({basicInfo, sources}, {sender}) {
+    async startDownload({format, video, sources}, {sender}) {
 
         // Create temporary folder
         const tmpDir = path.join(os.tmpdir(), config.tmpFolderName);
@@ -61,11 +62,11 @@ module.exports = {
             progress: 0,
             status: 'progress',
             video: {
-                url: basicInfo.video_url,
-                thumbnailUrl: basicInfo.thumbnail_url,
-                duration: Number(basicInfo.length_seconds),
-                title: basicInfo.title,
-                author: basicInfo.author
+                url: video.video_url,
+                thumbnailUrl: video.thumbnail_url,
+                duration: Number(video.length_seconds),
+                title: video.title,
+                author: video.author
             }
         });
 
@@ -80,7 +81,7 @@ module.exports = {
         const sourceStreams = [];
         for (const {itag, container} of sources) {
             const destiantion = path.join(tmpDir, `${_.createUID()}.${container}`);
-            const sourceStream = ytdl(basicInfo.video_url, {
+            const sourceStream = ytdl(video.video_url, {
                 quality: itag,
                 highWaterMark: 16384
             });
@@ -119,21 +120,19 @@ module.exports = {
                     });
 
                     // Build destination path
-                    const filteredTitle = basicInfo.title.replace(/[/\\?%*:|"<>]/g, ' ').replace(/ +/g, ' ');
+                    const filteredTitle = video.title.replace(/[/\\?%*:|"<>]/g, ' ').replace(/ +/g, ' ');
                     let prom;
 
                     // Start appropriate conversion
                     if (sources.length === 1) {
-                        const extension = sources[0].content.includes('video') ? 'mp4' : 'mp3';
-
                         prom = encoder.convert(
                             destiantion,
-                            path.join(config.downloadDirectory, `${filteredTitle}.${extension}`)
+                            path.join(config.downloadDirectory, `${filteredTitle}.${format}`)
                         );
                     } else {
                         prom = encoder.merge(
                             destiantions,
-                            path.join(config.downloadDirectory, `${filteredTitle}.mp4`)
+                            path.join(config.downloadDirectory, `${filteredTitle}.${format}`)
                         );
                     }
 
