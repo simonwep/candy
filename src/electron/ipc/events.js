@@ -51,7 +51,7 @@ module.exports = {
             fs.mkdirSync(tmpDir);
         }
 
-        // Create download id
+        // Create download id and start timestamp
         const downloadId = _.createUID();
 
         sender.send('add-download', {
@@ -59,8 +59,10 @@ module.exports = {
             destination: null,
             sources,
             size: 0,
+            speed: 0,
             progress: 0,
             status: 'progress',
+            startTimestamp: Date.now(),
             video: {
                 url: video.video_url,
                 thumbnailUrl: video.thumbnail_url,
@@ -99,12 +101,14 @@ module.exports = {
             let lastProgress = 0;
             sourceStream.on('progress', (_, progress) => {
                 totalProgress += progress - lastProgress;
-                lastProgress = progress;
 
                 update({
                     progress: totalProgress,
+                    speed: (lastProgress + progress) / 2,
                     size: totalsize
                 });
+
+                lastProgress = progress;
             });
 
             sourceStream.on('end', () => {
@@ -139,7 +143,7 @@ module.exports = {
 
                     // Wait until done
                     prom.then(() => {
-                        update({status: 'finish'});
+                        update({status: 'finish', endTimestamp: Date.now()});
                     }).catch(e => {
 
                         /* eslint-disable no-console */
@@ -161,7 +165,7 @@ module.exports = {
                 if (e !== 'cancelled') {
                     sourceStreams.forEach(s => s.destroy());
                     destiantions.forEach(fs.unlinkSync);
-                    update({status: e === 'cancelled' ? e : 'errored'});
+                    update({status: 'errored'});
                 }
             });
         }

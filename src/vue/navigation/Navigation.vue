@@ -14,7 +14,7 @@
 
             <p :data-text="item.text" class="list-item">
                 <span class="text">{{ item.text }}</span>
-                <span class="value">{{ item.value }}</span>
+                <span class="value">{{ item.value || '/' }}</span>
             </p>
         </nav-item>
 

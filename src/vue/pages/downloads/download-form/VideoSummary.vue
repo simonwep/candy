@@ -3,7 +3,7 @@
 
         <!-- Thumbnail and duration -->
         <div class="thumnail">
-            <img :src="video.thumbnail_url" alt="Thumbnail">
+            <img :src="video.thumbnail_url">
             <span class="duration">{{ utils.formatSeconds(Number(video.length_seconds)) }}</span>
         </div>
 
@@ -15,7 +15,7 @@
             <p class="date">Published on the {{ utils.formatDate('DD. MMMM YYYY', video.published) }}</p>
 
             <div class="author">
-                <img :src="video.author.avatar" alt="Avatar">
+                <img :src="video.author.avatar">
 
                 <div class="channel">
                     <p class="name">{{ video.author.name }}</p>

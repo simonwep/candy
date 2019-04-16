@@ -20,10 +20,16 @@
 
             <div class="info-text">
                 <span v-if="download.status === 'progress'">
-                    <b>{{ utils.readableByteCount(download.progress) }}</b> /
-                    <b>{{ utils.readableByteCount(download.size) }} ({{ percentualProgress }})</b> -
+                    <b>{{ utils.readableByteCount(download.progress) }}</b>
+                    /
+                    <b>{{ utils.readableByteCount(download.size) }} ({{ percentualProgress }}</b>
+                    at
+                    <b>{{ downloadSpeed }})</b> -
                 </span>
+
                 <b>{{ statusText }}</b>
+
+                <b v-if="download.status === 'finish'"> - Took {{ downloadDuration }}</b>
             </div>
 
             <div :data-status="download.status" class="progress-bar">
@@ -76,6 +82,15 @@
             percentualProgress() {
                 const {size, progress} = this.download;
                 return `${Number(((progress / size) * 100).toFixed(1)) || 0}%`;
+            },
+
+            downloadDuration() {
+                const {startTimestamp, endTimestamp} = this.download;
+                return `${Math.round((endTimestamp - startTimestamp) / 1000)}s`;
+            },
+
+            downloadSpeed() {
+                return this.utils.readableByteCount(this.download.speed).toLowerCase() + 'ps';
             }
         },
 

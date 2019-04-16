@@ -267,7 +267,7 @@
         "container": "m4a",
         "content": "audio",
         "resolution": null,
-        "bitrate": "48k",
+        "bitrate": "48kbps",
         "range": null,
         "vr3d": null
     },
@@ -275,7 +275,7 @@
         "container": "m4a",
         "content": "audio",
         "resolution": null,
-        "bitrate": "128k",
+        "bitrate": "128kbps",
         "range": null,
         "vr3d": null
     },
@@ -283,7 +283,7 @@
         "container": "m4a",
         "content": "audio",
         "resolution": null,
-        "bitrate": "256k",
+        "bitrate": "256kbps",
         "range": null,
         "vr3d": null
     },
@@ -331,7 +331,7 @@
         "container": "webm",
         "content": "audio",
         "resolution": null,
-        "bitrate": "128k",
+        "bitrate": "128kbps",
         "range": null,
         "vr3d": null
     },
@@ -411,7 +411,7 @@
         "container": "webm",
         "content": "audio",
         "resolution": null,
-        "bitrate": "50k",
+        "bitrate": "50kbps",
         "range": null,
         "vr3d": null
     },
@@ -419,7 +419,7 @@
         "container": "webm",
         "content": "audio",
         "resolution": null,
-        "bitrate": "70k",
+        "bitrate": "70kbps",
         "range": null,
         "vr3d": null
     },
@@ -427,7 +427,7 @@
         "container": "webm",
         "content": "audio",
         "resolution": null,
-        "bitrate": "160k",
+        "bitrate": "160kbps",
         "range": null,
         "vr3d": null
     },

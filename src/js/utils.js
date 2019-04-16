@@ -95,7 +95,7 @@ module.exports.formatSeconds = (duration = 0) => {
         Math.floor(duration / 60),
         duration % 60
     ].map(v => v ? String(v).padStart(2, '0') : 0).filter(Boolean).join(':');
-    return res.length < 3 ? `${res}s` : res;
+    return res.length < 3 ? `${res || 0}s` : res;
 };
 
 /**
