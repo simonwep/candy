@@ -1,18 +1,18 @@
 <template>
-    <div class="download-item" :data-card-size="cardSize">
+    <div :data-card-size="cardSize" class="download-item">
 
         <!-- Colored status bar -->
-        <div class="status-bar" :data-status="download.status">
-            <i v-if="download.status === 'progress'" class="fas fa-fw fa-angle-down"></i>
-            <i v-else-if="download.status === 'finish'" class="fas fa-fw fa-check"></i>
-            <i v-else-if="download.status === 'convert'" class="fas fa-fw fa-cog"></i>
-            <i v-else-if="download.status === 'cancelled'" class="fas fa-fw fa-eject"></i>
-            <i v-else-if="download.status === 'errored'" class="fas fa-fw fa-times"></i>
+        <div :data-status="download.status" class="status-bar">
+            <i class="fas fa-fw fa-angle-down" v-if="download.status === 'progress'"></i>
+            <i class="fas fa-fw fa-check" v-else-if="download.status === 'finish'"></i>
+            <i class="fas fa-fw fa-cog" v-else-if="download.status === 'convert'"></i>
+            <i class="fas fa-fw fa-eject" v-else-if="download.status === 'cancelled'"></i>
+            <i class="fas fa-fw fa-times" v-else-if="download.status === 'errored'"></i>
             <div></div>
         </div>
 
         <!-- Video info -->
-        <img class="thumbnail" :src="download.video.thumbnailUrl" alt="Thumbnail">
+        <img :src="download.video.thumbnailUrl" alt="Thumbnail" class="thumbnail">
         <h1 class="title">{{ download.video.title }}</h1>
 
         <!-- Download progress -->
@@ -26,14 +26,14 @@
                 <b>{{ statusText }}</b>
             </div>
 
-            <div class="progress-bar" :data-status="download.status">
-                <div v-if="download.status !== 'cancelled'" :style="{width: `${(download.progress / download.size) * 100}%`}"></div>
+            <div :data-status="download.status" class="progress-bar">
+                <div :style="{width: `${(download.progress / download.size) * 100}%`}" v-if="download.status !== 'cancelled'"></div>
             </div>
         </div>
 
         <!-- Actions -->
         <div class="actions">
-            <button v-if="download.status === 'progress'" class="cancel" @click="cancelDownload">Cancel</button>
+            <button @click="cancelDownload" class="cancel" v-if="download.status === 'progress'">Cancel</button>
         </div>
 
     </div>

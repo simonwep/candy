@@ -39,8 +39,8 @@
 <script>
 
     // UI Components
-    import Checkbox       from '../../ui/Checkbox';
-    import TextInputField from '../../ui/TextInputField';
+    import Checkbox       from '../../ui/input/Checkbox';
+    import TextInputField from '../../ui/input/TextInputField';
 
     export default {
 

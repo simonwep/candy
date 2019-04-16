@@ -7,7 +7,7 @@
         </button>
 
         <div class="items" ref="items">
-            <p v-for="item of preparedItems" @click="select(item)">{{ item.modified }}</p>
+            <p @click="select(item)" v-for="item of preparedItems">{{ item.modified }}</p>
         </div>
 
     </div>

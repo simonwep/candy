@@ -5,16 +5,16 @@
         <div class="drag"></div>
 
         <div class="window-actions">
-            <div class="minimize" @click="minimize"></div>
-            <div class="min-max" @click="minMax"></div>
-            <div class="close" @click="close"></div>
+            <div @click="minimize" class="minimize"></div>
+            <div @click="minMax" class="min-max"></div>
+            <div @click="close" class="close"></div>
         </div>
     </div>
 </template>
 
 <script>
 
-    import {remote, ipcRenderer} from 'electron';
+    import {remote} from 'electron';
 
     export default {
 

@@ -2,35 +2,35 @@
     <div class="format-selection">
 
         <!-- Video codec and format -->
-        <drop-down-selection :title="content || 'choose format'"
+        <drop-down-selection :item-value-filter="contentFilter"
                              :items="video.formats"
-                             :item-value-filter="contentFilter"
+                             :title="content || 'choose format'"
                              item-value="content"
                              v-model="content"/>
 
         <!-- If video - quality  -->
-        <drop-down-selection v-if="['video', 'audio/video'].includes(content)"
-                             :title="resolution || 'choose quality'"
+        <drop-down-selection :item-value-filter="qualityFilter"
                              :items="videoResolutions"
-                             :item-value-filter="qualityFilter"
+                             :title="resolution || 'choose quality'"
                              item-value="resolution"
+                             v-if="['video', 'audio/video'].includes(content)"
                              v-model="resolution"/>
 
         <!-- If audio - bitrate -->
-        <drop-down-selection v-if="['audio', 'audio/video'].includes(content)"
+        <drop-down-selection :items="audioBitrates"
                              :title="bitrate || 'choose bitrate'"
-                             :items="audioBitrates"
                              item-value="bitrate"
+                             v-if="['audio', 'audio/video'].includes(content)"
                              v-model="bitrate"/>
 
-        <drop-down-selection v-if="content"
-                             :title="format || 'choose file format'"
-                             :item-value-filter="formatFilter"
+        <drop-down-selection :item-value-filter="formatFilter"
                              :items="extensions"
+                             :title="format || 'choose file format'"
+                             v-if="content"
                              v-model="format"/>
 
         <!-- Start download -->
-        <button v-if="sources" @click="startDownload">
+        <button @click="startDownload" v-if="sources">
             <span>Download</span>
             <span class="size" v-if="sources.clen">({{ utils.readableByteCount(Number(sources.clen)) }})</span>
         </button>
@@ -41,10 +41,9 @@
 <script>
 
     // Components
-    import DropDownSelection from '../../../ui/DropDownSelection';
-
+    import DropDownSelection from '../../../ui/input/DropDownSelection';
     // IPC Client
-    import ipcClient from '../../../ipc/client';
+    import ipcClient         from '../../../ipc/client';
 
     export default {
 

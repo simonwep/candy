@@ -6,32 +6,32 @@
 
             <div class="url-input">
                 <i class="fas fa-fw fa-search"></i>
-                <input type="text"
+                <input @input="checkAvailableDownload"
                        placeholder="Enter video or playlist url"
-                       @input="checkAvailableDownload">
+                       type="text">
             </div>
 
             <div class="views">
 
                 <div :class="{active: viewType === 'big'}" @click="viewType = 'big'">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11 11">
-                        <rect y="6" width="11" height="5"></rect>
-                        <rect width="11" height="5"></rect>
+                    <svg viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+                        <rect height="5" width="11" y="6"></rect>
+                        <rect height="5" width="11"></rect>
                     </svg>
                 </div>
 
                 <div :class="{active: viewType === 'mid'}" @click="viewType = 'mid'">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11 11">
-                        <rect y="8" width="11" height="3"></rect>
-                        <rect width="11" height="3"></rect>
-                        <rect y="4" width="11" height="3"></rect>
+                    <svg viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
+                        <rect height="3" width="11" y="8"></rect>
+                        <rect height="3" width="11"></rect>
+                        <rect height="3" width="11" y="4"></rect>
                     </svg>
                 </div>
             </div>
         </div>
 
         <!-- Video info -->
-        <download-form v-if="videoStats" :video="videoStats"/>
+        <download-form :video="videoStats" v-if="videoStats"/>
 
         <!-- Download list -->
         <download-list :card-size="viewType"/>
@@ -42,8 +42,7 @@
 <script>
 
     // IPC Client
-    import ipcClient from '../../ipc/client';
-
+    import ipcClient    from '../../ipc/client';
     // Components
     import DownloadForm from './download-form/DownloadForm';
     import DownloadList from './download-list/DownloadList';

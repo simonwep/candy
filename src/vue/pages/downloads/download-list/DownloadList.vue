@@ -1,14 +1,13 @@
 <template>
     <div class="download-list">
-        <download-item v-for="download of downloads" :download="download" :card-size="cardSize"/>
+        <download-item :card-size="cardSize" :download="download" v-for="download of downloads"/>
     </div>
 </template>
 
 <script>
 
     // Vuex stuff
-    import {mapState} from 'vuex';
-
+    import {mapState}   from 'vuex';
     // Components
     import DownloadItem from './DownloadListItem';
 

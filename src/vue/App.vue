@@ -18,7 +18,6 @@
     // Font-awesome and normalize.css
     import '@fortawesome/fontawesome-free/css/all.css';
     import 'normalize.css';
-
     // Components
     import AppTitleBar from './AppTitleBar';
     import Navigation  from './navigation/Navigation';

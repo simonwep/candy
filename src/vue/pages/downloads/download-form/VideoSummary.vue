@@ -19,7 +19,7 @@
 
                 <div class="channel">
                     <p class="name">{{ video.author.name }}</p>
-                    <i v-if="video.author.verified" class="fas fa-fw fa-check"></i>
+                    <i class="fas fa-fw fa-check" v-if="video.author.verified"></i>
                 </div>
             </div>
         </div>

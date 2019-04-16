@@ -2,26 +2,26 @@
     <div :class="{'text-input-field': 1, focused}">
 
         <!-- Placeholder, will be moved if input contains text -->
-        <label :for="labelId" :class="{placeholder: 1, moved: value || focused}">{{ placeholder }}</label>
+        <label :class="{placeholder: 1, moved: value || focused}" :for="labelId">{{ placeholder }}</label>
 
         <div class="field">
-            <input ref="input"
-                   :id="labelId"
-                   :autofocus="autofocus ? 'autofocus' : ''"
+            <input :autofocus="autofocus ? 'autofocus' : ''"
                    :class="{empty: !value}"
+                   :id="labelId"
                    :type="password && !showPwd ? 'password' : 'text'"
-                   v-model="value"
-                   spellcheck="false"
                    @blur="focused = false"
                    @focus="focused = true"
                    @input="$emit('input', value)"
-                   @keyup.enter="$emit('submit')">
+                   @keyup.enter="$emit('submit')"
+                   ref="input"
+                   spellcheck="false"
+                   v-model="value">
 
 
             <!-- Show password -->
-            <i v-if="password"
-               :class="`show-pwd fas fa-fw fa-${showPwd ? 'eye' : 'eye-slash'}`"
-               @click="showPwd = !showPwd"></i>
+            <i :class="`show-pwd fas fa-fw fa-${showPwd ? 'eye' : 'eye-slash'}`"
+               @click="showPwd = !showPwd"
+               v-if="password"></i>
 
             <!-- Clear input -->
             <i :class="{'clear fas fa-fw fa-times': 1, visible: value}"

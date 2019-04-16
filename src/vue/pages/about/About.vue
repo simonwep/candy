@@ -1,0 +1,98 @@
+<template>
+    <div class="about">
+
+        <candy-icon/>
+
+        <article>
+            <h2>About us</h2>
+            Candy is developed and maintained by
+            <browser-link href="https://github.com/Simonwep">Simon Reinisch</browser-link>
+            and
+            <browser-link href="https://github.com/MathiasWickenhagen">Mathias Wickenhagen</browser-link>
+            and is published under the
+            <browser-link href="https://choosealicense.com/licenses/mit/">MIT License</browser-link>
+            on
+            <browser-link href="https://github.com/Simonwep/Candy">GitHub</browser-link>
+            .
+        </article>
+
+        <article>
+            Everyone can submit their ideas, suggenstions, bugs or whatsoever
+            <browser-link href="https://github.com/Simonwep/Candy/issues/new">here</browser-link>
+            .
+            Every contributor get's listed below if he's ok with that.
+        </article>
+
+        <article class="contributors">
+            <h2>Contributors</h2>
+            <template v-for="con of contributors">
+                <browser-link :href="con.github" v-if="con.github">{{ con.name }}</browser-link>
+                <span v-else>{{ con.name }}</span>
+            </template>
+        </article>
+
+
+    </div>
+</template>
+
+<script>
+
+    // Components
+    import CandyIcon      from '../../ui/specific/CandyIcon';
+    import BrowserLink    from '../../ui/specific/BrowserLink';
+    // Config stuff
+    import {contributors} from '../../../../config/config';
+
+    export default {
+        components: {CandyIcon, BrowserLink},
+
+        data() {
+            return {
+                contributors
+            };
+        }
+    };
+
+</script>
+
+<style lang="scss" scoped>
+
+    .about {
+        @include flex(column, center, center);
+        color: white;
+
+        .candy-icon {
+            @include size(8em);
+            fill: $palette-turquoise;
+            margin-bottom: 1.5em;
+        }
+
+        a {
+            color: $palette-cloud-blue;
+            text-decoration: underline;
+        }
+    }
+
+    article {
+        @include width(50vw, 10em, 30em);
+        font-size: 1.1em;
+        text-align: center;
+        margin: 0.75em 0 0.5em;
+        line-height: 1.25em;
+        text-shadow: 0 0.1em 0.2em rgba(black, 0.1);
+
+        > h2 {
+            @include font(600, 1.2em);
+            margin-bottom: 0.25em;
+        }
+
+        &.contributors {
+
+            a, span {
+                font-size: 0.9em;
+                margin-left: 0.5em;
+            }
+        }
+    }
+
+</style>

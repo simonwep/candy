@@ -2,10 +2,10 @@
     <div :class="{'expandable-section': 1, active}">
 
         <!-- Topic header -->
-        <router-link class="topic" :to="to">{{ title }}</router-link>
+        <router-link :to="to" class="topic">{{ title }}</router-link>
 
         <!-- Expandable link secion -->
-        <ul v-if="subs.length && $scopedSlots.default" class="items">
+        <ul class="items" v-if="subs.length && $scopedSlots.default">
             <li v-for="item of subs">
                 <slot :item="item"></slot>
             </li>
