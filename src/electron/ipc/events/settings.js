@@ -1,4 +1,4 @@
-const {remote} = require("electron");
+const userSettings = loadSettings();
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -15,12 +15,14 @@ const settingsFileName = 'settings.json';
 
 module.exports = {
 
+    userSettings,
+
     /**
      * Update settings
      * @param settings Overwrite settings
      * @returns {Promise<*>}
      */
-    async applySettings(settings) {
+    async applySettings(settings = {}) {
 
         // Valid object
         const validResult = validator.validate(settings, settingsSchema);
@@ -40,9 +42,6 @@ module.exports = {
                     // Create path
                     fs.mkdirSync(settingsPath, {recursive: true});
                 }
-
-                // Get global settings variable
-                const userSettings = remote.getGlobal('_userSettings');
 
                 // Overwrite the new properties
                 for (const [key, value] of Object.entries(settings)) {
@@ -82,3 +81,26 @@ module.exports = {
         return result;
     }
 };
+
+/**
+ * Load settings from file or by error use the defaults
+ * @returns {string}
+ */
+function loadSettings() {
+
+    try {
+
+        // Load path
+        const settingsPath = path.resolve(os.homedir(), 'candy');
+        const settingFile = path.resolve(settingsPath, settingsFileName);
+
+        // Load file and pars to json object
+        return JSON.stringify(fs.readFileSync(settingFile, 'utf8'));
+
+    } catch (e) {
+
+        // By a error load the default settings
+        return require('../../../../config/settings.default.json');
+    }
+}
+

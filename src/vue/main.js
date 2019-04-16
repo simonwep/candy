@@ -1,5 +1,3 @@
-const {ipcMain, ipcRenderer} = require("electron");
-const defaultUserSettings = require('../../config/settings.default');
 import Vue from 'vue';
 
 import App from './App';
@@ -19,12 +17,3 @@ new Vue({
     router,
     store
 }).$mount('#app');
-
-
-// Create global variable
-ipcMain.on("setUserSettings", (event, settings) => {
-    global._userSettings = settings;
-});
-
-// Set default settings
-ipcRenderer.send("setUserSettings", defaultUserSettings);
