@@ -1,0 +1,26 @@
+{
+    "type": "object",
+    "properties": {
+        "downloadDirectory": {
+            "type": "string"
+        },
+        "temporaryDirectory": {
+            "type": "string"
+        },
+        "createChannelDirectory": {
+            "type": "boolean"
+        },
+        "createPlaylistDirectory": {
+            "type": "boolean"
+        },
+        "deleteDownloadEntriesIfDone": {
+            "type": "boolean"
+        },
+        "lockDownloadSettings": {
+            "type": "boolean"
+        },
+        "settingsLocation" : {
+            "type": "string"
+        }
+    }
+}
