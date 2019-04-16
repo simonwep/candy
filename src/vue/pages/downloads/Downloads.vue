@@ -42,7 +42,8 @@
 <script>
 
     // IPC Client
-    import ipcClient    from '../../ipc/client';
+    import ipcClient from '../../ipc/client';
+
     // Components
     import DownloadForm from './download-form/DownloadForm';
     import DownloadList from './download-list/DownloadList';

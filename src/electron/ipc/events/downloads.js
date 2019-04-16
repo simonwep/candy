@@ -1,10 +1,9 @@
 const id3tags = require('../../../../config/id3tags');
-const config = require('../../../../config/config');
 const _ = require('../../../js/utils');
 const encoder = require('../encoder');
+const {getSettings} = require('./settings');
 const ytdl = require('ytdl-core');
 const path = require('path');
-const os = require('os');
 const fs = require('fs');
 
 // Holds downloadid - actions references
@@ -45,12 +44,7 @@ module.exports = {
      * @returns {Promise<string>}
      */
     async startDownload({format, video, sources}, {sender}) {
-
-        // Create temporary folder
-        const tmpDir = path.join(os.tmpdir(), config.tmpFolderName);
-        if (!fs.existsSync(tmpDir)) {
-            fs.mkdirSync(tmpDir);
-        }
+        const {temporaryDirectory, downloadDirectory} = await getSettings();
 
         // Create download id and start timestamp
         const downloadId = _.createUID();
@@ -83,7 +77,7 @@ module.exports = {
         const destiantions = [];
         const sourceStreams = [];
         for (const {itag, container} of sources) {
-            const destiantion = path.join(tmpDir, `${_.createUID()}.${container}`);
+            const destiantion = path.join(temporaryDirectory, `${_.createUID()}.${container}`);
             const sourceStream = ytdl(video.video_url, {
                 quality: itag,
                 highWaterMark: 16384
@@ -133,12 +127,12 @@ module.exports = {
                     if (sources.length === 1) {
                         prom = encoder.convert(
                             destiantion,
-                            path.join(config.downloadDirectory, `${filteredTitle}.${format}`)
+                            path.join(downloadDirectory, `${filteredTitle}.${format}`)
                         );
                     } else {
                         prom = encoder.merge(
                             destiantions,
-                            path.join(config.downloadDirectory, `${filteredTitle}.${format}`)
+                            path.join(downloadDirectory, `${filteredTitle}.${format}`)
                         );
                     }
 

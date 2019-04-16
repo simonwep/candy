@@ -5,10 +5,10 @@
         <div class="paths grid-item">
             <h1>Paths</h1>
 
-            <text-input-field placeholder="Download path" v-model="downloadDirectory"/>
-            <text-input-field placeholder="Temporary path" v-model="temporaryDirectory"/>
+            <text-input-field placeholder="Download path" v-model="current.downloadDirectory"/>
+            <text-input-field placeholder="Temporary path" v-model="current.temporaryDirectory"/>
 
-            <button @click="applySettings">Apply</button>
+            <button @click="applySettings" v-if="hasChanged">Apply</button>
         </div>
 
         <!-- All boolean based settings -->
@@ -16,21 +16,21 @@
             <h1>General</h1>
 
             <div class="item">
-                <checkbox v-model="createChannelDirectory"/>
+                <checkbox v-model="current.createChannelDirectory"/>
                 <span>Create a directory for each channel.</span>
             </div>
 
             <div class="item">
-                <checkbox v-model="createPlaylistDirecory"/>
+                <checkbox v-model="current.createPlaylistDirectory"/>
                 <span>Create a direcotry with playlist's name.</span>
             </div>
 
             <div class="item">
-                <checkbox v-model="lockDownloadSettings"/>
+                <checkbox v-model="current.lockDownloadSettings"/>
                 <span>Remember last download settings and apply these to the next one.</span>
             </div>
 
-            <button @click="applySettings">Apply</button>
+            <button @click="applySettings" v-if="hasChanged">Apply</button>
         </div>
 
     </div>
@@ -38,6 +38,8 @@
 
 <script>
 
+    // IPC Client
+    import ipcClient      from '../../ipc/client';
     // UI Components
     import Checkbox       from '../../ui/input/Checkbox';
     import TextInputField from '../../ui/input/TextInputField';
@@ -48,19 +50,56 @@
 
         data() {
             return {
-                createPlaylistDirecory: false,
-                createChannelDirectory: false,
-                lockDownloadSettings: false,
-                downloadDirectory: null,
-                temporaryDirectory: null,
-                settingsLocation: null
+                original: {},
+                current: {
+                    createPlaylistDirectory: false,
+                    createChannelDirectory: false,
+                    deleteDownloadEntriesIfDone: false,
+                    downloadDirectory: null,
+                    temporaryDirectory: null,
+                    lockDownloadSettings: false
+                }
             };
+        },
+
+        computed: {
+
+            hasChanged() {
+                const {original, current} = this;
+
+                for (const [prop, value] of Object.entries(original)) {
+                    if (current[prop] !== value) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        },
+
+        mounted() {
+            this.fetchSettings();
         },
 
         methods: {
 
             applySettings() {
-                // TODO: Apply settings
+                const {current} = this;
+
+                ipcClient.request('applySettings', current)
+                    .then(this.fetchSettings)
+                    .catch(reason => {
+                        // TODO: Handle error
+                        /* eslint-disable no-console */
+                        console.error(reason);
+                    });
+            },
+
+            fetchSettings() {
+                ipcClient.request('getSettings').then(res => {
+                    this.original = {...res};
+                    this.current = {...res};
+                });
             }
         }
     };

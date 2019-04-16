@@ -1,7 +1,5 @@
 {
     "binaryPrefix": true,
-    "tmpFolderName": "downloader",
-    "downloadDirectory": "C:\\Users\\root\\Downloads\\",
     "contributors": [
         {
             "name": "Simon Reinisch",

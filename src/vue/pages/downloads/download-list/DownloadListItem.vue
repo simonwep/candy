@@ -233,6 +233,7 @@
         margin-left: 1em;
 
         .info-text {
+            text-align: center;
             font-size: 0.75em;
             margin-bottom: 0.5em;
             color: white;

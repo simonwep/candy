@@ -9,13 +9,13 @@
                    :class="{empty: !value}"
                    :id="labelId"
                    :type="password && !showPwd ? 'password' : 'text'"
+                   :value="value"
                    @blur="focused = false"
                    @focus="focused = true"
-                   @input="$emit('input', value)"
+                   @input="$emit('input', $event.target.value)"
                    @keyup.enter="$emit('submit')"
                    ref="input"
-                   spellcheck="false"
-                   v-model="value">
+                   spellcheck="false">
 
 
             <!-- Show password -->
@@ -25,7 +25,7 @@
 
             <!-- Clear input -->
             <i :class="{'clear fas fa-fw fa-times': 1, visible: value}"
-               @click="value = ''"></i>
+               @click="$emit('input', '')"></i>
         </div>
 
         <!-- Colored border to show focus -->
@@ -40,12 +40,12 @@
         props: {
             placeholder: {type: String, required: true},
             password: {type: Boolean, default: false},
-            autofocus: {type: Boolean, default: false}
+            autofocus: {type: Boolean, default: false},
+            value: {type: String, default: null}
         },
 
         data() {
             return {
-                value: '',
                 showPwd: false,
                 focused: false,
                 labelId: `label-${(Date.now() + Math.floor(Math.random() * 1e15)).toString(36)}`
