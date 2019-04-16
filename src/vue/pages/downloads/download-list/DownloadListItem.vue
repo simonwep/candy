@@ -19,7 +19,7 @@
         <div class="progress">
 
             <div class="info-text">
-                <span v-if="download.status !== 'cancelled'">
+                <span v-if="download.status === 'progress'">
                     <b>{{ utils.readableByteCount(download.progress) }}</b> /
                     <b>{{ utils.readableByteCount(download.size) }} ({{ percentualProgress }})</b> -
                 </span>

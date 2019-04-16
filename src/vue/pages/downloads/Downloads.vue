@@ -63,6 +63,12 @@
 
             checkAvailableDownload({target: {value}}) {
 
+                // TODO: Hard-coded youtube video- and playlistid's
+                // Check if value conforms to a video- or playlistid
+                if (value.match(/^[\w\d_-]+$/)) {
+                    value = `https://www.youtube.com/${value.length < 12 ? 'watch?v=' : 'playlist?list=$'}${value}`;
+                }
+
                 // Validate url
                 const match = value.match(/^((https?):\/\/www\.youtube.com\/watch\?v=.*?)(&|$)/);
                 if (match && match[1]) {
