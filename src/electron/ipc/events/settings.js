@@ -12,6 +12,8 @@ const settingsSchema = require('../../../../config/settings.schema');
 // Settings name
 const settingsFileName = 'settings.json';
 
+const mkdirIfNotPresent = v => [!fs.existsSync(v) && fs.mkdirSync(v, {recursive: true}), v][1];
+
 /**
  * Load settings from file or by error use the defaults
  * @returns {string}
@@ -22,7 +24,8 @@ const userSettings = (() => {
     try {
 
         // Load path
-        const settingsFile = path.resolve(os.homedir(), '.candy/', settingsFileName);
+        const settingFilePath = mkdirIfNotPresent(path.resolve(os.homedir(), '.candy/'));
+        const settingsFile = path.resolve(settingFilePath, settingsFileName);
 
         // Load file and parse json
         settings = JSON.parse(fs.readFileSync(settingsFile, 'utf8'));
@@ -36,18 +39,10 @@ const userSettings = (() => {
         settings.temporaryDirectory = path.resolve(os.tmpdir(), 'candy');
     }
 
-    // Re-create folders if missing
-    const mkdirIfNotPresent = v => [!fs.existsSync(v) && fs.mkdirSync(v), v][1];
     const {downloadDirectory, temporaryDirectory} = settings;
-
     Object.defineProperties(settings, {
-        downloadDirectory: {
-            get: () => mkdirIfNotPresent(downloadDirectory)
-        },
-
-        temporaryDirectory: {
-            get: () => mkdirIfNotPresent(temporaryDirectory)
-        }
+        downloadDirectory: {get: () => mkdirIfNotPresent(downloadDirectory)},
+        temporaryDirectory: {get: () => mkdirIfNotPresent(temporaryDirectory)}
     });
 
     return settings;
@@ -66,59 +61,34 @@ module.exports = {
      */
     async applySettings(settings = {}) {
 
-        // Valid object
-        const validResult = validator.validate(settings, settingsSchema);
+        // Validate
+        const validationResult = validator.validate(settings, settingsSchema);
+        if (validationResult.errors.length === 0) {
 
-        // If object valid
-        if (validResult.errors.length === 0) {
+            // Apply new settings
+            for (const [key, value] of Object.entries(settings)) {
 
-            try {
-
-                // Load path
-                const settingsPath = path.resolve(os.homedir(), '.candy');
-                const settingFile = path.resolve(settingsPath, settingsFileName);
-
-                // If path no exits
-                if (!fs.existsSync(settingsPath)) {
-
-                    // Create path
-                    fs.mkdirSync(settingsPath, {recursive: true});
-                }
-
-                // Overwrite the new properties
-                for (const [key, value] of Object.entries(settings)) {
+                // Define getter for directory stuff
+                if (['downloadDirectory', 'temporaryDirectory'].includes(key)) {
+                    Object.defineProperty(userSettings, key, {
+                        get: () => mkdirIfNotPresent(value)
+                    });
+                } else {
                     userSettings[key] = value;
                 }
-
-                // Create file and write the setting in this
-                fs.writeFileSync(settingFile, JSON.stringify(userSettings, null, 4));
-
-                // Return result no errors
-                return [];
-            } catch (e) {
-
-                // Return error message
-                return [{
-                    errorMsg: 'Can not save settings.',
-                    validationError: e
-                }];
             }
+
+            // Resolve path
+            const settingFilePath = mkdirIfNotPresent(path.resolve(os.homedir(), '.candy/'));
+            const settingFile = path.resolve(settingFilePath, settingsFileName);
+
+            // Overwrite current settings file
+            fs.writeFileSync(settingFile, JSON.stringify(userSettings, null, 4));
+            return 'ok';
         }
 
-        const result = [];
-
-        // Get each error
-        for (const error of validResult.errors) {
-
-            // Add errors to the result
-            result.push({
-                errorMsg: 'Input values are not correct.',
-                validationError: error.property
-            });
-        }
-
-        // Return error result
-        return result;
+        // Throw errors
+        throw validationResult;
     }
 };
 
