@@ -7,9 +7,24 @@
                              :title="content || 'choose format'"
                              v-model="content"/>
 
+        <!-- Video codec and format -->
+        <drop-down-selection v-if="['video', 'audio/video'].includes(content)"
+                             :item-value-filter="videoQualityFilter"
+                             :items="availableQualities"
+                             :title="videoQuality || 'choose video quality'"
+                             v-model="videoQuality"/>
+
+        <!-- Video codec and format -->
+        <drop-down-selection v-if="['audio', 'audio/video'].includes(content)"
+                             :item-value-filter="audioQualityFilter"
+                             :items="availableQualities"
+                             :title="audioQuality || 'choose audio quality'"
+                             v-model="audioQuality"/>
+
+
         <!-- Container format -->
         <drop-down-selection v-if="content"
-                             :item-value-filter="formatFilter"
+                             :item-value-filter="extensionFilter"
                              :items="extensions"
                              :title="format || 'choose file format'"
                              v-model="format"/>
@@ -41,7 +56,10 @@
         data() {
             return {
                 availableContent: ['audio', 'video', 'audio/video'],
+                availableQualities: ['high', 'middle', 'low'],
                 content: null,
+                audioQuality: null,
+                videoQuality: null,
                 format: null
             };
         },
@@ -59,13 +77,21 @@
 
         watch: {
             content() {
-                this.resolution = this.bitrate = this.format = null;
+                this.format = this.audioQuality = this.videoQuality = null;
             }
         },
 
         methods: {
-            formatFilter(v) {
+            extensionFilter(v) {
                 return v.toUpperCase();
+            },
+
+            videoQualityFilter(v) {
+                return `${v} video quality`;
+            },
+
+            audioQualityFilter(v) {
+                return `${v} audio quality`;
             },
 
             contentFilter(v) {
@@ -77,36 +103,72 @@
             },
 
             startDownload() {
-                const {playlist: {videos}, content, format} = this;
+                const {
+                    playlist: {videos},
+                    content,
+                    format,
+                    audioQuality,
+                    videoQuality
+                } = this;
+
+                const priorities = {
+                    resolution: ['72p', '144p', '144p60', '180p', '240p', '240p60', '270p', '360p', '360p60', '480p', '480p60', '720p', '720p60', '1080p', '1080p60', '1440p', '1440p60', '2160p', '2160p60', '3072p', '4320p'],
+                    bitrate: ['48kbps', '128kbps', '256kbps', '50kbps', '70kbps', '160kbps']
+                };
+
+                // Filters and sorts an array of formats by a specific property
+                const filterFormats = (formats, property) => {
+                    return formats.sort((a, b) => {
+
+                        // Resolve
+                        a = a && a[property];
+                        b = b && b[property];
+
+                        // Compare
+                        const an = a && priorities[property].indexOf(a) || -1;
+                        const ab = a && priorities[property].indexOf(b) || -1;
+                        return an - ab;
+                    }).filter(v => v && Boolean(v[property]));
+                };
+
+                const getElement = (arr, pos = 'middle') => {
+                    switch (pos) {
+                        case 'low':
+                            return arr[0];
+                        case 'middle':
+                            return arr[Math.round((arr.length - 1) / 2)];
+                        case 'high':
+                            return arr[arr.length - 1];
+                        default:
+                            /* eslint-disable no-console */
+                            console.error(`Unknown position: ${pos}`);
+                    }
+                };
 
                 // Download everything lol
                 for (const {info: video} of videos) {
                     const {formats} = video;
 
-                    // TODO Use native numbers
-                    const getMiddle = arr => arr[Math.round((arr.length - 1) / 2)];
-                    const getAudioChannel = () => formats.sort((a, b) => parseInt(a.resolution, 10) - parseInt(b.resolution));
-                    const getVideoChannel = () => formats.sort((a, b) => parseInt(a.bitrate, 10) - parseInt(b.bitrate));
+                    // Getter for audio and video channels
+                    const audioChannels = () => filterFormats(formats, 'bitrate');
+                    const videoChannels = () => filterFormats(formats, 'resolution');
 
-                    let sources;
-
-                    switch (content) {
-                        case 'audio/video': {
-                            const [video, audio] = [getVideoChannel(), getAudioChannel()];
-                            sources = (video && audio) ? [getMiddle(video), getMiddle(audio)] : null;
-                            break;
+                    const sources = (() => {
+                        switch (content) {
+                            case 'audio/video': {
+                                const [video, audio] = [videoChannels(), audioChannels()];
+                                return (video && audio) ? [getElement(video, videoQuality), getElement(audio, audioQuality)] : null;
+                            }
+                            case 'audio': {
+                                const audio = audioChannels();
+                                return audio ? [getElement(audio, audioQuality)] : null;
+                            }
+                            case 'video': {
+                                const video = videoChannels();
+                                return video ? [getElement(video, videoQuality)] : null;
+                            }
                         }
-                        case 'audio': {
-                            const audio = getAudioChannel();
-                            sources = audio ? [getMiddle(audio)] : null;
-                            break;
-                        }
-                        case 'video': {
-                            const video = getVideoChannel();
-                            sources = video ? [getMiddle(video)] : null;
-                            break;
-                        }
-                    }
+                    })();
 
                     if (!sources) {
 

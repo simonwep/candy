@@ -25,7 +25,7 @@
 
         <!-- Container format -->
         <drop-down-selection v-if="content"
-                             :item-value-filter="formatFilter"
+                             :item-value-filter="extensionsFilter"
                              :items="extensions"
                              :title="format || 'choose file format'"
                              v-model="format"/>
@@ -124,7 +124,7 @@
                 })[v];
             },
 
-            formatFilter(v) {
+            extensionsFilter(v) {
                 return v.toUpperCase();
             },
 

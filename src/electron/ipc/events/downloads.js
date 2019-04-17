@@ -56,7 +56,7 @@ module.exports = {
             sources,
             size: 0,
             speed: 0,
-            progress: 0,
+            progress: 1, // Prevents trough zero divisions
             status: 'progress',
             startTimestamp: Date.now(),
             video: {

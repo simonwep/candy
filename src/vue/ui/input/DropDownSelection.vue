@@ -52,7 +52,7 @@
                     }
                 }
 
-                return prep.sort((a, b) => a.modified.localeCompare(b.modified));
+                return prep;
             }
         },
 
