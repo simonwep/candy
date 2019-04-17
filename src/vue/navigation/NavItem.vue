@@ -5,7 +5,7 @@
         <router-link :to="to" class="topic">{{ title }}</router-link>
 
         <!-- Expandable link secion -->
-        <ul class="items" v-if="subs.length && $scopedSlots.default">
+        <ul v-if="subs.length && $scopedSlots.default" class="items">
             <li v-for="item of subs">
                 <slot :item="item"></slot>
             </li>
@@ -23,15 +23,15 @@
             subs: {type: Array, default: () => []}
         },
 
+        data() {
+            return {};
+        },
+
         computed: {
 
             active() {
                 return this.$route.path.startsWith(this.to);
             }
-        },
-
-        data() {
-            return {};
         }
     };
 

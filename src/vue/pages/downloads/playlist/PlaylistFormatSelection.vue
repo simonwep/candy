@@ -8,14 +8,14 @@
                              v-model="content"/>
 
         <!-- Container format -->
-        <drop-down-selection :item-value-filter="formatFilter"
+        <drop-down-selection v-if="content"
+                             :item-value-filter="formatFilter"
                              :items="extensions"
                              :title="format || 'choose file format'"
-                             v-if="content"
                              v-model="format"/>
 
         <!-- Start download -->
-        <button @click="startDownload" v-if="content && format">
+        <button v-if="content && format" @click="startDownload">
             <span>Download</span>
         </button>
 
@@ -35,7 +35,15 @@
         components: {DropDownSelection},
 
         props: {
-            playlist: {type: Object, require: true}
+            playlist: {type: Object, required: true}
+        },
+
+        data() {
+            return {
+                availableContent: ['audio', 'video', 'audio/video'],
+                content: null,
+                format: null
+            };
         },
 
         computed: {
@@ -47,14 +55,6 @@
                     return ['mp3', 'oog', 'aac', 'wma'];
                 }
             }
-        },
-
-        data() {
-            return {
-                availableContent: ['audio', 'video', 'audio/video'],
-                content: null,
-                format: null
-            };
         },
 
         watch: {
@@ -109,6 +109,8 @@
                     }
 
                     if (!sources) {
+
+                        /* eslint-disable no-console */
                         console.error(`Nothing found for ${video.title}`);
                         continue;
                     }

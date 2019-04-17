@@ -5,35 +5,35 @@
         <drop-down-selection :item-value-filter="contentFilter"
                              :items="video.formats"
                              :title="content || 'choose format'"
-                             item-value="content"
-                             v-model="content"/>
+                             v-model="content"
+                             item-value="content"/>
 
         <!-- If video - quality  -->
-        <drop-down-selection :item-value-filter="qualityFilter"
+        <drop-down-selection v-if="['video', 'audio/video'].includes(content)"
+                             :item-value-filter="qualityFilter"
                              :items="videoResolutions"
                              :title="resolution || 'choose quality'"
-                             item-value="resolution"
-                             v-if="['video', 'audio/video'].includes(content)"
-                             v-model="resolution"/>
+                             v-model="resolution"
+                             item-value="resolution"/>
 
         <!-- If audio - bitrate -->
-        <drop-down-selection :items="audioBitrates"
+        <drop-down-selection v-if="['audio', 'audio/video'].includes(content)"
+                             :items="audioBitrates"
                              :title="bitrate || 'choose bitrate'"
-                             item-value="bitrate"
-                             v-if="['audio', 'audio/video'].includes(content)"
-                             v-model="bitrate"/>
+                             v-model="bitrate"
+                             item-value="bitrate"/>
 
         <!-- Container format -->
-        <drop-down-selection :item-value-filter="formatFilter"
+        <drop-down-selection v-if="content"
+                             :item-value-filter="formatFilter"
                              :items="extensions"
                              :title="format || 'choose file format'"
-                             v-if="content"
                              v-model="format"/>
 
         <!-- Start download -->
-        <button @click="startDownload" v-if="sources">
+        <button v-if="sources" @click="startDownload">
             <span>Download</span>
-            <span class="size" v-if="sources.clen">({{ utils.readableByteCount(Number(sources.clen)) }})</span>
+            <span v-if="sources.clen" class="size">({{ utils.readableByteCount(Number(sources.clen)) }})</span>
         </button>
 
     </div>
@@ -52,7 +52,16 @@
         components: {DropDownSelection},
 
         props: {
-            video: {type: Object, require: true}
+            video: {type: Object, required: true}
+        },
+
+        data() {
+            return {
+                content: null,
+                resolution: null,
+                bitrate: null,
+                format: null
+            };
         },
 
         computed: {
@@ -98,15 +107,6 @@
                     }
                 }
             }
-        },
-
-        data() {
-            return {
-                content: null,
-                resolution: null,
-                bitrate: null,
-                format: null
-            };
         },
 
         watch: {

@@ -6,32 +6,40 @@
 
             <div class="url-input">
                 <i class="fas fa-fw fa-search"></i>
-                <input @input="checkAvailableDownload"
-                       placeholder="Enter video or playlist url"
-                       type="text">
+                <input placeholder="Enter video or playlist url"
+                       type="text"
+                       @input="checkAvailableDownload">
             </div>
 
             <div class="views">
 
                 <div :class="{active: viewType === 'big'}" @click="viewType = 'big'">
                     <svg viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
-                        <rect height="5" width="11" y="6"></rect>
+                        <rect height="5"
+                              width="11"
+                              y="6"></rect>
                         <rect height="5" width="11"></rect>
                     </svg>
                 </div>
 
                 <div :class="{active: viewType === 'mid'}" @click="viewType = 'mid'">
                     <svg viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
-                        <rect height="3" width="11" y="8"></rect>
+                        <rect height="3"
+                              width="11"
+                              y="8"></rect>
                         <rect height="3" width="11"></rect>
-                        <rect height="3" width="11" y="4"></rect>
+                        <rect height="3"
+                              width="11"
+                              y="4"></rect>
                     </svg>
                 </div>
             </div>
         </div>
 
         <!-- Download card -->
-        <download-card v-if="video || playlist" :video="video" :playlist="playlist"/>
+        <download-card v-if="video || playlist"
+                       :video="video"
+                       :playlist="playlist"/>
 
         <!-- Download list -->
         <download-list :card-size="viewType"/>

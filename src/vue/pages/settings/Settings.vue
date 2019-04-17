@@ -5,10 +5,10 @@
         <div class="paths grid-item">
             <h1>Paths</h1>
 
-            <text-input-field placeholder="Download path" v-model="current.downloadDirectory"/>
-            <text-input-field placeholder="Temporary path" v-model="current.temporaryDirectory"/>
+            <text-input-field v-model="current.downloadDirectory" placeholder="Download path"/>
+            <text-input-field v-model="current.temporaryDirectory" placeholder="Temporary path"/>
 
-            <button @click="applySettings" :class="{visible: hasChanged}">Apply</button>
+            <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
         </div>
 
         <!-- All boolean based settings -->
@@ -30,7 +30,7 @@
                 <span>Remember last download settings and apply these to the next one.</span>
             </div>
 
-            <button @click="applySettings" :class="{visible: hasChanged}">Apply</button>
+            <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
         </div>
 
     </div>

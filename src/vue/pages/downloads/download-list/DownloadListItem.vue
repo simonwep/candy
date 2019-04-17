@@ -3,16 +3,18 @@
 
         <!-- Colored status bar -->
         <div :data-status="download.status" class="status-bar">
-            <i class="fas fa-fw fa-angle-down" v-if="download.status === 'progress'"></i>
-            <i class="fas fa-fw fa-check" v-else-if="download.status === 'finish'"></i>
-            <i class="fas fa-fw fa-cog" v-else-if="download.status === 'convert'"></i>
-            <i class="fas fa-fw fa-eject" v-else-if="download.status === 'cancelled'"></i>
-            <i class="fas fa-fw fa-times" v-else-if="download.status === 'errored'"></i>
+            <i v-if="download.status === 'progress'" class="fas fa-fw fa-angle-down"></i>
+            <i v-else-if="download.status === 'finish'" class="fas fa-fw fa-check"></i>
+            <i v-else-if="download.status === 'convert'" class="fas fa-fw fa-cog"></i>
+            <i v-else-if="download.status === 'cancelled'" class="fas fa-fw fa-eject"></i>
+            <i v-else-if="download.status === 'errored'" class="fas fa-fw fa-times"></i>
             <div></div>
         </div>
 
         <!-- Video info -->
-        <img :src="download.video.thumbnailUrl" alt="Thumbnail" class="thumbnail">
+        <img :src="download.video.thumbnailUrl"
+             alt="Thumbnail"
+             class="thumbnail">
         <h1 class="title">{{ download.video.title }}</h1>
 
         <!-- Download progress -->
@@ -33,13 +35,16 @@
             </div>
 
             <div :data-status="download.status" class="progress-bar">
-                <div :style="{width: `${(download.progress / download.size) * 100}%`}" v-if="download.status !== 'cancelled'"></div>
+                <div v-if="download.status !== 'cancelled'" :style="{width: `${(download.progress / download.size) * 100}%`}"></div>
             </div>
         </div>
 
         <!-- Actions -->
         <div class="actions">
-            <button @click="cancelDownload" class="cancel" v-if="download.status === 'progress'">Cancel</button>
+            <button v-if="download.status === 'progress'"
+                    class="cancel"
+                    @click="cancelDownload">Cancel
+            </button>
         </div>
 
     </div>
@@ -60,6 +65,10 @@
                     return typeof v === 'string' && ['big', 'mid'].includes(v);
                 }
             }
+        },
+
+        data() {
+            return {};
         },
 
         computed: {
@@ -92,10 +101,6 @@
             downloadSpeed() {
                 return this.utils.readableByteCount(this.download.speed).toLowerCase() + 'ps';
             }
-        },
-
-        data() {
-            return {};
         },
 
         methods: {

@@ -6,11 +6,11 @@
         <div class="divider"></div>
 
         <!-- Downloads -->
-        <nav-item :subs="downloadSubs"
+        <nav-item v-slot="{item}"
+                  :subs="downloadSubs"
                   class="downloads"
                   title="Downloads"
-                  to="/downloads"
-                  v-slot="{item}">
+                  to="/downloads">
 
             <p :data-text="item.text" class="list-item">
                 <span class="text">{{ item.text }}</span>
@@ -19,8 +19,12 @@
         </nav-item>
 
         <!-- Settings -->
-        <nav-item class="settings" title="Settings" to="/settings"></nav-item>
-        <nav-item class="about" title="About" to="/about"></nav-item>
+        <nav-item class="settings"
+                  title="Settings"
+                  to="/settings"/>
+        <nav-item class="about"
+                  title="About"
+                  to="/about"/>
 
     </section>
 </template>
@@ -37,6 +41,10 @@
 
         components: {CandyIcon, NavItem},
 
+        data() {
+            return {};
+        },
+
         computed: {
             ...mapState(['downloads']),
 
@@ -50,10 +58,6 @@
                     {text: 'Failed', value: downloads.filter(v => v.status === 'errored').length}
                 ];
             }
-        },
-
-        data() {
-            return {};
         }
     };
 

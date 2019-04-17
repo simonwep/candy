@@ -16,8 +16,7 @@
         "electron:serve": "vue-cli-service electron:serve",
         "postinstall": "electron-builder install-app-deps",
         "postuninstall": "electron-builder install-app-deps",
-        "lint": "eslint ./src",
-        "lint:fix": "eslint ./src --fix"
+        "lint": "vue-cli-service lint ./src"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.8.1",

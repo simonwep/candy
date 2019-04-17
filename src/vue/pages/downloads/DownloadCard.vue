@@ -1,5 +1,5 @@
 <template>
-    <div class="download-card" v-if="video || playlist">
+    <div v-if="video || playlist" class="download-card">
 
         <!-- Summary types -->
         <video-summary v-if="video" :video="video"/>

@@ -5,23 +5,23 @@
         <label :class="{placeholder: 1, moved: value || focused}" :for="labelId">{{ placeholder }}</label>
 
         <div class="field">
-            <input :autofocus="autofocus ? 'autofocus' : ''"
+            <input ref="input"
+                   :autofocus="autofocus ? 'autofocus' : ''"
                    :class="{empty: !value}"
                    :id="labelId"
                    :type="password && !showPwd ? 'password' : 'text'"
                    :value="value"
+                   spellcheck="false"
                    @blur="focused = false"
                    @focus="focused = true"
                    @input="$emit('input', $event.target.value)"
-                   @keyup.enter="$emit('submit')"
-                   ref="input"
-                   spellcheck="false">
+                   @keyup.enter="$emit('submit')">
 
 
             <!-- Show password -->
-            <i :class="`show-pwd fas fa-fw fa-${showPwd ? 'eye' : 'eye-slash'}`"
-               @click="showPwd = !showPwd"
-               v-if="password"></i>
+            <i v-if="password"
+               :class="`show-pwd fas fa-fw fa-${showPwd ? 'eye' : 'eye-slash'}`"
+               @click="showPwd = !showPwd"></i>
 
             <!-- Clear input -->
             <i :class="{'clear fas fa-fw fa-times': 1, visible: value}"

@@ -6,8 +6,8 @@
             <span>{{ value ? (itemValueFilter ? itemValueFilter(value) : value) : title }}</span>
         </button>
 
-        <div class="items" ref="items">
-            <p @click="select(item)" v-for="item of preparedItems">{{ item.modified }}</p>
+        <div ref="items" class="items">
+            <p v-for="item of preparedItems" @click="select(item)">{{ item.modified }}</p>
         </div>
 
     </div>
@@ -33,23 +33,6 @@
             };
         },
 
-        mounted() {
-            const {items, activator} = this.$refs;
-
-            // Detect clicks outside of it and close it afterwards
-            this.outsideClickArguments = this.utils.on(window, 'click', ({path}) => {
-                if (path.includes(activator)) {
-                    this.open = !this.open;
-                } else if (!path.includes(items)) {
-                    this.open = false;
-                }
-            });
-        },
-
-        destroyed() {
-            this.utils.off(...this.outsideClickArguments);
-        },
-
         computed: {
             preparedItems() {
                 const {items, itemValue, itemValueFilter} = this;
@@ -71,6 +54,23 @@
 
                 return prep.sort((a, b) => a.modified.localeCompare(b.modified));
             }
+        },
+
+        mounted() {
+            const {items, activator} = this.$refs;
+
+            // Detect clicks outside of it and close it afterwards
+            this.outsideClickArguments = this.utils.on(window, 'click', ({path}) => {
+                if (path.includes(activator)) {
+                    this.open = !this.open;
+                } else if (!path.includes(items)) {
+                    this.open = false;
+                }
+            });
+        },
+
+        destroyed() {
+            this.utils.off(...this.outsideClickArguments);
         },
 
         methods: {

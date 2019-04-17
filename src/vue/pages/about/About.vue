@@ -26,7 +26,7 @@
         <article class="contributors">
             <h2>Contributors</h2>
             <template v-for="con of contributors">
-                <browser-link :href="con.github" v-if="con.github">{{ con.name }}</browser-link>
+                <browser-link v-if="con.github" :href="con.github">{{ con.name }}</browser-link>
                 <span v-else>{{ con.name }}</span>
             </template>
         </article>

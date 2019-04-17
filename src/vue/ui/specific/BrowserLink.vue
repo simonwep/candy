@@ -1,8 +1,8 @@
 <template>
 
     <!-- Normally a link would be opened inside the electron application. To prevent this a custom link is required -->
-    <a @click.prevent="href && shell.openExternal(href)" class="browser-link">
-        <slot/>
+    <a class="browser-link" @click.prevent="href && shell.openExternal(href)">
+        <slot></slot>
     </a>
 </template>
 

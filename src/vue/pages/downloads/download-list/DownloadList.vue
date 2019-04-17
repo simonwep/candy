@@ -1,6 +1,8 @@
 <template>
     <div class="download-list">
-        <download-item :card-size="cardSize" :download="download" v-for="download of downloads"/>
+        <download-item v-for="download of downloads"
+                       :card-size="cardSize"
+                       :download="download"/>
     </div>
 </template>
 

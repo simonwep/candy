@@ -20,6 +20,7 @@
     "rules": {
         "no-cond-assign": "off",
         "vue/require-v-for-key": "off",
+        "vue/valid-v-for": "off",
         "vue/html-indent": [
             "error",
             4,
