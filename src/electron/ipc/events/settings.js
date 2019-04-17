@@ -1,5 +1,6 @@
-const fs = require('fs');
+const {mkdirIfNotPresent} = require('../../../js/utils');
 const path = require('path');
+const fs = require('fs');
 const os = require('os');
 
 // Validator
@@ -11,8 +12,6 @@ const settingsSchema = require('../../../../config/settings.schema');
 
 // Settings name
 const settingsFileName = 'settings.json';
-
-const mkdirIfNotPresent = v => [!fs.existsSync(v) && fs.mkdirSync(v, {recursive: true}), v][1];
 
 /**
  * Load settings from file or by error use the defaults

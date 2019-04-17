@@ -107,6 +107,7 @@
     button {
         @include font(600, 0.8em);
         @include flex(row, center);
+        @include white-space-overflow();
         align-self: stretch;
         display: inline-block;
         cursor: pointer;
@@ -127,6 +128,7 @@
     }
 
     .items {
+        @include white-space-overflow();
         position: absolute;
         background: $palette-theme-secondary;
         padding: 0.2em 0;

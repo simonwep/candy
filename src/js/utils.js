@@ -1,4 +1,5 @@
 const config = require('../../config/config');
+const fs = require('fs');
 
 function eventListener(method, elements, events, fn, options = {}) {
 
@@ -169,4 +170,17 @@ module.exports.pick = (object, props) => {
     }
 
     return newObj;
+};
+
+/**
+ * Creates a directory if not already present. Uses the recursive method.
+ * @param path The directory path, can be a tree
+ * @returns {*} The input value
+ */
+module.exports.mkdirIfNotPresent = path => {
+    if (!fs.existsSync(path)) {
+        fs.mkdirSync(path, {recursive: true});
+    }
+
+    return path;
 };

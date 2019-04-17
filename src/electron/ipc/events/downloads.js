@@ -1,7 +1,7 @@
 const id3tags = require('../../../../config/id3tags');
-const _ = require('../../../js/utils');
-const encoder = require('../encoder');
+const {createUID, throttleEvent, mkdirIfNotPresent} = require('../../../js/utils');
 const {getSettings} = require('./settings');
+const encoder = require('../encoder');
 const ytdl = require('ytdl-core');
 const path = require('path');
 const fs = require('fs');
@@ -44,10 +44,11 @@ module.exports = {
      * @returns {Promise<string>}
      */
     async startDownload({format, video, sources}, {sender}) {
-        const {temporaryDirectory, downloadDirectory} = await getSettings();
+        const settings = await getSettings();
+        let {temporaryDirectory, downloadDirectory} = settings;
 
         // Create download id and start timestamp
-        const downloadId = _.createUID();
+        const downloadId = createUID();
 
         sender.send('add-download', {
             id: downloadId,
@@ -68,16 +69,16 @@ module.exports = {
         });
 
         // Create throttled update event handler
-        const update = _.throttleEvent(props => sender.send('update-download', {id: downloadId, props}));
+        const update = throttleEvent(props => sender.send('update-download', {id: downloadId, props}));
 
         let totalProgress = 0; // Downloaded bytes
-        let totalsize = 0; // Total download size
+        let totalSize = 0; // Total download size
         let done = 0; // Streams count which are done
 
         const destiantions = [];
         const sourceStreams = [];
         for (const {itag, container} of sources) {
-            const destiantion = path.join(temporaryDirectory, `${_.createUID()}.${container}`);
+            const destiantion = path.join(temporaryDirectory, `${createUID()}.${container}`);
             const sourceStream = ytdl(video.video_url, {
                 quality: itag,
                 highWaterMark: 16384
@@ -90,19 +91,19 @@ module.exports = {
             destiantions.push(destiantion);
             sourceStreams.push(sourceStream);
 
-            // Listen for events
-            sourceStream.on('response', res => totalsize += Number(res.headers['content-length']));
-
             let lastProgress = 0;
-            sourceStream.on('progress', (_, progress) => {
+            let lastSize = 0;
+            sourceStream.on('progress', (_, progress, size) => {
                 totalProgress += progress - lastProgress;
+                totalSize -= lastSize;
 
                 update({
                     progress: totalProgress,
                     speed: (lastProgress + progress) / 2,
-                    size: totalsize
+                    size: totalSize += size
                 });
 
+                lastSize = size;
                 lastProgress = progress;
             });
 
@@ -111,17 +112,20 @@ module.exports = {
 
                 // Check if this was the last stream
                 if (done === sources.length) {
-
-                    // Update render process
                     update({
-                        progress: totalsize,
-                        size: totalsize,
+                        progress: totalSize,
+                        size: totalSize,
                         status: 'convert'
                     });
 
                     // Build destination path
                     const filteredTitle = video.title.replace(/[/\\?%*:|"<>]/g, ' ').replace(/ +/g, ' ');
                     let prom;
+
+                    // Check if an additional directory with the author's name should be made for this video
+                    if (settings.createChannelDirectory) {
+                        downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, video.author.name));
+                    }
 
                     // Start appropriate conversion
                     if (sources.length === 1) {

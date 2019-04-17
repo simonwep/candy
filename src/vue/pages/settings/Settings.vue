@@ -8,7 +8,7 @@
             <text-input-field placeholder="Download path" v-model="current.downloadDirectory"/>
             <text-input-field placeholder="Temporary path" v-model="current.temporaryDirectory"/>
 
-            <button @click="applySettings" v-if="hasChanged">Apply</button>
+            <button @click="applySettings" :class="{visible: hasChanged}">Apply</button>
         </div>
 
         <!-- All boolean based settings -->
@@ -30,7 +30,7 @@
                 <span>Remember last download settings and apply these to the next one.</span>
             </div>
 
-            <button @click="applySettings" v-if="hasChanged">Apply</button>
+            <button @click="applySettings" :class="{visible: hasChanged}">Apply</button>
         </div>
 
     </div>
@@ -136,10 +136,17 @@
                 border: 1px solid $palette-turquoise;
                 transition: all 0.3s;
                 color: $palette-turquoise;
+                visibility: hidden;
+                opacity: 0;
 
                 &:hover {
                     background: $palette-turquoise;
                     color: $palette-theme-secondary;
+                }
+
+                &.visible {
+                    opacity: 1;
+                    visibility: visible;
                 }
             }
         }

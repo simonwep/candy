@@ -8,6 +8,7 @@ export const downloads = {
 
         add(state, video) {
             state.push(video);
+            sortVideos(state);
         },
 
         update(state, {id, props}) {
@@ -19,10 +20,14 @@ export const downloads = {
 
                 // Check if status has changed
                 if (statusChanged) {
-                    const sortMap = ['errored', 'cancelled', 'finish', 'convert', 'progress'];
-                    state.sort((a, b) => sortMap.indexOf(b.status) - sortMap.indexOf(a.status));
+                    sortVideos(state);
                 }
             }
         }
     }
 };
+
+function sortVideos(state) {
+    const sortMap = ['errored', 'cancelled', 'finish', 'convert', 'progress'];
+    state.sort((a, b) => sortMap.indexOf(b.status) - sortMap.indexOf(a.status));
+}
