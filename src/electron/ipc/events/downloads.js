@@ -13,11 +13,11 @@ module.exports = {
 
     /**
      * Fetches all available informations (including available streams) of a video
-     * @param url
+     * @param videoid The video id
      * @returns {Promise<videoInfo>}
      */
-    async getVideoInfo(url) {
-        const info = await ytdl.getBasicInfo(url);
+    async getVideoInfo(videoid) {
+        const info = await ytdl.getBasicInfo(`https://www.youtube.com/watch?v=${videoid}`);
         const resolvedFormats = [];
 
         // Resolve itags
@@ -99,7 +99,7 @@ module.exports = {
 
                 update({
                     progress: totalProgress,
-                    speed: (lastProgress + progress) / 2,
+                    speed: (lastProgress + progress) / 4,
                     size: totalSize += size
                 });
 

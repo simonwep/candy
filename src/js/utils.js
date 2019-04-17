@@ -184,3 +184,28 @@ module.exports.mkdirIfNotPresent = path => {
 
     return path;
 };
+
+/**
+ * Resolves and validates a youtube url / id or whatsoever
+ * @param str
+ * @returns {{playlistId: *, isValid: boolean, videoId: *, url: *}}
+ */
+module.exports.resolveYouTubeUrl = str => {
+    str = str.trim();
+
+    const match = (str, regex, g = 0) => {
+        const m = str.match(regex);
+        return m && m[g] ? m[g] : null;
+    };
+
+    const isId = str.match(/^[\w-]+$/);
+    const playlistId = isId && str.length === 11 ? str : match(str, /.*list=(.*?)(&|$)/, 1);
+    const videoId = isId && str.length > 11 ? str : match(str, /watch\?v=(.*?)(&|$)/, 1);
+
+    return {
+        url: str,
+        isValid: !!(playlistId || videoId),
+        playlistId,
+        videoId
+    };
+};

@@ -39,7 +39,8 @@
 <script>
 
     // IPC Client
-    import ipcClient      from '../../ipc/client';
+    import ipcClient from '../../ipc/client';
+
     // UI Components
     import Checkbox       from '../../ui/input/Checkbox';
     import TextInputField from '../../ui/input/TextInputField';

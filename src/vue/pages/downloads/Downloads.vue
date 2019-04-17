@@ -30,8 +30,8 @@
             </div>
         </div>
 
-        <!-- Video info -->
-        <download-form :video="videoStats" v-if="videoStats"/>
+        <!-- Download card -->
+        <download-card v-if="video || playlist" :video="video" :playlist="playlist"/>
 
         <!-- Download list -->
         <download-list :card-size="viewType"/>
@@ -45,16 +45,17 @@
     import ipcClient from '../../ipc/client';
 
     // Components
-    import DownloadForm from './download-form/DownloadForm';
     import DownloadList from './download-list/DownloadList';
+    import DownloadCard from './DownloadCard';
 
     export default {
 
-        components: {DownloadForm, DownloadList},
+        components: {DownloadCard, DownloadList},
 
         data() {
             return {
-                videoStats: null,
+                video: null,
+                playlist: null,
                 viewType: 'big'
             };
         },
@@ -62,21 +63,17 @@
         methods: {
 
             checkAvailableDownload({target: {value}}) {
+                const {isValid, playlistId, videoId} = this.utils.resolveYouTubeUrl(value);
 
-                // TODO: Hard-coded youtube video- and playlistid's
-                // Check if value conforms to a video- or playlistid
-                if (value.match(/^[\w\d_-]+$/)) {
-                    value = `https://www.youtube.com/${value.length < 12 ? 'watch?v=' : 'playlist?list=$'}${value}`;
-                }
-
-                // Validate url
-                const match = value.match(/^((https?):\/\/www\.youtube.com\/watch\?v=.*?)(&|$)/);
-                if (match && match[1]) {
-                    ipcClient.request('getVideoInfo', match[1]).then(res => {
-                        this.videoStats = res;
-                    });
-                } else {
-                    this.videoStats = null;
+                // TODO Ask user if both is detected
+                if (!isValid) {
+                    return this.video = this.playlist = null;
+                } else if (videoId) {
+                    this.type = 'video';
+                    ipcClient.request('getVideoInfo', videoId).then(res => this.video = res);
+                } else if (playlistId) {
+                    this.type = 'playlist';
+                    this.$store.dispatch('youtube/resolvePlaylist', {playlistId}).then(res => this.playlist = res);
                 }
             }
         }
@@ -160,7 +157,7 @@
         }
     }
 
-    .download-form {
+    .download-card {
         flex-shrink: 0;
         margin-top: 1px;
 

@@ -23,6 +23,7 @@
                              v-if="['audio', 'audio/video'].includes(content)"
                              v-model="bitrate"/>
 
+        <!-- Container format -->
         <drop-down-selection :item-value-filter="formatFilter"
                              :items="extensions"
                              :title="format || 'choose file format'"
@@ -42,8 +43,9 @@
 
     // Components
     import DropDownSelection from '../../../ui/input/DropDownSelection';
+
     // IPC Client
-    import ipcClient         from '../../../ipc/client';
+    import ipcClient from '../../../ipc/client';
 
     export default {
 

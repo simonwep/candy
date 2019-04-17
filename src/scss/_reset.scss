@@ -34,7 +34,7 @@ button {
 }
 
 ::-webkit-scrollbar {
-    width: 0.4em;
+    @include size(0.4em);
     background: transparent;
 }
 

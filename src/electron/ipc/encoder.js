@@ -16,17 +16,17 @@ module.exports = {
 
     async merge([audio, video], destination) {
         return new Promise((resolve, reject) => {
-            ffmpeg().input(audio).audioCodec('libvorbis')
-                .input(video).videoCodec('libx264')
+            ffmpeg().input(audio).audioCodec('aac')
+                .input(video).videoCodec('mpeg4')
                 .on('end', resolve)
                 .on('error', reject)
                 .output(destination).run();
         });
     },
 
-    async convert(video, destination) {
+    async convert(source, destination) {
         return new Promise((resolve, reject) => {
-            ffmpeg().input(video)
+            ffmpeg().input(source)
                 .on('end', resolve)
                 .on('error', reject)
                 .output(destination).run();

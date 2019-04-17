@@ -7,7 +7,6 @@
             <span class="duration">{{ utils.formatSeconds(Number(video.length_seconds)) }}</span>
         </div>
 
-
         <!-- Video details -->
         <div class="video-details">
             <h1>{{ video.title }}</h1>
