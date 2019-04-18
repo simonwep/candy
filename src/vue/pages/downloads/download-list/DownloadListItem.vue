@@ -49,6 +49,15 @@
                     class="cancel"
                     @click="cancelDownload">Cancel
             </button>
+
+            <div v-if="download.status === 'finish'" class="afterwards">
+                <button @click="openDestinationDirectory">
+                    <i class="fas fa-fw fa-folder-open"></i>
+                </button>
+                <button @click="openDestinationFile">
+                    <i class="fas fa-fw fa-play-circle"></i>
+                </button>
+            </div>
         </div>
 
     </div>
@@ -58,6 +67,9 @@
 
     // IPC Client
     import ipcClient from '../../../ipc/client';
+
+    // Electron stuff
+    import {shell} from 'electron';
 
     export default {
 
@@ -111,6 +123,14 @@
 
             cancelDownload() {
                 ipcClient.request('cancelDownload', {downloadId: this.download.id});
+            },
+
+            openDestinationDirectory() {
+                shell.showItemInFolder(this.download.destinationFile);
+            },
+
+            openDestinationFile() {
+                shell.openItem(this.download.destinationFile);
             }
         }
     };
@@ -326,6 +346,28 @@
                 &:hover {
                     background: $palette-bright-red;
                     color: $palette-theme-tertiary;
+                }
+            }
+        }
+
+        .afterwards {
+
+            button {
+                @include size(2.5em);
+                padding: 0;
+                border-radius: 100%;
+                color: rgba(white, 0.75);
+                border-color: rgba(white, 0.75);
+                font-size: 0.8em;
+                transition: all 0.3s;
+
+                &:hover {
+                    color: $palette-turquoise;
+                    border-color: $palette-turquoise;
+                }
+
+                &:not(:last-child) {
+                    margin-right: 0.75em;
                 }
             }
         }

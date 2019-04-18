@@ -79,19 +79,20 @@ module.exports = {
         const destiantions = [];
         const sourceStreams = [];
         for (const {itag, container} of sources) {
-            const destiantion = path.join(temporaryDirectory, `${createUID()}.${container}`);
+            const destinationDirectory = path.join(temporaryDirectory, `${createUID()}.${container}`);
             const sourceStream = ytdl(video.video_url, {
                 quality: itag,
                 highWaterMark: 16384
             });
 
             // Pipe to temporary destination
-            sourceStream.pipe(fs.createWriteStream(destiantion));
+            sourceStream.pipe(fs.createWriteStream(destinationDirectory));
 
             // Save destinations and strema
-            destiantions.push(destiantion);
+            destiantions.push(destinationDirectory);
             sourceStreams.push(sourceStream);
 
+            let lastProgressTimestamp = 0;
             let lastProgress = 0;
             let lastSize = 0;
             sourceStream.on('progress', (_, progress, size) => {
@@ -99,13 +100,14 @@ module.exports = {
                 totalSize -= lastSize;
 
                 update({
-                    progress: totalProgress,
-                    speed: (lastProgress + progress) / 4,
+                    progress: totalProgress || 1,
+                    speed: ((lastProgress + progress) / 4) * (Date.now() - lastProgressTimestamp).toFixed(1),
                     size: totalSize += size
                 });
 
                 lastSize = size;
                 lastProgress = progress;
+                lastProgressTimestamp = Date.now();
             });
 
             sourceStream.on('end', () => {
@@ -121,7 +123,6 @@ module.exports = {
 
                     // Build destination path
                     const filteredTitle = video.title.replace(/[/\\?%*:|"<>]/g, ' ').replace(/ +/g, ' ');
-                    let prom;
 
                     // Check if an additional directory with the author's name should be made for this video
                     if (settings.createChannelDirectory) {
@@ -130,25 +131,17 @@ module.exports = {
 
                     // Check if an additional directory with the playlist name is requested
                     if (playlist) {
-                        downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, playlist.channelTitle));
+                        downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, playlist.title));
                     }
 
                     // Start appropriate conversion
-                    if (sources.length === 1) {
-                        prom = encoder.convert(
-                            destiantion,
-                            path.join(downloadDirectory, `${filteredTitle}.${format}`)
-                        );
-                    } else {
-                        prom = encoder.merge(
-                            destiantions,
-                            path.join(downloadDirectory, `${filteredTitle}.${format}`)
-                        );
-                    }
-
-                    // Wait until done
-                    prom.then(() => {
-                        update({status: 'finish', endTimestamp: Date.now()});
+                    const destinationFile = path.join(downloadDirectory, `${filteredTitle}.${format}`);
+                    encoder[sources.length === 1 ? 'convert' : 'merge'](destinationDirectory, destinationFile).then(() => {
+                        update({
+                            status: 'finish',
+                            endTimestamp: Date.now(),
+                            destinationFile
+                        });
                     }).catch(e => {
 
                         /* eslint-disable no-console */
