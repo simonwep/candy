@@ -5,7 +5,6 @@
     "createPlaylistDirectory": true,
     "deleteDownloadEntriesIfDone": true,
     "lockDownloadSettings": true,
-    "youtubeAPIKey": "AIzaSyDho1aQ-nQ4XKI6SQtguPQck773cpMvKWs",
     "homeVideoChannels": [
         "UCvjgXvBlbQiydffZU7m1_aw",
         "UCoxcjq-8xIDTYp3uz647V5A",

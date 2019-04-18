@@ -1,5 +1,4 @@
-import {channelPreloadAmount} from '../../../../config/config';
-import ipcClient              from '../../ipc/client';
+import {getLatestVideosByChannel, getPlaylistVideos} from '../../wrapper-apis/youtube';
 
 export const youtube = {
 
@@ -16,37 +15,8 @@ export const youtube = {
          * @returns {Promise<void>}
          */
         async latestVideosBy(_, {channelIds = []}) {
-            const {youtubeAPIKey} = await ipcClient.request('getSettings');
-
-            const videos = (await Promise.all(
-                channelIds.map(v => {
-                    return this.dispatch('fetch', {
-                        transform: 'json',
-                        url: 'https://www.googleapis.com/youtube/v3/search',
-                        urlSearchParams: {
-                            part: 'snippet',
-                            key: youtubeAPIKey,
-                            channelId: v,
-                            maxResults: channelPreloadAmount,
-                            order: 'date',
-                            type: 'video'
-                        }
-                    }).then(async r => r.items.map(v => v.snippet));
-                })
-            )).flat();
-
-            videos.sort((a, b) => {
-
-                // Convert to timestamp
-                [a, b].forEach(value => {
-                    if (typeof value.publishedAt === 'string') {
-                        value.publishedAt = +(new Date(value.publishedAt));
-                    }
-                });
-
-                return b.publishedAt - a.publishedAt;
-            });
-
+            const videos = (await Promise.all(channelIds.map(getLatestVideosByChannel))).flat();
+            videos.sort((a, b) => b.published - a.published);
             return videos;
         },
 
@@ -57,56 +27,7 @@ export const youtube = {
          * @returns {Promise<{videos: Array, info: *}>}
          */
         async resolvePlaylist(_, {playlistId}) {
-            const {youtubeAPIKey} = await ipcClient.request('getSettings');
-
-            let playlist = {
-                videos: [],
-                info: (await this.dispatch('fetch', {
-                    transform: 'json',
-                    url: 'https://www.googleapis.com/youtube/v3/playlists',
-                    urlSearchParams: {
-                        part: 'snippet',
-                        key: youtubeAPIKey,
-                        id: playlistId
-                    }
-                })).items[0].snippet
-            };
-
-            const {videos} = playlist;
-            let nextPageToken;
-            do {
-                const resp = await this.dispatch('fetch', {
-                    transform: 'json',
-                    url: 'https://www.googleapis.com/youtube/v3/playlistItems',
-                    urlSearchParams: {
-                        part: 'snippet',
-                        maxResults: 50,
-                        key: youtubeAPIKey,
-                        pageToken: nextPageToken,
-                        playlistId
-                    }
-                });
-
-                if (!resp) {
-                    throw 'Failed to fetch ids';
-                }
-
-                // Resolve more details
-                const promises = [];
-                for (const {snippet} of resp.items) {
-                    promises.push(
-                        ipcClient.request('getVideoInfo', snippet.resourceId.videoId).then(res => {
-                            snippet.info = res;
-                        })
-                    );
-
-                    videos.push(snippet);
-                }
-
-                await Promise.all(promises);
-            } while (nextPageToken);
-
-            return playlist;
+            return getPlaylistVideos(playlistId);
         }
     }
 };

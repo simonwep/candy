@@ -19,8 +19,14 @@
         "lockDownloadSettings": {
             "type": "boolean"
         },
-        "settingsLocation" : {
+        "settingsLocation": {
             "type": "string"
+        },
+        "homeVideoChannels": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         }
     }
 }

@@ -2,12 +2,12 @@
     <div class="video-snippet-card">
 
         <div class="thumbnail">
-            <h2 class="author">{{ video.channelTitle }}</h2>
-            <img :src="video.thumbnails.high.url" alt="">
+            <h2 class="author">{{ video.author.name }}</h2>
+            <img :src="video.thumbnail_url" alt="">
         </div>
 
         <div class="info">
-            <img :src="video.info.author.avatar" alt="">
+            <img :src="video.author.avatar" alt="">
             <p class="title">{{ video.title }}</p>
         </div>
 

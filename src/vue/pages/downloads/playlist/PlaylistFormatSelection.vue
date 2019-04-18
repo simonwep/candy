@@ -146,7 +146,7 @@
                 };
 
                 // Download everything lol
-                for (const {info: video} of videos) {
+                for (const video of videos) {
                     const {formats} = video;
 
                     // Getter for audio and video channels

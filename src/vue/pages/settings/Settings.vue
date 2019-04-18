@@ -2,18 +2,17 @@
     <div class="settings">
 
         <!-- All string based settings -->
-        <div class="paths grid-item">
+        <section class="paths">
             <h1>Paths</h1>
 
             <text-input-field v-model="current.downloadDirectory" placeholder="Download path"/>
             <text-input-field v-model="current.temporaryDirectory" placeholder="Temporary path"/>
-            <text-input-field v-model="current.youtubeAPIKey" placeholder="YouTube API Key"/>
 
             <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
-        </div>
+        </section>
 
         <!-- All boolean based settings -->
-        <div class="checkboxes grid-item">
+        <section class="checkboxes">
             <h1>General</h1>
 
             <div class="item">
@@ -26,13 +25,25 @@
                 <span>Create a direcotry with playlist's name.</span>
             </div>
 
+            <!-- TODO: Implement -->
             <!--<div class="item">
                 <checkbox v-model="current.lockDownloadSettings"/>
                 <span>Remember last download settings and apply these to the next one.</span>
             </div>-->
 
             <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
-        </div>
+        </section>
+
+        <section class="front-page">
+            <h1>Frontpage</h1>
+
+            <!-- Edit shown channels -->
+            <h3>Channels which should be shown on your front-page</h3>
+            <tag-input-field v-model="current.homeVideoChannels"
+                             placeholder="Add channel id"/>
+
+            <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
+        </section>
 
     </div>
 </template>
@@ -44,11 +55,12 @@
 
     // UI Components
     import Checkbox       from '../../ui/input/Checkbox';
+    import TagInputField  from '../../ui/input/TagInputField';
     import TextInputField from '../../ui/input/TextInputField';
 
     export default {
 
-        components: {Checkbox, TextInputField},
+        components: {Checkbox, TagInputField, TextInputField},
 
         data() {
             return {
@@ -60,7 +72,7 @@
                     downloadDirectory: null,
                     temporaryDirectory: null,
                     lockDownloadSettings: false,
-                    youtubeAPIKey: null
+                    homeVideoChannels: []
                 }
             };
         },
@@ -125,7 +137,7 @@
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr;
 
-        .grid-item {
+        > section {
             @include flex(column);
             background: $palette-theme-secondary;
             border-radius: 0.15em;
@@ -136,6 +148,12 @@
                 @include font(600, 1.1em);
                 color: $palette-snow-white;
                 margin: 0.25em 0 1.25em 0.15em;
+            }
+
+            > h3 {
+                @include font(600, 0.8em);
+                color: $palette-snow-white;
+                margin-bottom: 0.25em;
             }
 
             > button {
@@ -180,6 +198,13 @@
     .paths {
         .text-input-field {
             margin-bottom: 0.75em;
+        }
+    }
+
+    .front-page {
+
+        .tag-input-field {
+            margin-top: 0.5em;
         }
     }
 
