@@ -22,6 +22,15 @@ export default new Vuex.Store({
 
     actions: {
 
+        /**
+         * Fetch wrapper with some extra features
+         * @param _
+         * @param url
+         * @param urlSearchParams
+         * @param init
+         * @param transform
+         * @returns {Promise<Response | never>}
+         */
         async fetch(_, {url, urlSearchParams, init, transform = null}) {
 
             // Resolve params if provided

@@ -1,5 +1,5 @@
-import {youtubeAPIKey} from '../../../../config/config';
-import ipcClient       from '../../ipc/client';
+import {youtubeAPIKey, channelPreloadAmount} from '../../../../config/config';
+import ipcClient                             from '../../ipc/client';
 
 export const youtube = {
 
@@ -9,6 +9,51 @@ export const youtube = {
 
     actions: {
 
+        /**
+         * Fetches the latest videos from a group of channels
+         * @param _
+         * @param channelIds An array of channel id's
+         * @returns {Promise<void>}
+         */
+        async latestVideosBy(_, {channelIds = []}) {
+            const videos = (await Promise.all(
+                channelIds.map(v => {
+                    return this.dispatch('fetch', {
+                        transform: 'json',
+                        url: 'https://www.googleapis.com/youtube/v3/search',
+                        urlSearchParams: {
+                            part: 'snippet',
+                            key: youtubeAPIKey,
+                            channelId: v,
+                            maxResults: channelPreloadAmount,
+                            order: 'date',
+                            type: 'video'
+                        }
+                    }).then(async r => r.items.map(v => v.snippet));
+                })
+            )).flat();
+
+            videos.sort((a, b) => {
+
+                // Convert to timestamp
+                [a, b].forEach(value => {
+                    if (typeof value.publishedAt === 'string') {
+                        value.publishedAt = +(new Date(value.publishedAt));
+                    }
+                });
+
+                return b.publishedAt - a.publishedAt;
+            });
+
+            return videos;
+        },
+
+        /**
+         * Resolves the playlist itself and it's containing videos
+         * @param _
+         * @param playlistId The playlist id
+         * @returns {Promise<{videos: Array, info: *}>}
+         */
         async resolvePlaylist(_, {playlistId}) {
             let playlist = {
                 videos: [],
@@ -17,8 +62,8 @@ export const youtube = {
                     url: 'https://www.googleapis.com/youtube/v3/playlists',
                     urlSearchParams: {
                         part: 'snippet',
-                        id: playlistId,
-                        key: youtubeAPIKey
+                        key: youtubeAPIKey,
+                        id: playlistId
                     }
                 })).items[0].snippet
             };

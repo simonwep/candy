@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'expandable-section': 1, active}">
+    <div :class="{'expandable-section': 1, active: $route.path === to}">
 
         <!-- Topic header -->
         <router-link :to="to" class="topic">{{ title }}</router-link>
@@ -25,13 +25,6 @@
 
         data() {
             return {};
-        },
-
-        computed: {
-
-            active() {
-                return this.$route.path.startsWith(this.to);
-            }
         }
     };
 

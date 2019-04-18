@@ -5,6 +5,8 @@
         <img src="../../../assets/icons/512x512.png" alt="Logo">
         <div class="divider"></div>
 
+        <nav-item title="Home" to="/"/>
+
         <!-- Downloads -->
         <nav-item v-slot="{item}"
                   :subs="downloadSubs"
@@ -18,13 +20,9 @@
             </p>
         </nav-item>
 
-        <!-- Settings -->
-        <nav-item class="settings"
-                  title="Settings"
-                  to="/settings"/>
-        <nav-item class="about"
-                  title="About"
-                  to="/about"/>
+        <!-- More menu links -->
+        <nav-item title="Settings" to="/settings"/>
+        <nav-item title="About" to="/about"/>
 
     </section>
 </template>
@@ -84,6 +82,7 @@
     }
 
     .downloads {
+        margin-bottom: auto;
 
         .list-item {
             @include flex(row, center);
@@ -120,10 +119,6 @@
                 margin-right: 1.5em;
             }
         }
-    }
-
-    .settings {
-        margin-top: auto;
     }
 
 </style>

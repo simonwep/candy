@@ -7,8 +7,9 @@ const os = require('os');
 const Validator = require('jsonschema').Validator;
 const validator = new Validator();
 
-// Settings Schema
+// Settings Schema and default settings
 const settingsSchema = require('../../../../config/settings.schema');
+const defaultSettings = require('../../../../config/settings.default.json');
 
 // Settings name
 const settingsFileName = 'settings.json';
@@ -30,12 +31,19 @@ const userSettings = (() => {
         settings = JSON.parse(fs.readFileSync(settingsFile, 'utf8'));
     } catch (e) {
 
-        // By a error load the default settings
-        settings = require('../../../../config/settings.default.json');
+        // Use defaultSettings as fallback
+        settings = defaultSettings;
 
         // Resolve static paths
         settings.downloadDirectory = path.resolve(os.homedir(), 'Downloads');
         settings.temporaryDirectory = path.resolve(os.tmpdir(), 'candy');
+    }
+
+    // Validate settings props with default file, fill up missing properties
+    for (const [prop, value] of Object.entries(defaultSettings)) {
+        if (!(prop in settings)) {
+            settings[prop] = value;
+        }
     }
 
     const {downloadDirectory, temporaryDirectory} = settings;
