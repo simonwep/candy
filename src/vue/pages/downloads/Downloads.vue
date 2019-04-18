@@ -14,7 +14,7 @@
             </div>
 
             <!-- Choose between video and audio if both avaiable -->
-            <div :class="{'recognition-type': 1, visible: videoAndPlaylist}">
+            <div v-if="videoAndPlaylist" class="recognition-type">
                 <button :class="{active: type === 'video'}" @click="chooseType('video')">Video</button>
                 <button :class="{active: type === 'playlist'}" @click="chooseType('playlist')">Playlist</button>
             </div>
@@ -188,12 +188,14 @@
             border-radius: 0.15em;
             transition: all 0.3s;
             overflow: hidden;
-            visibility: hidden;
-            opacity: 0;
 
-            &.visible {
-                opacity: 1;
-                visibility: visible;
+            @include animate('0.25s ease-in-out forwards') {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
             }
 
             button {

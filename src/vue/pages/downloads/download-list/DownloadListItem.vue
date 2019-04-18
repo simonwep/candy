@@ -15,7 +15,11 @@
         <img :src="download.video.thumbnailUrl"
              alt="Thumbnail"
              class="thumbnail">
-        <h1 class="title">{{ download.video.title }}</h1>
+
+        <div class="video-info">
+            <h1>{{ download.video.title }}</h1>
+            <p><span v-for="source of download.sources">{{ source.bitrate || source.resolution }}</span></p>
+        </div>
 
         <!-- Download progress -->
         <div class="progress">
@@ -224,12 +228,26 @@
         margin-left: 0.5em;
     }
 
-    .title {
-        @include font(600, 0.75em);
+    .video-info {
+        @include flex(column);
         width: 30%;
         color: white;
         margin-left: 1em;
         line-height: 1.3em;
+
+        > h1 {
+            @include font(600, 0.85em);
+        }
+
+        > p {
+            @include font(600, 0.75em);
+
+            span:not(:last-child)::after {
+                content: '/';
+                display: inline-block;
+                margin: 0 0.25em;
+            }
+        }
     }
 
     .progress {

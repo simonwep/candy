@@ -55,7 +55,8 @@
                     {text: 'All', value: downloads.length},
                     {text: 'Active', value: downloads.filter(v => v.status === 'progress').length},
                     {text: 'Done', value: downloads.filter(v => v.status === 'finish').length},
-                    {text: 'Failed', value: downloads.filter(v => v.status === 'errored').length}
+                    {text: 'Failed', value: downloads.filter(v => v.status === 'errored').length},
+                    {text: 'Cancelled', value: downloads.filter(v => v.status === 'cancelled').length},
                 ];
             }
         }
@@ -113,6 +114,7 @@
                 text-shadow: 0 1px 3px rgba(black, 0.5);
                 text-align: center;
                 margin-left: auto;
+                min-width: 2.25em;
             }
 
             .text {
