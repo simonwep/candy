@@ -7,6 +7,7 @@
 
             <text-input-field v-model="current.downloadDirectory" placeholder="Download path"/>
             <text-input-field v-model="current.temporaryDirectory" placeholder="Temporary path"/>
+            <text-input-field v-model="current.youtubeAPIKey" placeholder="YouTube API Key"/>
 
             <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
         </div>
@@ -25,10 +26,10 @@
                 <span>Create a direcotry with playlist's name.</span>
             </div>
 
-            <div class="item">
+            <!--<div class="item">
                 <checkbox v-model="current.lockDownloadSettings"/>
                 <span>Remember last download settings and apply these to the next one.</span>
-            </div>
+            </div>-->
 
             <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
         </div>
@@ -58,7 +59,8 @@
                     deleteDownloadEntriesIfDone: false,
                     downloadDirectory: null,
                     temporaryDirectory: null,
-                    lockDownloadSettings: false
+                    lockDownloadSettings: false,
+                    youtubeAPIKey: null
                 }
             };
         },

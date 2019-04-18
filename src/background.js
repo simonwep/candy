@@ -20,15 +20,24 @@ function createWindow() {
         minHeight: 600,
         frame: false,
         title: 'Candy Downlaoder',
-        icon: path.resolve(__dirname, '../', 'assets/icons/512x512.png')
+        icon: path.resolve(__dirname, '../', 'assets/icons/512x512.png'),
+
+        webPreferences: {
+
+            // Allow CORS Requests
+            webSecurity: false
+        }
     });
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
-        if (!process.env.IS_TEST) win.webContents.openDevTools();
     } else {
         createProtocol('app');
         win.loadURL('app://./index.html');
+    }
+
+    if ((process.env.WEBPACK_DEV_SERVER_URL || process.argv.includes('--debug')) && !process.env.IS_TEST) {
+        win.webContents.openDevTools();
     }
 
     win.setMenuBarVisibility(false);

@@ -140,7 +140,7 @@
     }
 
     .header {
-        @include flex(row, center, space-between);
+        @include flex(row, center, flex-start);
         flex-shrink: 0;
         background: $palette-theme-secondary;
         padding: 1em 2em;
@@ -178,7 +178,7 @@
         .dual-ring-spinner {
             align-self: stretch;
             @include size(2em);
-            margin: 0 0.5em;
+            margin: 0 0.6em 0 0.5em;
         }
 
         .recognition-type {
@@ -188,6 +188,7 @@
             border-radius: 0.15em;
             transition: all 0.3s;
             overflow: hidden;
+            flex-shrink: 0;
 
             @include animate('0.25s ease-in-out forwards') {
                 from {
@@ -205,6 +206,7 @@
                 color: $palette-theme-secondary;
                 background: $palette-theme-tertiary;
                 transition: all 0.3s;
+                flex-shrink: 0;
 
                 &.active {
                     background: $palette-cloud-blue;
@@ -220,10 +222,12 @@
 
         .views {
             @include flex(row, center);
-            margin-left: auto;
+            margin-left: 0.5em;
             align-self: stretch;
+            justify-self: flex-end;
             border-radius: 0.15em;
             overflow: hidden;
+            flex-shrink: 0;
 
             svg {
                 @include size(16px);

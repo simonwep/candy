@@ -1,5 +1,5 @@
-import {youtubeAPIKey, channelPreloadAmount} from '../../../../config/config';
-import ipcClient                             from '../../ipc/client';
+import {channelPreloadAmount} from '../../../../config/config';
+import ipcClient              from '../../ipc/client';
 
 export const youtube = {
 
@@ -16,6 +16,8 @@ export const youtube = {
          * @returns {Promise<void>}
          */
         async latestVideosBy(_, {channelIds = []}) {
+            const {youtubeAPIKey} = await ipcClient.request('getSettings');
+
             const videos = (await Promise.all(
                 channelIds.map(v => {
                     return this.dispatch('fetch', {
@@ -55,6 +57,8 @@ export const youtube = {
          * @returns {Promise<{videos: Array, info: *}>}
          */
         async resolvePlaylist(_, {playlistId}) {
+            const {youtubeAPIKey} = await ipcClient.request('getSettings');
+
             let playlist = {
                 videos: [],
                 info: (await this.dispatch('fetch', {

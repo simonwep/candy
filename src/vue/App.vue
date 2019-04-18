@@ -7,7 +7,9 @@
         <!-- Actual content -->
         <div class="content">
             <navigation/>
-            <router-view class="router"/>
+            <keep-alive>
+                <router-view class="router"/>
+            </keep-alive>
         </div>
 
     </div>
