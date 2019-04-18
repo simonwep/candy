@@ -91,10 +91,17 @@
 
                 ipcClient.request('applySettings', current)
                     .then(this.fetchSettings)
-                    .catch(reason => {
-                        // TODO: Handle error
-                        /* eslint-disable no-console */
-                        console.error(reason);
+                    .catch(() => {
+
+                        // Show error dialog
+                        this.$store.commit('dialogbox/show', {
+                            type: 'error',
+                            title: 'Whoops',
+                            text: 'Failed to save settings, be sure to enter a valid path.',
+                            buttons: [
+                                {type: 'accept', text: 'Okay'}
+                            ]
+                        });
                     });
             },
 
@@ -127,7 +134,7 @@
 
             > h1 {
                 @include font(600, 1.1em);
-                color: white;
+                color: $palette-snow-white;
                 margin: 0.25em 0 1.25em 0.15em;
             }
 
@@ -165,7 +172,7 @@
                 @include font(600, 0.75em);
                 margin-left: 0.75em;
                 line-height: 1.25em;
-                color: white;
+                color: $palette-snow-white;
             }
         }
     }

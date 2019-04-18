@@ -121,7 +121,7 @@
             padding: 0.9em 0 0.8em;
             width: 100%;
             z-index: 2;
-            color: white;
+            color: $palette-snow-white;
         }
 
         i {

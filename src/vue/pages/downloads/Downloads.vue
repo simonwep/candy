@@ -110,20 +110,32 @@
                     }
                 }
 
+                // Shorthand to show an error dialog
+                const err = title => {
+                    this.$store.commit('dialogbox/show', {
+                        type: 'error',
+                        title,
+                        text: 'Be sure to have an active internet connection, entered a valid video id and the video itself is public.',
+                        buttons: [
+                            {type: 'accept', text: 'Okay'}
+                        ]
+                    });
+                };
+
                 if (videoId) {
                     this.type = this.type || 'video';
                     this.loading = true;
                     ipcClient.request('getVideoInfo', videoId).then(res => {
                         this.loading = false;
                         this.video = res;
-                    });
+                    }).catch(() => err('Can\'t fetch video details'));
                 } else if (playlistId) {
                     this.type = this.type || 'playlist';
                     this.loading = true;
                     this.$store.dispatch('youtube/resolvePlaylist', {playlistId}).then(res => {
                         this.loading = false;
                         this.playlist = res;
-                    });
+                    }).catch(() => err('Can\'t fetch playlist details'));
                 }
             }
         }
@@ -151,17 +163,17 @@
             background: $palette-theme-tertiary;
             padding: 0.5em 0.75em;
             border-radius: 0.15em;
-            color: white;
+            color: $palette-snow-white;
 
             &:focus-within i {
-                color: white;
+                color: $palette-snow-white;
             }
 
             > i {
                 font-size: 0.75em;
                 margin-right: 0.75em;
                 transition: all 0.3s;
-                color: rgba(white, 0.6);
+                color: rgba($palette-snow-white, 0.6);
             }
 
             > input {
@@ -170,7 +182,7 @@
                 @include font(400, 0.9em);
 
                 &::placeholder {
-                    color: rgba(white, 0.6);
+                    color: rgba($palette-snow-white, 0.6);
                 }
             }
         }
@@ -211,7 +223,7 @@
                 &.active {
                     background: $palette-cloud-blue;
                     align-self: stretch;
-                    color: white;
+                    color: $palette-snow-white;
                 }
 
                 &:not(.active):hover {
@@ -251,7 +263,7 @@
                     border-color: $palette-cloud-blue;
 
                     svg {
-                        fill: white;
+                        fill: $palette-snow-white;
                     }
                 }
             }

@@ -251,7 +251,7 @@
     .video-info {
         @include flex(column);
         width: 30%;
-        color: white;
+        color: $palette-snow-white;
         margin-left: 1em;
         line-height: 1.3em;
 
@@ -279,7 +279,7 @@
             text-align: center;
             font-size: 0.75em;
             margin-bottom: 0.5em;
-            color: white;
+            color: $palette-snow-white;
 
             b {
                 font-weight: 600;
@@ -356,8 +356,8 @@
                 @include size(2.5em);
                 padding: 0;
                 border-radius: 100%;
-                color: rgba(white, 0.75);
-                border-color: rgba(white, 0.75);
+                color: rgba($palette-snow-white, 0.75);
+                border-color: rgba($palette-snow-white, 0.75);
                 font-size: 0.8em;
                 transition: all 0.3s;
 

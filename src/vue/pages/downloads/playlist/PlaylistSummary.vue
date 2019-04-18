@@ -38,7 +38,7 @@
     .playlist-summary {
         @include flex(column, flex-start, flex-start);
         overflow: hidden;
-        color: white;
+        color: $palette-snow-white;
 
         > h1 {
             @include font(500, 1.1em);

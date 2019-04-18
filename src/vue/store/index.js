@@ -4,6 +4,7 @@ import Vue  from 'vue';
 // Modules
 import {downloads} from './modules/downloads';
 import {youtube}   from './modules/youtube';
+import {dialogbox} from './modules/dialogbox';
 
 Vue.use(Vuex);
 
@@ -14,7 +15,10 @@ export default new Vuex.Store({
         downloads,
 
         // YouTube api related stuff
-        youtube
+        youtube,
+
+        // Dialog box content
+        dialogbox
     },
 
     // Enable strict mode in development

@@ -56,7 +56,7 @@
     .title {
         @include font(600, 0.8em);
         margin-left: 0.25em;
-        color: white;
+        color: $palette-snow-white;
     }
 
     .drag {
@@ -68,7 +68,7 @@
     .window-actions {
         @include flex(row, center);
         align-self: stretch;
-        $icon-color: rgba(white, 0.85);
+        $icon-color: rgba($palette-snow-white, 0.85);
 
         div {
             @include size(100%, 1em);
@@ -79,7 +79,7 @@
             transition: all 0.3s;
 
             &:hover {
-                background: rgba(white, 0.05);
+                background: rgba($palette-snow-white, 0.05);
             }
 
             &::before,

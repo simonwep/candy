@@ -4,11 +4,11 @@ import * as _        from '../../js/utils';
 
 const map = {};
 
-ipcRenderer.on('response', (event, {id, data}) => {
-    const resolver = map[id];
+ipcRenderer.on('response', (event, {error = false, id, data}) => {
+    const {resolve, reject} = map[id];
 
     /* eslint-disable no-console */
-    if (!resolver) {
+    if (!resolve || !reject) {
         console.error('[IPC-CLIENT] Cannot resolve request', event, id, data);
     }
 
@@ -16,7 +16,11 @@ ipcRenderer.on('response', (event, {id, data}) => {
         console.error('[IPC-CLIENT] No data received', event, id, data);
     }
 
-    resolver(data);
+    if (error) {
+        reject(data);
+    } else {
+        resolve(data);
+    }
 });
 
 ipcRenderer.on('add-download', (event, data) => store.commit('downloads/add', data));
@@ -27,6 +31,6 @@ export default {
     async request(channel, data) {
         const id = _.createUID();
         ipcRenderer.send(channel, {data, id});
-        return new Promise(resolve => map[id] = resolve);
+        return new Promise((resolve, reject) => map[id] = {resolve, reject});
     }
 };

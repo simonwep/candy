@@ -1,5 +1,8 @@
 const {ipcMain} = require('electron');
-const events = require('./events');
+const events = {
+    ...require('./events/downloads'),
+    ...require('./events/settings')
+};
 
 for (const [key, val] of Object.entries(events)) {
 
@@ -15,6 +18,8 @@ for (const [key, val] of Object.entries(events)) {
         // Fire handler
         val(data, event).then(data => {
             event.sender.send('response', {id, data});
+        }).catch(err => {
+            event.sender.send('response', {error: true, id, data: err});
         });
     });
 }

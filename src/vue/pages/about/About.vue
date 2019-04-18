@@ -59,7 +59,7 @@
 
     .about {
         @include flex(column, center, center);
-        color: white;
+        color: $palette-snow-white;
 
         > img {
             width: 10em;

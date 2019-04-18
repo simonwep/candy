@@ -88,7 +88,7 @@
 <style lang="scss" scoped>
 
     .drop-down-selection {
-        color: white;
+        color: $palette-snow-white;
 
         &.open {
 

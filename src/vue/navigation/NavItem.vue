@@ -42,7 +42,7 @@
             border-color: $palette-cloud-blue;
 
             .topic {
-                background: rgba(white, 0.035);
+                background: rgba($palette-snow-white, 0.035);
             }
 
             .items {
@@ -53,13 +53,13 @@
 
     .topic {
         cursor: pointer;
-        color: white;
+        color: $palette-snow-white;
         padding: 0.85em 2em;
         @include font(600, 0.8em);
         transition: all 0.15s;
 
         &:hover {
-            background: rgba(white, 0.02);
+            background: rgba($palette-snow-white, 0.02);
         }
     }
 
@@ -73,7 +73,7 @@
             list-style: none;
             margin: 0.75em 0;
             padding: 0.25em 2em;
-            color: rgba(white, 0.85);
+            color: rgba($palette-snow-white, 0.85);
             @include font(600, 0.85em);
         }
     }

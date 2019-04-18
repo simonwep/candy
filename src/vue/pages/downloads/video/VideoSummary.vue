@@ -44,7 +44,7 @@
 
     .video-summary {
         @include flex(row, flex-start, flex-start);
-        color: white;
+        color: $palette-snow-white;
 
         .thumnail {
             position: relative;
@@ -61,7 +61,7 @@
                 border-radius: 0.15em;
                 background: $palette-theme-primary;
                 box-shadow: 0 1px 3px rgba(black, 0.2);
-                color: white;
+                color: $palette-snow-white;
             }
         }
 
