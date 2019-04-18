@@ -86,6 +86,18 @@
             };
         },
 
+        watch: {
+            $route(to) {
+                if (to.name === 'downloads') {
+                    this.input = to.query.value || '';
+
+                    if (this.input) {
+                        this.checkAvailableDownload();
+                    }
+                }
+            }
+        },
+
         methods: {
 
             chooseType(type) {
@@ -126,16 +138,18 @@
                     this.type = this.type || 'video';
                     this.loading = true;
                     ipcClient.request('getVideoInfo', videoId).then(res => {
-                        this.loading = false;
                         this.video = res;
-                    }).catch(() => err('Can\'t fetch video details'));
+                    }).catch(() => {
+                        err('Can\'t fetch video details');
+                    }).finally(() => this.loading = false);
                 } else if (playlistId) {
                     this.type = this.type || 'playlist';
                     this.loading = true;
                     this.$store.dispatch('youtube/resolvePlaylist', {playlistId}).then(res => {
-                        this.loading = false;
                         this.playlist = res;
-                    }).catch(() => err('Can\'t fetch playlist details'));
+                    }).catch(() => {
+                        err('Can\'t fetch playlist details');
+                    }).finally(() => this.loading = false);
                 }
             }
         }
@@ -187,16 +201,10 @@
             }
         }
 
-        .dual-ring-spinner {
-            align-self: stretch;
-            @include size(2em);
-            margin: 0 0.6em 0 0.5em;
-        }
-
         .recognition-type {
             @include flex(row, center);
             align-self: stretch;
-            margin: 0 0.5em;
+            margin-left: 0.5em;
             border-radius: 0.15em;
             transition: all 0.3s;
             overflow: hidden;
@@ -232,14 +240,24 @@
             }
         }
 
+        .dual-ring-spinner {
+            align-self: stretch;
+            @include size(2em);
+            margin-left: 0.5em;
+        }
+
         .views {
             @include flex(row, center);
-            margin-left: 0.5em;
+            margin-left: auto;
             align-self: stretch;
-            justify-self: flex-end;
             border-radius: 0.15em;
             overflow: hidden;
             flex-shrink: 0;
+
+            &:before {
+                content: '';
+                margin-left: 0.5em;
+            }
 
             svg {
                 @include size(16px);

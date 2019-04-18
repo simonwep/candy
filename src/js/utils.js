@@ -199,8 +199,8 @@ module.exports.resolveYouTubeUrl = str => {
     };
 
     const isId = str.match(/^[\w-]+$/);
-    const playlistId = isId && str.length === 11 ? str : match(str, /.*list=(.*?)(&|$)/, 1);
-    const videoId = isId && str.length > 11 ? str : match(str, /watch\?v=(.*?)(&|$)/, 1);
+    const playlistId = isId && str.length > 11 ? str : match(str, /.*list=(.*?)(&|$)/, 1);
+    const videoId = isId && str.length <= 11 ? str : match(str, /watch\?v=(.*?)(&|$)/, 1);
 
     return {
         url: str,

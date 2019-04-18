@@ -1,5 +1,5 @@
 <template>
-    <div class="video-snippet-card">
+    <div class="video-snippet-card" @click="download">
 
         <!-- Thumbnail and title -->
         <img :src="video.thumbnail_url" alt="">
@@ -24,6 +24,12 @@
 
         data() {
             return {};
+        },
+
+        methods: {
+            download() {
+                this.$router.push(`/downloads?value=${this.video.video_id}`);
+            }
         }
     };
 
@@ -34,6 +40,7 @@
     .video-snippet-card {
         @include flex(column);
         color: white;
+        cursor: pointer;
 
         > img {
             width: 100%;
