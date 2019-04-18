@@ -1,6 +1,8 @@
 <template>
     <div class="home">
-        <span>Coming soon</span>
+
+        <video-snippet-card v-for="video of videos" :video="video"/>
+
     </div>
 </template>
 
@@ -9,7 +11,11 @@
     // IPC Client
     import ipcClient from '../../ipc/client';
 
+    // Components
+    import VideoSnippetCard from './VideoSnippetCard';
+
     export default {
+        components: {VideoSnippetCard},
 
         data() {
             return {
@@ -23,7 +29,9 @@
                 return this.$store.dispatch('youtube/latestVideosBy', {
                     channelIds: homeVideoChannels
                 });
-            }).then(res => this.videos = res);
+            }).then(res => {
+                this.videos = res;
+            });
         }
     };
 
@@ -32,9 +40,12 @@
 <style lang="scss" scoped>
 
     .home {
-        @include flex(row, center, center);
-        @include font(600, 1.5em);
-        color: $palette-theme-secondary;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));
+        grid-gap: 1.5em;
+        padding: 2em;
+        overflow-y: auto;
+        height: 100%;
     }
 
 </style>

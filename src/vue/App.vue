@@ -55,15 +55,15 @@
         @include flex(row);
         height: 100%;
         flex-grow: 1;
+    }
 
-        .navigation {
-            height: 100%;
-        }
+    .navigation {
+        height: 100%;
+    }
 
-        .router {
-            flex-grow: 1;
-            overflow: hidden;
-        }
+    .router {
+        flex-grow: 1;
+        overflow: hidden;
     }
 
 </style>

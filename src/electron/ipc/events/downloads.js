@@ -55,9 +55,9 @@ module.exports = {
             id: downloadId,
             destination: null,
             sources,
-            size: 0,
+            size: 1, // Prevents trough zero divisions
             speed: 0,
-            progress: 1, // Prevents trough zero divisions
+            progress: 0,
             status: 'progress',
             startTimestamp: Date.now(),
             video: {
@@ -100,7 +100,7 @@ module.exports = {
                 totalSize -= lastSize;
 
                 update({
-                    progress: totalProgress || 1,
+                    progress: totalProgress,
                     speed: ((lastProgress + progress) / 4) * (Date.now() - lastProgressTimestamp).toFixed(1),
                     size: totalSize += size
                 });

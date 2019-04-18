@@ -50,6 +50,7 @@ export async function getLatestVideosByChannel(channelid) {
  * @returns {Promise<void>}
  */
 export async function getPlaylistVideos(playlistId) {
+    const triedIds = [];
 
     // Fetch first raw page
     return fetchText(`https://www.youtube.com/playlist?list=${playlistId}`).then(async html => {
@@ -62,7 +63,12 @@ export async function getPlaylistVideos(playlistId) {
         return {
             info: microformatDataRenderer,
             videos: await Promise.all(playlistItems.map(
-                v => ipcClient.request('getVideoInfo', v.playlistVideoRenderer.videoId)
+                v => {
+                    const {videoId} = v.playlistVideoRenderer;
+                    triedIds.push(videoId);
+                    return ipcClient.request('getVideoInfo', videoId)
+                        .catch(() => null);
+                }
             ))
         };
     }).then(async ({info, videos}) => {
@@ -71,6 +77,8 @@ export async function getPlaylistVideos(playlistId) {
         if (videos.length < 99 && !videos.length) {
             return videos;
         }
+
+        videos = videos.filter(Boolean); // Remove dead links
 
         let nextLink = videos[videos.length - 1].video_id;
         while (nextLink) {
@@ -90,14 +98,18 @@ export async function getPlaylistVideos(playlistId) {
             // Resolve ids and add these to the current list
             const promises = [];
             for (const {playlistPanelVideoRenderer: {videoId}} of contents) {
-                if (!videos.find(v => v.video_id === videoId)) {
-                    promises.push(ipcClient.request('getVideoInfo', videoId));
+                if (!triedIds.find(v => v === videoId)) {
+                    triedIds.push(videoId);
+                    promises.push(
+                        ipcClient.request('getVideoInfo', videoId).catch(() => null)
+                    );
                 }
             }
 
             // Check if something new has been added
             if (promises.length) {
                 videos.push(...(await Promise.all(promises)));
+                videos = videos.filter(Boolean); // Remove dead links
                 nextLink = videos[videos.length - 1].video_id;
             } else {
                 nextLink = null;
