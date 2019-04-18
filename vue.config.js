@@ -13,5 +13,25 @@ module.exports = {
                 `
             }
         }
+    },
+
+    pluginOptions: {
+        electronBuilder: {
+
+            <!-- Electron config -->
+            builderOptions: {
+                productName: 'Candy downloader',
+                appId: 'com.candy.candy',
+                mac: {
+                    icon: 'assets/icons/512x512.png'
+                },
+                win: {
+                    icon: 'assets/icons/512x512.png'
+                },
+                linux: {
+                    icon: 'assets/icons/256x256.png'
+                }
+            }
+        }
     }
 };

@@ -126,7 +126,7 @@
             > h1 {
                 @include font(600, 1.1em);
                 color: white;
-                margin-bottom: 1em;
+                margin: 0.25em 0 1.25em 0.15em;
             }
 
             > button {
@@ -157,7 +157,7 @@
 
         .item {
             @include flex(row, center);
-            margin-bottom: 1em;
+            margin-bottom: 1.25em;
 
             span {
                 @include font(600, 0.75em);

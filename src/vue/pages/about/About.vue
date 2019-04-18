@@ -1,7 +1,7 @@
 <template>
     <div class="about">
 
-        <candy-icon/>
+        <img src="../../../../assets/icons/512x512.png" alt="Logo">
 
         <article>
             <h2>About us</h2>
@@ -38,13 +38,13 @@
 <script>
 
     // Components
-    import CandyIcon      from '../../ui/specific/CandyIcon';
-    import BrowserLink    from '../../ui/specific/BrowserLink';
+    import BrowserLink from '../../ui/specific/BrowserLink';
+
     // Config stuff
     import {contributors} from '../../../../config/config';
 
     export default {
-        components: {CandyIcon, BrowserLink},
+        components: {BrowserLink},
 
         data() {
             return {
@@ -61,10 +61,11 @@
         @include flex(column, center, center);
         color: white;
 
-        .candy-icon {
-            @include size(8em);
+        > img {
+            width: 10em;
             fill: $palette-turquoise;
             margin-bottom: 1.5em;
+            filter: drop-shadow(0 0.15em 0.75em rgba(black, 0.45));
         }
 
         a {

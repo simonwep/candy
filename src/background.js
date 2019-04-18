@@ -1,5 +1,6 @@
 import {app, BrowserWindow, protocol}       from 'electron';
 import {createProtocol, installVueDevtools} from 'vue-cli-plugin-electron-builder/lib';
+import path                                 from 'path';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -13,9 +14,13 @@ protocol.registerStandardSchemes(['app'], {secure: true});
 /* eslint-disable */
 function createWindow() {
     win = new BrowserWindow({
-        width: 800,
-        height: 900,
-        frame: false
+        width: 900,
+        height: 700,
+        minWidth: 800,
+        minHeight: 600,
+        frame: false,
+        title: 'Candy Downlaoder',
+        icon: path.resolve(__dirname, '../', 'assets/icons/512x512.png')
     });
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {

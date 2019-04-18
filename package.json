@@ -12,15 +12,14 @@
         "url": "https://github.com/Simonwep/Candy"
     },
     "scripts": {
+        "lint": "vue-cli-service lint ./src",
         "electron:build": "vue-cli-service electron:build",
         "electron:serve": "vue-cli-service electron:serve",
         "postinstall": "electron-builder install-app-deps",
-        "postuninstall": "electron-builder install-app-deps",
-        "lint": "vue-cli-service lint ./src"
+        "postuninstall": "electron-builder install-app-deps"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.8.1",
-        "electron": "^4.1.4",
         "ffmpeg-static": "^2.4.0",
         "ffprobe-static": "^3.0.0",
         "fluent-ffmpeg": "^2.1.2",
@@ -39,6 +38,7 @@
         "@vue/cli-plugin-eslint": "^3.6.0",
         "@vue/cli-service": "^3.6.0",
         "cross-env": "^5.2.0",
+        "electron": "^4.1.4",
         "electron-builder": "^20.39.0",
         "electron-debug": "^2.2.0",
         "electron-devtools-installer": "^2.2.4",
@@ -47,39 +47,5 @@
         "sassyfication": "^0.1.1",
         "vue-cli-plugin-electron-builder": "^1.2.0",
         "vue-template-compiler": "^2.6.10"
-    },
-    "build": {
-        "productName": "Candy downloader",
-        "appId": "com.candy.candy",
-        "directories": {
-            "output": "build"
-        },
-        "files": [
-            "dist/electron/**/*"
-        ],
-        "dmg": {
-            "contents": [
-                {
-                    "x": 410,
-                    "y": 150,
-                    "type": "link",
-                    "path": "/Applications"
-                },
-                {
-                    "x": 130,
-                    "y": 150,
-                    "type": "file"
-                }
-            ]
-        },
-        "mac": {
-            "icon": "build/icons/icon.icns"
-        },
-        "win": {
-            "icon": "build/icons/icon.ico"
-        },
-        "linux": {
-            "icon": "build/icons"
-        }
     }
 }

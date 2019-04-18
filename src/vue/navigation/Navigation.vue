@@ -1,8 +1,8 @@
 <template>
     <section class="navigation">
 
-        <candy-icon/>
-
+        <!-- Logo and content divider -->
+        <img src="../../../assets/icons/512x512.png" alt="Logo">
         <div class="divider"></div>
 
         <!-- Downloads -->
@@ -32,14 +32,14 @@
 <script>
 
     // Components
-    import CandyIcon  from '../ui/specific/CandyIcon';
-    import NavItem    from './NavItem';
+    import NavItem from './NavItem';
+
     // Vuex stuff
     import {mapState} from 'vuex';
 
     export default {
 
-        components: {CandyIcon, NavItem},
+        components: {NavItem},
 
         data() {
             return {};
@@ -56,7 +56,7 @@
                     {text: 'Active', value: downloads.filter(v => v.status === 'progress').length},
                     {text: 'Done', value: downloads.filter(v => v.status === 'finish').length},
                     {text: 'Failed', value: downloads.filter(v => v.status === 'errored').length},
-                    {text: 'Cancelled', value: downloads.filter(v => v.status === 'cancelled').length},
+                    {text: 'Cancelled', value: downloads.filter(v => v.status === 'cancelled').length}
                 ];
             }
         }
@@ -71,9 +71,8 @@
         background: $palette-theme-secondary;
         padding: 0.75em 0;
 
-        .candy-icon {
-            fill: $palette-turquoise;
-            @include size(5em);
+        > img {
+            width: 5em;
             margin: 0.5em 0 1em;
         }
     }
