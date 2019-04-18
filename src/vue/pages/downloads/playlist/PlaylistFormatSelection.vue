@@ -177,7 +177,12 @@
                         continue;
                     }
 
-                    ipcClient.request('startDownload', {sources, video, format});
+                    ipcClient.request('startDownload', {
+                        sources,
+                        video,
+                        format,
+                        playlist: this.playlist.info
+                    });
                 }
             }
         }

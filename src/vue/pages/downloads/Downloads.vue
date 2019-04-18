@@ -4,15 +4,26 @@
         <!-- Header with url - input field -->
         <div class="header">
 
+            <!-- Url input -->
             <div class="url-input">
                 <i class="fas fa-fw fa-search"></i>
-                <input placeholder="Enter video or playlist url"
+                <input v-model="input"
+                       placeholder="Enter video or playlist url"
                        type="text"
                        @input="checkAvailableDownload">
             </div>
 
-            <div class="views">
+            <!-- Choose between video and audio if both avaiable -->
+            <div :class="{'recognition-type': 1, visible: videoAndPlaylist}">
+                <button :class="{active: type === 'video'}" @click="chooseType('video')">Video</button>
+                <button :class="{active: type === 'playlist'}" @click="chooseType('playlist')">Playlist</button>
+            </div>
 
+            <!-- Loading spinner -->
+            <dual-ring-spinner v-if="loading"/>
+
+            <!-- Different view buttons -->
+            <div class="views">
                 <div :class="{active: viewType === 'big'}" @click="viewType = 'big'">
                     <svg viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg">
                         <rect height="5"
@@ -53,35 +64,66 @@
     import ipcClient from '../../ipc/client';
 
     // Components
-    import DownloadList from './download-list/DownloadList';
-    import DownloadCard from './DownloadCard';
+    import DualRingSpinner from '../../ui/spinner/DualRingSpinner';
+    import DownloadList    from './download-list/DownloadList';
+    import DownloadCard    from './DownloadCard';
 
     export default {
 
-        components: {DownloadCard, DownloadList},
+        components: {DualRingSpinner, DownloadCard, DownloadList},
 
         data() {
             return {
+                input: '',
                 video: null,
                 playlist: null,
+                loading: false,
+
+                videoAndPlaylist: false,
+                type: null,
+
                 viewType: 'big'
             };
         },
 
         methods: {
 
-            checkAvailableDownload({target: {value}}) {
-                const {isValid, playlistId, videoId} = this.utils.resolveYouTubeUrl(value);
+            chooseType(type) {
+                if (this.type !== type) {
+                    this.type = type;
+                    this.checkAvailableDownload();
+                }
+            },
 
-                // TODO Ask user if both is detected
-                if (!isValid) {
-                    return this.video = this.playlist = null;
-                } else if (videoId) {
-                    this.type = 'video';
-                    ipcClient.request('getVideoInfo', videoId).then(res => this.video = res);
+            checkAvailableDownload() {
+                const {input, type} = this;
+                let {playlistId, videoId} = this.utils.resolveYouTubeUrl(input);
+                this.videoAndPlaylist = videoId && playlistId;
+                this.video = this.playlist = null;
+
+                // Check if it's valid and the user choosed a type if both are available
+                if (this.videoAndPlaylist) {
+                    if (type === 'video') {
+                        playlistId = null;
+                    } else if (type === 'playlist') {
+                        videoId = null;
+                    }
+                }
+
+                if (videoId) {
+                    this.type = this.type || 'video';
+                    this.loading = true;
+                    ipcClient.request('getVideoInfo', videoId).then(res => {
+                        this.loading = false;
+                        this.video = res;
+                    });
                 } else if (playlistId) {
-                    this.type = 'playlist';
-                    this.$store.dispatch('youtube/resolvePlaylist', {playlistId}).then(res => this.playlist = res);
+                    this.type = this.type || 'playlist';
+                    this.loading = true;
+                    this.$store.dispatch('youtube/resolvePlaylist', {playlistId}).then(res => {
+                        this.loading = false;
+                        this.playlist = res;
+                    });
                 }
             }
         }
@@ -108,7 +150,7 @@
             @include width(50vw, auto, 30em);
             background: $palette-theme-tertiary;
             padding: 0.5em 0.75em;
-            border-radius: 0.1em;
+            border-radius: 0.15em;
             color: white;
 
             &:focus-within i {
@@ -129,6 +171,47 @@
 
                 &::placeholder {
                     color: rgba(white, 0.6);
+                }
+            }
+        }
+
+        .dual-ring-spinner {
+            align-self: stretch;
+            @include size(2em);
+            margin: 0 0.5em;
+        }
+
+        .recognition-type {
+            @include flex(row, center);
+            align-self: stretch;
+            margin: 0 0.5em;
+            border-radius: 0.15em;
+            transition: all 0.3s;
+            overflow: hidden;
+            visibility: hidden;
+            opacity: 0;
+
+            &.visible {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            button {
+                @include font(600, 0.9em);
+                padding: 0.25em 0.75em;
+                align-self: stretch;
+                color: $palette-theme-secondary;
+                background: $palette-theme-tertiary;
+                transition: all 0.3s;
+
+                &.active {
+                    background: $palette-cloud-blue;
+                    align-self: stretch;
+                    color: white;
+                }
+
+                &:not(.active):hover {
+                    filter: brightness(1.1);
                 }
             }
         }
@@ -160,6 +243,10 @@
                 &.active {
                     background: $palette-cloud-blue;
                     border-color: $palette-cloud-blue;
+
+                    svg {
+                        fill: white;
+                    }
                 }
             }
         }

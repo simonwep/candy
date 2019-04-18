@@ -37,13 +37,14 @@ module.exports = {
 
     /**
      * Starts the download of channel/s
+     * @param playlist Optional playlist where this item correspondents to
      * @param format Media container
      * @param video The videos basic info gathered by getVideoInfo
      * @param sources Channels
      * @param sender
      * @returns {Promise<string>}
      */
-    async startDownload({format, video, sources}, {sender}) {
+    async startDownload({playlist, format, video, sources}, {sender}) {
         const settings = await getSettings();
         let {temporaryDirectory, downloadDirectory} = settings;
 
@@ -125,6 +126,11 @@ module.exports = {
                     // Check if an additional directory with the author's name should be made for this video
                     if (settings.createChannelDirectory) {
                         downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, video.author.name));
+                    }
+
+                    // Check if an additional directory with the playlist name is requested
+                    if (playlist) {
+                        downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, playlist.channelTitle));
                     }
 
                     // Start appropriate conversion

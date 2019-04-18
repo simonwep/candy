@@ -12,7 +12,7 @@ export const youtube = {
         async resolvePlaylist(_, {playlistId}) {
             let playlist = {
                 videos: [],
-                playlist: (await this.dispatch('fetch', {
+                info: (await this.dispatch('fetch', {
                     transform: 'json',
                     url: 'https://www.googleapis.com/youtube/v3/playlists',
                     urlSearchParams: {

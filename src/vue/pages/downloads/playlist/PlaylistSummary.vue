@@ -1,7 +1,7 @@
 <template>
     <section class="playlist-summary">
 
-        <h1>Found {{ playlist.videos.length }} videos in "{{ playlist.playlist.title }}"</h1>
+        <h1>{{ playlist.info.title }} / {{ playlist.videos.length }} Videos</h1>
 
         <!-- Videos -->
         <div class="snippets">
