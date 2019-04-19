@@ -2,6 +2,8 @@ const ffmpeg = require('fluent-ffmpeg/lib/fluent-ffmpeg');
 const ffmpegStatic = require('ffmpeg-static');
 const ffprobeStatic = require('ffprobe-static');
 const path = require('path');
+const os = require('os');
+const ac = os.cpus().length - 2; // Thread limit
 
 // Apply static paths
 if (process.env.NODE_ENV !== 'production') {
@@ -12,9 +14,26 @@ if (process.env.NODE_ENV !== 'production') {
 ffmpeg.setFfmpegPath(ffmpegStatic.path);
 ffmpeg.setFfprobePath(ffprobeStatic.path);
 
+// Promise queue
+const request = (() => {
+    let active = 0;
+    let chain = [];
+
+    return async () => {
+        active >= ac && await new Promise(resolve => chain.push(resolve));
+        active++;
+        return () => {
+            active--;
+            const next = chain.shift();
+            next && next();
+        };
+    };
+})();
+
 module.exports = {
 
     async merge([audio, video], destination) {
+        const done = await request();
         return new Promise((resolve, reject) => {
             ffmpeg().input(audio).audioCodec('aac')
                 .input(video).videoCodec('libx264')
@@ -22,15 +41,16 @@ module.exports = {
                 .on('error', reject)
                 .outputOptions('-preset veryfast -threads 1')
                 .output(destination).run();
-        });
+        }).finally(done);
     },
 
     async convert(source, destination) {
+        const done = await request();
         return new Promise((resolve, reject) => {
             ffmpeg().input(source)
                 .on('end', resolve)
                 .on('error', reject)
                 .output(destination).run();
-        });
+        }).finally(done);
     }
 };
