@@ -20,7 +20,7 @@ module.exports = {
                 .input(video).videoCodec('libx264')
                 .on('end', resolve)
                 .on('error', reject)
-                .outputOptions('-preset veryfast')
+                .outputOptions('-preset veryfast -threads 1')
                 .output(destination).run();
         });
     },

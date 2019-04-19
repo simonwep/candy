@@ -49,6 +49,7 @@
         @include flex(column);
         background: $palette-theme-secondary;
         padding: 0.5em 1em;
+        box-shadow: 0 0.2em 2em rgba(black, 0.1);
     }
 
     .divider {

@@ -67,11 +67,6 @@
             margin-bottom: 1.5em;
             filter: drop-shadow(0 0.15em 0.75em rgba(black, 0.45));
         }
-
-        a {
-            color: $palette-cloud-blue;
-            text-decoration: underline;
-        }
     }
 
     article {

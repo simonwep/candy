@@ -15,9 +15,14 @@ export const youtube = {
          * @returns {Promise<void>}
          */
         async latestVideosBy(_, {channelIds = []}) {
-            const videos = (await Promise.all(channelIds.map(getLatestVideosByChannel))).flat();
-            videos.sort((a, b) => b.published - a.published);
-            return videos;
+            const channels = (await Promise.all(channelIds.map(getLatestVideosByChannel)));
+
+            // Sort videos
+            for(const {videos} of channels){
+                videos.sort((a, b) => b.published - a.published);
+            }
+
+            return channels;
         },
 
         /**

@@ -46,14 +46,18 @@ export async function getLatestVideosByChannel(channelid) {
         .catch(() => fetchText(`https://www.youtube.com/user/${channelid}/videos`))
         .then(async html => {
             const ytInitialData = extractYTInitialData(html);
-            const rawVideos = ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[1].tabRenderer.content.sectionListRenderer.contents[0].itemSectionRenderer.contents[0].gridRenderer.items;
+            const {microformatDataRenderer} = ytInitialData.microformat;
+            const {items} = ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[1].tabRenderer.content.sectionListRenderer.contents[0].itemSectionRenderer.contents[0].gridRenderer;
             const videos = [];
 
-            for (const {gridVideoRenderer: rv} of rawVideos) {
+            for (const {gridVideoRenderer: rv} of items) {
                 videos.push(ipcClient.request('getVideoInfo', rv.videoId));
             }
 
-            return Promise.all(videos);
+            return {
+                info: microformatDataRenderer,
+                videos: await Promise.all(videos)
+            };
         });
 }
 

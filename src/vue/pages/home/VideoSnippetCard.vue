@@ -32,7 +32,7 @@
 
         methods: {
             download() {
-                this.$router.push(`/downloads?value=${this.video.video_id}`);
+                this.$router.push(`/downloads?id=${this.video.video_id}`);
             }
         }
     };
@@ -48,6 +48,12 @@
         background: $palette-theme-primary;
         padding: 0.5em;
         border-radius: 0.15em;
+        transition: all 0.3s;
+
+        &:hover {
+            filter: brightness(1.15);
+            box-shadow: 0 0.1em 2em rgba(black, 0.1);
+        }
 
         .thumbnail {
             @include flex(row, flex-start);

@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'expandable-section': 1, active: $route.path === to}">
+    <div :class="{'nav-item': 1, active: $route.path === to}">
 
         <!-- Topic header -->
         <router-link :to="to" class="topic">{{ title }}</router-link>
@@ -32,11 +32,15 @@
 
 <style lang="scss" scoped>
 
-    .expandable-section {
+    .nav-item {
         @include flex(column);
         border-left: 2px solid transparent;
         transition: all 0.15s;
         width: 100%;
+
+        a {
+            text-decoration: none;
+        }
 
         &.active {
             border-color: $palette-cloud-blue;

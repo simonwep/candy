@@ -89,7 +89,7 @@
         watch: {
             $route(to) {
                 if (to.name === 'downloads') {
-                    this.input = to.query.value || '';
+                    this.input = to.query.id || '';
 
                     if (this.input) {
                         this.checkAvailableDownload();

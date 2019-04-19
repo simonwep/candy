@@ -7,8 +7,23 @@
             <folding-rectangles/>
         </div>
 
+        <p v-if="!channelIds.length" class="placeholder">
+            Empty here huh? Go to
+            <router-link to="/settings">settings</router-link>
+            to add
+            channels
+        </p>
+
         <!-- Video cards -->
-        <video-snippet-card v-for="video of videos" :video="video"/>
+        <div v-if="channelIds.length" class="video-snippets">
+            <div v-for="channel of channels" class="channel">
+                <h1>{{ channel.info.title }}</h1>
+
+                <div class="videos">
+                    <video-snippet-card v-for="video of channel.videos" :video="video"/>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -19,15 +34,16 @@
 
     // Components
     import FoldingRectangles from '../../ui/spinner/FoldingRectangles';
+    import BrowserLink       from '../../ui/specific/BrowserLink';
     import VideoSnippetCard  from './VideoSnippetCard';
 
     export default {
-        components: {FoldingRectangles, VideoSnippetCard},
+        components: {FoldingRectangles, BrowserLink, VideoSnippetCard},
 
         data() {
             return {
-                videos: [],
                 channels: [],
+                channelIds: [],
                 loading: false
             };
         },
@@ -35,10 +51,10 @@
         watch: {
             async $route(to) {
                 if (to.name === 'home') {
-                    const {channels} = this;
+                    const {channelIds} = this;
                     const {homeVideoChannels} = await ipcClient.request('getSettings');
 
-                    if (homeVideoChannels.toString() !== channels.toString()) {
+                    if (homeVideoChannels.toString() !== channelIds.toString()) {
                         this.refreshVideoCards();
                     }
                 }
@@ -53,17 +69,17 @@
 
             refreshVideoCards() {
                 this.loading = true;
-                this.videos = [];
+                this.channels = [];
 
                 ipcClient.request('getSettings').then(res => {
                     const {homeVideoChannels} = res;
-                    this.channels = [...homeVideoChannels];
+                    this.channelIds = [...homeVideoChannels];
 
                     return this.$store.dispatch('youtube/latestVideosBy', {
                         channelIds: homeVideoChannels
                     });
                 }).then(res => {
-                    this.videos = res;
+                    this.channels = res;
                 }).catch(() => {
                     this.$store.commit('dialogbox/show', {
                         type: 'error',
@@ -85,34 +101,75 @@
 <style lang="scss" scoped>
 
     .home {
+        @include flex(row, center, center);
         position: relative;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
-        grid-gap: 1.5em;
+        height: 100%;
+    }
+
+    .loading-screen {
+        @include flex(column, center, center);
+        @include position(0, 0, 0, 0);
+        position: absolute;
+        margin: auto;
+        z-index: 100;
+
+        @include animate('0.15s ease-in-out') {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        > h1 {
+            @include font(600, 1em);
+            color: $palette-turquoise;
+            margin-bottom: 1em;
+        }
+    }
+
+    .placeholder {
+        @include font(400, 1.1em);
+        color: $palette-snow-white;
+    }
+
+    .video-snippets {
+        @include flex(column);
+        @include size(100%);
+        flex-shrink: 0;
         padding: 2em;
         overflow-y: auto;
-        height: 100%;
 
-        .loading-screen {
-            @include flex(column, center, center);
-            @include position(0, 0, 0, 0);
-            position: absolute;
-            margin: auto;
-            z-index: 100;
+        .channel {
+            @include flex(column);
+            position: relative;
+            margin-bottom: 2em;
+            min-height: 15em;
 
-            @include animate('0.15s ease-in-out') {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
+
+            > h1 {
+                @include font(600, 0.95em);
+                color: $palette-snow-white;
+                margin-bottom: 0.5em;
+            }
+
+            .videos {
+                @include flex(row);
+                overflow: auto visible;
+                padding-bottom: 0.5em;
+
+                .video-snippet-card {
+                    min-width: 10em;
+                    margin-right: 0.5em;
                 }
             }
 
-            > h1 {
-                @include font(600, 1em);
-                color: $palette-turquoise;
-                margin-bottom: 1em;
+            &::after {
+                @include pseudo();
+                @include position(0, 0, 0.5em, auto);
+                @include size(auto, 5em);
+                background: linear-gradient(to left, $palette-theme-tertiary, transparent);
             }
         }
     }
