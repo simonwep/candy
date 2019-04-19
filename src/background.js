@@ -19,7 +19,7 @@ function createWindow() {
         minWidth: 800,
         minHeight: 600,
         frame: false,
-        title: 'Candy Downlaoder',
+        title: 'Candy YouTube Downloader',
         icon: path.resolve(__dirname, '../', 'assets/icons/512x512.png'),
 
         webPreferences: {

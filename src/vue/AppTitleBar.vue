@@ -1,6 +1,6 @@
 <template>
     <div class="title-bar">
-        <p class="title">Downloader</p>
+        <p class="title">Candy YouTube Downloader</p>
 
         <div class="drag"></div>
 
@@ -51,6 +51,7 @@
         padding: 0 0.75em;
         z-index: 100;
         box-sizing: content-box;
+        flex-shrink: 0;
     }
 
     .title {

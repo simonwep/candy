@@ -5,7 +5,9 @@
 
         <!-- Videos -->
         <div class="snippets">
-            <video-snippet-card v-for="video of playlist.videos" :video="video"/>
+            <video-snippet-card v-for="video of playlist.videos" 
+                                :video="video" 
+                                :key="video.video_id"/>
         </div>
 
     </section>
@@ -37,8 +39,9 @@
 
     .playlist-summary {
         @include flex(column, flex-start, flex-start);
-        overflow: hidden;
         color: $palette-snow-white;
+        position: relative;
+        overflow: hidden;
 
         > h1 {
             @include font(500, 1.1em);
@@ -54,6 +57,13 @@
             .video-snippet-card {
                 padding-bottom: 1em;
             }
+        }
+
+        &::after {
+            @include pseudo();
+            @include position(0, 0, 0.5em, auto);
+            @include size(auto, 5em);
+            background: linear-gradient(to left, $palette-theme-secondary, transparent);
         }
     }
 

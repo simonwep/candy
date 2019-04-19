@@ -8,7 +8,7 @@
             <div class="url-input">
                 <i class="fas fa-fw fa-search"></i>
                 <input v-model="input"
-                       placeholder="Enter video or playlist url"
+                       placeholder="Enter video, playlist or channel url / id"
                        type="text"
                        @input="checkDownloadAvailability">
             </div>
