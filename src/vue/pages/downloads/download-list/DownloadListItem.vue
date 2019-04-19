@@ -28,9 +28,7 @@
                 <span v-if="download.status === 'progress'">
                     <b>{{ utils.readableByteCount(download.progress) }}</b>
                     /
-                    <b>{{ utils.readableByteCount(download.size) }} ({{ percentualProgress }}</b>
-                    at
-                    <b>{{ downloadSpeed }})</b> -
+                    <b>{{ utils.readableByteCount(download.size) }} ({{ percentualProgress }}) - </b>
                 </span>
 
                 <b>{{ statusText }}</b>
@@ -112,10 +110,6 @@
             downloadDuration() {
                 const {startTimestamp, endTimestamp} = this.download;
                 return `${Math.round((endTimestamp - startTimestamp) / 1000)}s`;
-            },
-
-            downloadSpeed() {
-                return this.utils.readableByteCount(this.download.speed).toLowerCase() + 'ps';
             }
         },
 
@@ -257,6 +251,7 @@
 
         > h1 {
             @include font(600, 0.85em);
+            @include white-space-overflow();
         }
 
         > p {

@@ -62,7 +62,7 @@
     .home {
         position: relative;
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
         grid-gap: 1.5em;
         padding: 2em;
         overflow-y: auto;

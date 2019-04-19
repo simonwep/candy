@@ -250,8 +250,6 @@
             @include flex(row, center);
             margin-left: auto;
             align-self: stretch;
-            border-radius: 0.15em;
-            overflow: hidden;
             flex-shrink: 0;
 
             &:before {
@@ -272,8 +270,12 @@
                 cursor: pointer;
                 border: 1px solid $palette-theme-tertiary;
 
-                &:not(:first-child) {
-                    border-left: none;
+                &:first-child{
+                    border-radius: 0.15em 0 0 0.15em;
+                }
+
+                &:last-child{
+                    border-radius: 0 0.15em 0.15em 0;
                 }
 
                 &.active {

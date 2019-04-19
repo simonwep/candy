@@ -2,7 +2,11 @@
     <div class="video-snippet-card" @click="download">
 
         <!-- Thumbnail and title -->
-        <img :src="video.thumbnail_url" alt="">
+        <div class="thumbnail">
+            <img :src="video.thumbnail_url" alt="">
+            <span>{{ utils.formatSeconds(Number(video.length_seconds)) }}</span>
+        </div>
+
         <h1>{{ video.title }}</h1>
 
         <!-- Channel stuff -->
@@ -41,22 +45,40 @@
         @include flex(column);
         color: white;
         cursor: pointer;
+        background: $palette-theme-primary;
+        padding: 0.5em;
+        border-radius: 0.15em;
 
-        > img {
-            width: 100%;
-            border-radius: 0.15em;
+        .thumbnail {
+            @include flex(row, flex-start);
+            position: relative;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                border-radius: 0.15em;
+            }
+
+            span {
+                @include font(600, 0.75em);
+                @include position(auto, 0, 0, auto);
+                position: absolute;
+                background: $palette-theme-tertiary;
+                padding: 0.25em 0.5em 0.4em;
+                border-top-left-radius: 0.25em;
+            }
         }
 
         > h1 {
-            @include font(600, 0.8em);
-            margin-top: 0.25em;
-            line-height: 1.25em;
+            @include font(600, 0.75em);
+            margin: 0.5em 0;
+            line-height: 1.4em;
         }
 
         .channel {
             @include flex(row, center);
             @include font(600, 0.8em);
-            margin-top: 0.25em;
+            margin-top: auto;
 
             > i {
                 color: $palette-cloud-blue;

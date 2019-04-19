@@ -56,7 +56,6 @@ module.exports = {
             destination: null,
             sources,
             size: 1, // Prevents trough zero divisions
-            speed: 0,
             progress: 0,
             status: 'progress',
             startTimestamp: Date.now(),
@@ -76,23 +75,22 @@ module.exports = {
         let totalSize = 0; // Total download size
         let done = 0; // Streams count which are done
 
-        const destiantions = [];
+        const tmpFiles = [];
         const sourceStreams = [];
         for (const {itag, container} of sources) {
-            const destinationDirectory = path.join(temporaryDirectory, `${createUID()}.${container}`);
+            const tmpFile = path.join(temporaryDirectory, `${createUID()}.${container}`);
             const sourceStream = ytdl(video.video_url, {
                 quality: itag,
                 highWaterMark: 16384
             });
 
             // Pipe to temporary destination
-            sourceStream.pipe(fs.createWriteStream(destinationDirectory));
+            sourceStream.pipe(fs.createWriteStream(tmpFile));
 
             // Save destinations and strema
-            destiantions.push(destinationDirectory);
+            tmpFiles.push(tmpFile);
             sourceStreams.push(sourceStream);
 
-            let lastProgressTimestamp = 0;
             let lastProgress = 0;
             let lastSize = 0;
             sourceStream.on('progress', (_, progress, size) => {
@@ -101,13 +99,11 @@ module.exports = {
 
                 update({
                     progress: totalProgress,
-                    speed: ((lastProgress + progress) / 4) * (Date.now() - lastProgressTimestamp).toFixed(1),
                     size: totalSize += size
                 });
 
                 lastSize = size;
                 lastProgress = progress;
-                lastProgressTimestamp = Date.now();
             });
 
             sourceStream.on('end', () => {
@@ -136,7 +132,8 @@ module.exports = {
 
                     // Start appropriate conversion
                     const destinationFile = path.join(downloadDirectory, `${filteredTitle}.${format}`);
-                    encoder[sources.length === 1 ? 'convert' : 'merge'](destinationDirectory, destinationFile).then(() => {
+                    const sourceFiles = sources.length === 1 ? tmpFile : tmpFiles;
+                    encoder[sources.length === 1 ? 'convert' : 'merge'](sourceFiles, destinationFile).then(() => {
                         update({
                             status: 'finish',
                             endTimestamp: Date.now(),
@@ -150,7 +147,7 @@ module.exports = {
                     }).finally(() => {
 
                         // Unlink temporary files
-                        destiantions.forEach(fs.unlinkSync);
+                        tmpFiles.forEach(fs.unlinkSync);
                     });
                 }
             });
@@ -162,7 +159,7 @@ module.exports = {
 
                 if (e !== 'cancelled') {
                     sourceStreams.forEach(s => s.destroy());
-                    destiantions.forEach(fs.unlinkSync);
+                    tmpFiles.forEach(fs.unlinkSync);
                     update({status: 'errored'});
                 }
             });

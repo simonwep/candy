@@ -91,11 +91,24 @@ module.exports.formatDate = (format, date = Date.now(), locales = 'en-us') => {
  * @returns {string}
  */
 module.exports.formatSeconds = (duration = 0) => {
-    const res = [
-        Math.floor(duration / 3600),
-        Math.floor(duration / 60),
-        duration % 60
-    ].map(v => v ? String(v).padStart(2, '0') : 0).filter(Boolean).join(':');
+    const s = duration % 60;
+    const m = Math.floor((duration / 60) % 60);
+    const h = Math.floor((duration / 3600) % 3600);
+
+    let res = '';
+
+    if (h) {
+        res += String(h).padStart(2, '0') + ':';
+    }
+
+    if (m || h) {
+        res += String(m).padStart(2, '0') + ':';
+    }
+
+    if (s || m || h) {
+        res += String(s).padStart(2, '0');
+    }
+
     return res.length < 3 ? `${res || 0}s` : res;
 };
 

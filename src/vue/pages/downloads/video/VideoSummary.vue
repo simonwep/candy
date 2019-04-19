@@ -4,7 +4,7 @@
         <!-- Thumbnail and duration -->
         <div class="thumnail">
             <img :src="video.thumbnail_url">
-            <span class="duration">{{ utils.formatSeconds(Number(video.length_seconds)) }}</span>
+            <span>{{ utils.formatSeconds(Number(video.length_seconds)) }}</span>
         </div>
 
         <!-- Video details -->
@@ -53,7 +53,7 @@
                 border-radius: 0.15em;
             }
 
-            .duration {
+            span {
                 position: absolute;
                 @include position(auto, 0.5em, 0.75em, auto);
                 @include font(400, 0.75em);
