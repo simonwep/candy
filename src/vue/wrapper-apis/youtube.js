@@ -10,18 +10,30 @@ function fetchText(url) {
     });
 }
 
-function generateWindowFromHTML(html) {
+/**
+ * All youtube pages come with some pre-defined content saved in a object named
+ * ytInitialData. This function extracts this object from a yt page and returns it
+ * as normal javascript object.
+ * @param html
+ * @returns {*}
+ */
+function extractYTInitialData(html) {
 
-    // Replace all request sources
-    html = html.replace(/(src|href|link)=".*?"/g, '');
+    // Extract script elements
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
 
-    const iframe = document.createElement('iframe');
-    document.body.appendChild(iframe);
-    iframe.contentWindow.document.open();
-    iframe.contentWindow.document.write(html);
-    iframe.contentWindow.document.close();
+    // Find script tag with ytInitialData
+    const scripts = Array.from(tmp.querySelectorAll('script'));
+    const targetScriptString = scripts.map(v => v.innerHTML)
+        .find(v => v.trim().match(/^window\["ytInitialData"]/));
 
-    return {window: iframe.contentWindow, close: () => document.body.removeChild(iframe)};
+    if (targetScriptString) {
+        const returnObjectString = targetScriptString.replace(/^[ \t\r\n]+window\["ytInitialData"] *= */, '');
+        return new Function(`return ${returnObjectString}`)();
+    }
+
+    return null;
 }
 
 /**
@@ -30,18 +42,19 @@ function generateWindowFromHTML(html) {
  * @returns {Promise<[any, any, any, any, any, any, any, any, any, any] | never>}
  */
 export async function getLatestVideosByChannel(channelid) {
-    return fetchText(`https://www.youtube.com/channel/${channelid}/videos`).then(async html => {
-        const {window: {ytInitialData}, close} = generateWindowFromHTML(html);
-        const rawVideos = ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[1].tabRenderer.content.sectionListRenderer.contents[0].itemSectionRenderer.contents[0].gridRenderer.items;
-        const videos = [];
+    return fetchText(`https://www.youtube.com/channel/${channelid}/videos`)
+        .catch(() => fetchText(`https://www.youtube.com/user/${channelid}/videos`))
+        .then(async html => {
+            const ytInitialData = extractYTInitialData(html);
+            const rawVideos = ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[1].tabRenderer.content.sectionListRenderer.contents[0].itemSectionRenderer.contents[0].gridRenderer.items;
+            const videos = [];
 
-        for (const {gridVideoRenderer: rv} of rawVideos) {
-            videos.push(ipcClient.request('getVideoInfo', rv.videoId));
-        }
+            for (const {gridVideoRenderer: rv} of rawVideos) {
+                videos.push(ipcClient.request('getVideoInfo', rv.videoId));
+            }
 
-        close();
-        return Promise.all(videos);
-    });
+            return Promise.all(videos);
+        });
 }
 
 /**
@@ -54,10 +67,9 @@ export async function getPlaylistVideos(playlistId) {
 
     // Fetch first raw page
     return fetchText(`https://www.youtube.com/playlist?list=${playlistId}`).then(async html => {
-        const {window: {ytInitialData}, close} = generateWindowFromHTML(html);
+        const ytInitialData = extractYTInitialData(html);
         const {microformatDataRenderer} = ytInitialData.microformat;
         const playlistItems = ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer.content.sectionListRenderer.contents[0].itemSectionRenderer.contents[0].playlistVideoListRenderer.contents;
-        close();
 
         // Resolve first <100 videos
         return {
@@ -91,9 +103,8 @@ export async function getPlaylistVideos(playlistId) {
             }
 
             // Extract playlist ids
-            const {window: {ytInitialData}, close} = generateWindowFromHTML(nextPage);
+            const ytInitialData = extractYTInitialData(nextPage);
             const {contents} = ytInitialData.contents.twoColumnWatchNextResults.playlist.playlist;
-            close();
 
             // Resolve ids and add these to the current list
             const promises = [];

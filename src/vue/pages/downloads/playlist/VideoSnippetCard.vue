@@ -42,6 +42,7 @@
             position: relative;
             border-radius: 0.15em;
             overflow: hidden;
+            width: 100%;
 
             h2 {
                 @include font(600, 0.75em);

@@ -17,9 +17,10 @@ module.exports = {
     async merge([audio, video], destination) {
         return new Promise((resolve, reject) => {
             ffmpeg().input(audio).audioCodec('aac')
-                .input(video).videoCodec('mpeg4')
+                .input(video).videoCodec('libx264')
                 .on('end', resolve)
                 .on('error', reject)
+                .outputOptions('-preset veryfast')
                 .output(destination).run();
         });
     },

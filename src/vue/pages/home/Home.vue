@@ -26,32 +26,57 @@
 
         data() {
             return {
-                videos: null,
+                videos: [],
+                channels: [],
                 loading: false
             };
         },
 
+        watch: {
+            async $route(to) {
+                if (to.name === 'home') {
+                    const {channels} = this;
+                    const {homeVideoChannels} = await ipcClient.request('getSettings');
+
+                    if (homeVideoChannels.toString() !== channels.toString()) {
+                        this.refreshVideoCards();
+                    }
+                }
+            }
+        },
+
         mounted() {
-            this.loading = true;
-            ipcClient.request('getSettings').then(res => {
-                const {homeVideoChannels} = res;
-                return this.$store.dispatch('youtube/latestVideosBy', {
-                    channelIds: homeVideoChannels
+            this.refreshVideoCards();
+        },
+
+        methods: {
+
+            refreshVideoCards() {
+                this.loading = true;
+                this.videos = [];
+
+                ipcClient.request('getSettings').then(res => {
+                    const {homeVideoChannels} = res;
+                    this.channels = [...homeVideoChannels];
+
+                    return this.$store.dispatch('youtube/latestVideosBy', {
+                        channelIds: homeVideoChannels
+                    });
+                }).then(res => {
+                    this.videos = res;
+                }).catch(() => {
+                    this.$store.commit('dialogbox/show', {
+                        type: 'error',
+                        title: 'Whoops',
+                        text: 'Cannot fetch latetest videos. Try again alter',
+                        buttons: [
+                            {type: 'accept', text: 'Okay'}
+                        ]
+                    });
+                }).finally(() => {
+                    this.loading = false;
                 });
-            }).then(res => {
-                this.videos = res;
-            }).catch(() => {
-                this.$store.commit('dialogbox/show', {
-                    type: 'error',
-                    title: 'Whoops',
-                    text: 'Cannot fetch latetest videos. Try again alter',
-                    buttons: [
-                        {type: 'accept', text: 'Okay'}
-                    ]
-                });
-            }).finally(() => {
-                this.loading = false;
-            });
+            }
         }
     };
 
