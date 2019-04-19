@@ -205,6 +205,7 @@ module.exports.mkdirIfNotPresent = path => {
  */
 module.exports.resolveYouTubeUrl = str => {
     str = str.trim();
+    const strl = str.length;
 
     const match = (str, regex, g = 0) => {
         const m = str.match(regex);
@@ -212,12 +213,14 @@ module.exports.resolveYouTubeUrl = str => {
     };
 
     const isId = str.match(/^[\w-]+$/);
-    const playlistId = isId && str.length > 11 ? str : match(str, /.*list=(.*?)(&|$)/, 1);
-    const videoId = isId && str.length <= 11 ? str : match(str, /watch\?v=(.*?)(&|$)/, 1);
+    const playlistId = isId && strl > 30 ? str : match(str, /.*list=(.*?)(&|$)/, 1);
+    const videoId = isId && strl <= 11 ? str : match(str, /watch\?v=(.*?)(&|$)/, 1);
+    const channelId = isId && (strl > 20 && strl < 30) ? str : match(str, /(channel|user)\/(.*?)(\/|&|$)/, 2);
 
     return {
         url: str,
-        isValid: !!(playlistId || videoId),
+        isValid: !!(playlistId || videoId || channelId),
+        channelId,
         playlistId,
         videoId
     };

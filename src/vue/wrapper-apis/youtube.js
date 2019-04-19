@@ -38,12 +38,12 @@ function extractYTInitialData(html) {
 
 /**
  * Resolves the latest 30 videos from a channel
- * @param channelid
+ * @param channelId
  * @returns {Promise<[any, any, any, any, any, any, any, any, any, any] | never>}
  */
-export async function getLatestVideosByChannel(channelid) {
-    return fetchText(`https://www.youtube.com/channel/${channelid}/videos`)
-        .catch(() => fetchText(`https://www.youtube.com/user/${channelid}/videos`))
+export async function getLatestVideosByChannel(channelId) {
+    return fetchText(`https://www.youtube.com/channel/${channelId}/videos`)
+        .catch(() => fetchText(`https://www.youtube.com/user/${channelId}/videos`))
         .then(async html => {
             const ytInitialData = extractYTInitialData(html);
             const {microformatDataRenderer} = ytInitialData.microformat;
@@ -135,3 +135,20 @@ export async function getPlaylistVideos(playlistId) {
     });
 }
 
+/**
+ * Resolves all videos from a channel
+ * @param channelId
+ * @returns {Promise<void>}
+ */
+export async function getChannelVideos(channelId) {
+
+    // Fetch playlist id
+    const playlistid = await fetchText(`https://www.youtube.com/channel/${channelId}/videos`)
+        .catch(() => fetchText(`https://www.youtube.com/user/${channelId}/videos`)).then(async html => {
+            const ytInitialData = extractYTInitialData(html);
+            return ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[1].tabRenderer.content.sectionListRenderer.subMenu.channelSubMenuRenderer.playAllButton.buttonRenderer.navigationEndpoint.watchPlaylistEndpoint.playlistId;
+        });
+
+    // Return playlist videos
+    return getPlaylistVideos(playlistid);
+}

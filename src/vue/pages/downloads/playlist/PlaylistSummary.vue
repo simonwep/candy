@@ -1,11 +1,11 @@
 <template>
     <section class="playlist-summary">
 
-        <h1>{{ playlist.info.title }} / {{ playlist.channels.length }} Videos</h1>
+        <h1>{{ playlist.info.title }} / {{ playlist.videos.length }} Videos</h1>
 
         <!-- Videos -->
         <div class="snippets">
-            <video-snippet-card v-for="video of playlist.channels" :video="video"/>
+            <video-snippet-card v-for="video of playlist.videos" :video="video"/>
         </div>
 
     </section>

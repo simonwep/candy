@@ -10,7 +10,7 @@
                 <input v-model="input"
                        placeholder="Enter video or playlist url"
                        type="text"
-                       @input="checkAvailableDownload">
+                       @input="checkDownloadAvailability">
             </div>
 
             <!-- Choose between video and audio if both avaiable -->
@@ -92,7 +92,7 @@
                     this.input = to.query.id || '';
 
                     if (this.input) {
-                        this.checkAvailableDownload();
+                        this.checkDownloadAvailability();
                     }
                 }
             }
@@ -103,13 +103,13 @@
             chooseType(type) {
                 if (this.type !== type) {
                     this.type = type;
-                    this.checkAvailableDownload();
+                    this.checkDownloadAvailability();
                 }
             },
 
-            checkAvailableDownload() {
+            checkDownloadAvailability() {
                 const {input, type} = this;
-                let {playlistId, videoId} = this.utils.resolveYouTubeUrl(input);
+                let {playlistId, videoId, channelId, isValid} = this.utils.resolveYouTubeUrl(input);
                 this.videoAndPlaylist = videoId && playlistId;
                 this.video = this.playlist = null;
 
@@ -134,9 +134,9 @@
                     });
                 };
 
+                this.loading = isValid;
                 if (videoId) {
                     this.type = this.type || 'video';
-                    this.loading = true;
                     ipcClient.request('getVideoInfo', videoId).then(res => {
                         this.video = res;
                     }).catch(() => {
@@ -144,11 +144,17 @@
                     }).finally(() => this.loading = false);
                 } else if (playlistId) {
                     this.type = this.type || 'playlist';
-                    this.loading = true;
                     this.$store.dispatch('youtube/resolvePlaylist', {playlistId}).then(res => {
                         this.playlist = res;
                     }).catch(() => {
-                        err('Can\'t fetch playlist details');
+                        err('Can\'t fetch playlist videos');
+                    }).finally(() => this.loading = false);
+                } else if (channelId) {
+                    this.type = 'channel';
+                    this.$store.dispatch('youtube/resolveChannelVideos', {channelId}).then(res => {
+                        this.playlist = res;
+                    }).catch(() => {
+                        err('Can\'t fetch channel videos');
                     }).finally(() => this.loading = false);
                 }
             }
@@ -270,11 +276,11 @@
                 cursor: pointer;
                 border: 1px solid $palette-theme-tertiary;
 
-                &:first-child{
+                &:first-child {
                     border-radius: 0.15em 0 0 0.15em;
                 }
 
-                &:last-child{
+                &:last-child {
                     border-radius: 0 0.15em 0.15em 0;
                 }
 

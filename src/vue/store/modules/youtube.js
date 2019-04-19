@@ -1,4 +1,8 @@
-import {getLatestVideosByChannel, getPlaylistVideos} from '../../wrapper-apis/youtube';
+import {
+    getLatestVideosByChannel,
+    getPlaylistVideos,
+    getChannelVideos
+} from '../../wrapper-apis/youtube';
 
 export const youtube = {
 
@@ -18,7 +22,7 @@ export const youtube = {
             const channels = (await Promise.all(channelIds.map(getLatestVideosByChannel)));
 
             // Sort videos
-            for(const {videos} of channels){
+            for (const {videos} of channels) {
                 videos.sort((a, b) => b.published - a.published);
             }
 
@@ -33,6 +37,16 @@ export const youtube = {
          */
         async resolvePlaylist(_, {playlistId}) {
             return getPlaylistVideos(playlistId);
+        },
+
+        /**
+         * Resolves all videos from a channel
+         * @param _
+         * @param channelId
+         * @returns {Promise<void>}
+         */
+        async resolveChannelVideos(_, {channelId}) {
+            return getChannelVideos(channelId);
         }
     }
 };
