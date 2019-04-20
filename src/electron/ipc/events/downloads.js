@@ -54,6 +54,7 @@ module.exports = {
         sender.send('add-download', {
             id: downloadId,
             destination: null,
+            paused: false,
             sources,
             size: 1, // Prevents trough zero divisions
             progress: 0,
@@ -170,6 +171,16 @@ module.exports = {
             cancel() {
                 sourceStreams.forEach(s => s.destroy('cancelled'));
                 update({status: 'cancelled'});
+            },
+
+            pause(){
+                sourceStreams.forEach(s => !s.isPaused() && s.pause());
+                update({status: 'paused'});
+            },
+
+            resume(){
+                sourceStreams.forEach(s => s.isPaused() && s.resume());
+                update({status: 'progress'});
             }
         };
 
@@ -185,6 +196,28 @@ module.exports = {
     async cancelDownload({downloadId}) {
         const item = activeDownloads[downloadId];
         item && item.cancel();
+        return 'ok';
+    },
+
+    /**
+     * Pauses a download
+     * @param downloadId
+     * @returns {Promise<string>}
+     */
+    async pauseDownload({downloadId}) {
+        const item = activeDownloads[downloadId];
+        item && item.pause();
+        return 'ok';
+    },
+
+    /**
+     * Resumes a download
+     * @param downloadId
+     * @returns {Promise<string>}
+     */
+    async resumeDownload({downloadId}) {
+        const item = activeDownloads[downloadId];
+        item && item.resume();
         return 'ok';
     }
 };

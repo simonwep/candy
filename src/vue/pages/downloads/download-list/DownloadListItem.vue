@@ -8,6 +8,7 @@
             <i v-else-if="download.status === 'convert'" class="fas fa-fw fa-cog"></i>
             <i v-else-if="download.status === 'cancelled'" class="fas fa-fw fa-eject"></i>
             <i v-else-if="download.status === 'errored'" class="fas fa-fw fa-times"></i>
+            <i v-else-if="download.status === 'paused'" class="fas fa-fw fa-pause-circle"></i>
             <div></div>
         </div>
 
@@ -43,19 +44,21 @@
 
         <!-- Actions -->
         <div class="actions">
-            <button v-if="download.status === 'progress'"
-                    class="cancel"
-                    @click="cancelDownload">Cancel
-            </button>
 
-            <div v-if="download.status === 'finish'" class="afterwards">
-                <button @click="openDestinationDirectory">
+            <template v-if="['progress', 'paused'].includes(download.status)">
+                <button class="cancel" @click="cancelDownload">Cancel</button>
+                <button class="pause" @click="pauseOrResumeDownload">{{ download.status === 'paused' ? 'Resume' : 'Pause' }}</button>
+            </template>
+
+            <template v-if="download.status === 'finish'">
+                <button class="afterward" @click="openDestinationDirectory">
                     <i class="fas fa-fw fa-folder-open"></i>
                 </button>
-                <button @click="openDestinationFile">
+                <button class="afterward" @click="openDestinationFile">
                     <i class="fas fa-fw fa-play-circle"></i>
                 </button>
-            </div>
+            </template>
+
         </div>
 
     </div>
@@ -99,6 +102,8 @@
                         return 'Ooops, try again later.';
                     case 'cancelled':
                         return 'Download cancelled.';
+                    case 'paused':
+                        return 'Download paused.';
                 }
             },
 
@@ -117,6 +122,14 @@
 
             cancelDownload() {
                 ipcClient.request('cancelDownload', {downloadId: this.download.id});
+            },
+
+            pauseOrResumeDownload() {
+                const {download} = this;
+                ipcClient.request(
+                    download.status === 'paused' ? 'resumeDownload' : 'pauseDownload',
+                    {downloadId: download.id}
+                );
             },
 
             openDestinationDirectory() {
@@ -189,7 +202,8 @@
             }
         }
 
-        &[data-status='progress'] {
+        &[data-status='progress'],
+        &[data-status='paused'] {
             > div {
                 background: $palette-nature-orange;
             }
@@ -324,7 +338,7 @@
 
     .actions {
         @include flex(row, center);
-        margin: 0 1.25em 0 2em;
+        margin: 0 1.25em 0 1.25em;
 
         button {
             @include font(600, 0.75em);
@@ -333,6 +347,7 @@
             transition: all 0.3s;
             color: $palette-theme-tertiary;
             border-radius: 0.15em;
+            margin-left: 0.75em;
 
             &.cancel {
                 color: $palette-bright-red;
@@ -343,11 +358,18 @@
                     color: $palette-theme-tertiary;
                 }
             }
-        }
 
-        .afterwards {
+            &.pause {
+                color: $palette-nature-orange;
+                border-color: $palette-nature-orange;
 
-            button {
+                &:hover {
+                    background: $palette-nature-orange;
+                    color: $palette-theme-tertiary;
+                }
+            }
+
+            &.afterward {
                 @include size(2.5em);
                 padding: 0;
                 border-radius: 100%;

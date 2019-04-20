@@ -195,13 +195,14 @@
         }
     }
 
-    .paths {
+    .paths {s
         .text-input-field {
             margin-bottom: 0.75em;
         }
     }
 
     .front-page {
+        grid-area: 2 / 1 /  2 / 3;
 
         .tag-input-field {
             margin-top: 0.5em;
