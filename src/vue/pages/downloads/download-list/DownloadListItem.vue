@@ -46,8 +46,8 @@
         <div class="actions">
 
             <template v-if="['progress', 'paused'].includes(download.status)">
-                <button class="cancel" @click="cancelDownload">Cancel</button>
-                <button class="pause" @click="pauseOrResumeDownload">{{ download.status === 'paused' ? 'Resume' : 'Pause' }}</button>
+                <button class="action-cancel" @click="cancelDownload">Cancel</button>
+                <button class="action-pause" @click="pauseOrResumeDownload">{{ download.status === 'paused' ? 'Resume' : 'Pause' }}</button>
             </template>
 
             <template v-if="download.status === 'finish'">
@@ -340,52 +340,22 @@
         @include flex(row, center);
         margin: 0 1.25em 0 1.25em;
 
-        button {
-            @include font(600, 0.75em);
-            padding: 0.5em 1em;
-            border: 1px solid $palette-theme-tertiary;
+        button.afterward {
+            @include size(2.5em);
+            padding: 0;
+            border-radius: 100%;
+            color: rgba($palette-snow-white, 0.75);
+            border: 1px solid rgba($palette-snow-white, 0.75);
+            font-size: 0.8em;
             transition: all 0.3s;
-            color: $palette-theme-tertiary;
-            border-radius: 0.15em;
-            margin-left: 0.75em;
 
-            &.cancel {
-                color: $palette-bright-red;
-                border-color: $palette-bright-red;
-
-                &:hover {
-                    background: $palette-bright-red;
-                    color: $palette-theme-tertiary;
-                }
+            &:hover {
+                color: $palette-turquoise;
+                border-color: $palette-turquoise;
             }
 
-            &.pause {
-                color: $palette-nature-orange;
-                border-color: $palette-nature-orange;
-
-                &:hover {
-                    background: $palette-nature-orange;
-                    color: $palette-theme-tertiary;
-                }
-            }
-
-            &.afterward {
-                @include size(2.5em);
-                padding: 0;
-                border-radius: 100%;
-                color: rgba($palette-snow-white, 0.75);
-                border-color: rgba($palette-snow-white, 0.75);
-                font-size: 0.8em;
-                transition: all 0.3s;
-
-                &:hover {
-                    color: $palette-turquoise;
-                    border-color: $palette-turquoise;
-                }
-
-                &:not(:last-child) {
-                    margin-right: 0.75em;
-                }
+            &:not(:last-child) {
+                margin-right: 0.75em;
             }
         }
     }

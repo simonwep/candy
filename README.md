@@ -12,6 +12,11 @@
 Candy is a YouTube downloaded with focus of flexibility and design. Let every download be a pleasure. It's backed with [fluent-ffmpeg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg),
 [VueJS](https://vuejs.org/), [Electron](https://electronjs.org/) and [node-ytdl-core](https://github.com/fent/node-ytdl-core).
 
+## Disclaimer
+Downloading videos or music directly won't pay the work which was done by these who made it.
+Please consider supporting the artists and creators if you really like their work, most of these have [patreon](https://www.patreon.com/)
+or similar donation possibilities which can be used to directly giving them something back - it's even better than watching their videos on youtube.
+
 ## Features
 
 Candy is currently only build for windows, linux and MacOS support is in progress - but if anyone want to use it now it's possible to clone

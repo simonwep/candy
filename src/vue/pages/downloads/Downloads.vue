@@ -14,7 +14,7 @@
             </div>
 
             <!-- Choose between video and audio if both avaiable -->
-            <div v-if="videoAndPlaylist" class="recognition-type">
+            <div v-if="videoAndPlaylist && !loading" class="recognition-type">
                 <button :class="{active: type === 'video'}" @click="chooseType('video')">Video</button>
                 <button :class="{active: type === 'playlist'}" @click="chooseType('playlist')">Playlist</button>
             </div>

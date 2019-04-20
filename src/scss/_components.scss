@@ -1,0 +1,29 @@
+button[class*='action'] {
+    @include font(600, 0.75em);
+    padding: 0.5em 1em;
+    border: 1px solid $palette-theme-tertiary;
+    transition: all 0.3s;
+    color: $palette-theme-tertiary;
+    border-radius: 0.15em;
+    margin-left: 0.75em;
+
+    &.action-cancel {
+        color: $palette-bright-red;
+        border-color: $palette-bright-red;
+
+        &:hover {
+            background: $palette-bright-red;
+            color: $palette-theme-tertiary;
+        }
+    }
+
+    &.action-pause {
+        color: $palette-nature-orange;
+        border-color: $palette-nature-orange;
+
+        &:hover {
+            background: $palette-nature-orange;
+            color: $palette-theme-tertiary;
+        }
+    }
+}
