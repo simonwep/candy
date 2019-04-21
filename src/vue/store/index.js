@@ -24,6 +24,24 @@ export default new Vuex.Store({
     // Enable strict mode in development
     strict: process.env.NODE_ENV !== 'production',
 
+    state: {
+        clipBoardText: null
+    },
+
+    mutations: {
+
+        /**
+         * Updates the clipboard store
+         * @param state
+         * @param newText
+         */
+        updateClipBoardText(state, newText) {
+            if (typeof newText === 'string') {
+                state.clipBoardText = newText;
+            }
+        }
+    },
+
     actions: {
 
         /**

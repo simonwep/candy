@@ -15,7 +15,9 @@
         </p>
 
         <!-- Video cards -->
-        <div v-if="channelIds.length" class="video-snippets">
+        <div v-if="channelIds.length && !loading" class="video-snippets">
+            <h1>You subscribed to {{ channelIds.length }} channels</h1>
+
             <div v-for="channel of channels" class="channel">
                 <h1>{{ channel.info.title }}</h1>
 
@@ -140,6 +142,14 @@
         flex-shrink: 0;
         padding: 2em;
         overflow-y: auto;
+
+        > h1 {
+            @include font(600, 1.2em);
+            color: $palette-snow-white;
+            border-bottom: 2px solid $palette-theme-secondary;
+            padding-bottom: 0.5em;
+            margin-bottom: 0.75em;
+        }
 
         .channel {
             @include flex(column);

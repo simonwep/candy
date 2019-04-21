@@ -20,13 +20,13 @@ export const dialogbox = {
                 type, title, text, buttons,
                 open: true,
                 close(idx) {
-                    commit('dialogbox/close');
+                    commit('dialogbox/hide');
                     onResolve(idx);
                 }
             });
         },
 
-        close(state) {
+        hide(state) {
             state.open = false;
         }
     }

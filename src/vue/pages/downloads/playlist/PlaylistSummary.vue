@@ -1,7 +1,7 @@
 <template>
     <section class="playlist-summary">
 
-        <h1>{{ playlist.info.title }} / {{ playlist.videos.length }} Videos</h1>
+        <h1>{{ playlist.info.title }} <span>/ {{ playlist.videos.length }} Videos</span></h1>
 
         <!-- Videos -->
         <div class="snippets">
@@ -46,6 +46,10 @@
         > h1 {
             @include font(500, 1.1em);
             margin-top: 0.5em;
+
+            span {
+                opacity: 0.8;
+            }
         }
 
         .snippets {

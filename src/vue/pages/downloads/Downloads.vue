@@ -60,8 +60,9 @@
 
 <script>
 
-    // IPC Client
-    import ipcClient from '../../ipc/client';
+    // IPC Client and electron stuff
+    import ipcClient   from '../../ipc/client';
+    import {clipboard} from 'electron';
 
     // Components
     import DualRingSpinner from '../../ui/spinner/DualRingSpinner';
@@ -82,7 +83,9 @@
                 videoAndPlaylist: false,
                 type: null,
 
-                viewType: 'big'
+                viewType: 'big',
+
+                clipboardInterval: null
             };
         },
 
@@ -98,6 +101,28 @@
             }
         },
 
+        mounted() {
+
+            let lastText = null;
+            this.clipboardInterval = setInterval(() => {
+                const text = clipboard.readText();
+
+                if (text !== lastText) {
+
+                    // Validate content
+                    if (this.utils.resolveYouTubeUrl(text).isValid) {
+                        this.checkDownloadAvailability(text);
+                    }
+
+                    lastText = text;
+                }
+            }, 500);
+        },
+
+        destroyed() {
+            clearInterval(this.clipboardInterval);
+        },
+
         methods: {
 
             chooseType(type) {
@@ -107,11 +132,16 @@
                 }
             },
 
-            checkDownloadAvailability() {
+            checkDownloadAvailability(content = null) {
+                content = typeof content === 'string' && content;
                 const {input, type} = this;
-                let {playlistId, videoId, channelId, isValid} = this.utils.resolveYouTubeUrl(input);
+
+                let {playlistId, videoId, channelId, isValid} = this.utils.resolveYouTubeUrl(content || input);
                 this.videoAndPlaylist = videoId && playlistId;
-                this.video = this.playlist = null;
+
+                if (!isValid) {
+                    return;
+                }
 
                 // Check if it's valid and the user choosed a type if both are available
                 if (this.videoAndPlaylist) {
@@ -124,38 +154,40 @@
 
                 // Shorthand to show an error dialog
                 const err = title => {
-                    this.$store.commit('dialogbox/show', {
-                        type: 'error',
-                        title,
-                        text: 'Be sure to have an active internet connection, entered a valid video id and the video itself is public.',
-                        buttons: [
-                            {type: 'accept', text: 'Okay'}
-                        ]
-                    });
+                    if (!content) {
+                        this.video = this.playlist = null;
+                        this.$store.commit('dialogbox/show', {
+                            type: 'error',
+                            title,
+                            text: 'Be sure to have an active internet connection, entered a valid video id and the video itself is public.',
+                            buttons: [
+                                {type: 'accept', text: 'Okay'}
+                            ]
+                        });
+                    }
                 };
 
-                this.loading = isValid;
                 if (videoId) {
                     this.type = this.type || 'video';
                     ipcClient.request('getVideoInfo', videoId).then(res => {
                         this.video = res;
-                    }).catch(() => {
-                        err('Can\'t fetch video details');
-                    }).finally(() => this.loading = false);
+                        this.playlist = null;
+                        content && (this.input = content);
+                    }).catch(() => err('Can\'t fetch video details')).finally(() => this.loading = false);
                 } else if (playlistId) {
                     this.type = this.type || 'playlist';
                     this.$store.dispatch('youtube/resolvePlaylist', {playlistId}).then(res => {
                         this.playlist = res;
-                    }).catch(() => {
-                        err('Can\'t fetch playlist videos');
-                    }).finally(() => this.loading = false);
+                        this.video = null;
+                        content && (this.input = content);
+                    }).catch(() => err('Can\'t fetch playlist videos')).finally(() => this.loading = false);
                 } else if (channelId) {
                     this.type = 'channel';
                     this.$store.dispatch('youtube/resolveChannelVideos', {channelId}).then(res => {
                         this.playlist = res;
-                    }).catch(() => {
-                        err('Can\'t fetch channel videos');
-                    }).finally(() => this.loading = false);
+                        this.video = null;
+                        content && (this.input = content);
+                    }).catch(() => err('Can\'t fetch channel videos')).finally(() => this.loading = false);
                 }
             }
         }
