@@ -39,6 +39,8 @@ some methods won't work anymore. [Open an issue](https://github.com/Simonwep/Can
 2. "What about other platforms?" - _For now Candy should and will only be a downloader for YouTube._
 3. "The number of playlist / channel items is not equal to these on YouTube?!" - _YouTube counts private and removed videos in a playlist as 
 videos of this playlist. Candy won't take this into account so it's possible that some videos are missing._
+4. "Some downloads, mostly audio stuff, is especially slow?" - _Since it dosn't make sense to provide high bandwidth for most of YouTube's ressources (Streaming doesn't need that much) it takes longer
+than other, direct downloads. It's not possible to speed it up until YouTube rises his bandwidth._
 
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/30767528/56439931-1376d380-62e8-11e9-80ce-5ce3754ab10a.png)
