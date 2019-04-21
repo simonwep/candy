@@ -1,6 +1,7 @@
 const id3tags = require('../../../../config/id3tags');
 const {createUID, throttleEvent, mkdirIfNotPresent} = require('../../../js/utils');
 const {getSettings} = require('./settings');
+const {log} = require('./log');
 const encoder = require('../encoder');
 const ytdl = require('ytdl-core');
 const path = require('path');
@@ -31,6 +32,9 @@ module.exports = {
             }
         }
 
+        // Log
+        await log('INFO', `Get video info from ${videoid}`);
+
         info.formats = resolvedFormats;
         return info;
     },
@@ -50,6 +54,9 @@ module.exports = {
 
         // Create download id and start timestamp
         const downloadId = createUID();
+
+        // Log
+        await log('INFO', `Download ${downloadId}: Initiated`);
 
         sender.send('add-download', {
             id: downloadId,
@@ -84,6 +91,9 @@ module.exports = {
                 quality: itag,
                 highWaterMark: 16384
             });
+
+            // Log
+            await log('INFO', `Download ${downloadId}: Start download of media with itag ${itag} / ${container}`);
 
             // Pipe to temporary destination
             sourceStream.pipe(fs.createWriteStream(tmpFile));
@@ -158,6 +168,9 @@ module.exports = {
                 /* eslint-disable no-console */
                 console.error(e);
 
+                // Log
+                log('ERROR', `Download ${downloadId}: Errored ${e.message} / ${e.toString()}`);
+
                 if (e !== 'cancelled') {
                     sourceStreams.forEach(s => s.destroy());
                     tmpFiles.forEach(fs.unlinkSync);
@@ -169,16 +182,19 @@ module.exports = {
         // Expose download functions
         activeDownloads[downloadId] = {
             cancel() {
+                log('INFO', `Download ${downloadId}: Cancelled`);
                 sourceStreams.forEach(s => s.destroy('cancelled'));
                 update({status: 'cancelled'});
             },
 
-            pause(){
+            pause() {
+                log('INFO', `Download ${downloadId}: Paused`);
                 sourceStreams.forEach(s => !s.isPaused() && s.pause());
                 update({status: 'paused'});
             },
 
-            resume(){
+            resume() {
+                log('INFO', `Download ${downloadId}: Resumed`);
                 sourceStreams.forEach(s => s.isPaused() && s.resume());
                 update({status: 'progress'});
             }

@@ -31,6 +31,11 @@ function extractYTInitialData(html) {
     if (targetScriptString) {
         const returnObjectString = targetScriptString.replace(/^[ \t\r\n]+window\["ytInitialData"] *= */, '');
         return new Function(`return ${returnObjectString}`)();
+    } else {
+        ipcClient.request('log', {
+            level: 'ERROR',
+            text: `Failed to extract ytInitialData.`
+        });
     }
 
     return null;
@@ -58,6 +63,11 @@ export async function getLatestVideosByChannel(channelId) {
                 info: microformatDataRenderer,
                 videos: await Promise.all(videos)
             };
+        }).catch(err => {
+            ipcClient.request('log', {
+                level: 'ERROR',
+                text: `Failed to fetch latest videos from channel "${channelId}" / ${err.toString()}.`
+            });
         });
 }
 
@@ -132,6 +142,11 @@ export async function getPlaylistVideos(playlistId) {
         }
 
         return {videos, info};
+    }).catch(err => {
+        ipcClient.request('log', {
+            level: 'ERROR',
+            text: `Failed to fetch playlist videos from "${playlistId}" / ${err.toString()}.`
+        });
     });
 }
 
@@ -147,6 +162,11 @@ export async function getChannelVideos(channelId) {
         .catch(() => fetchText(`https://www.youtube.com/user/${channelId}/videos`)).then(async html => {
             const ytInitialData = extractYTInitialData(html);
             return ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[1].tabRenderer.content.sectionListRenderer.subMenu.channelSubMenuRenderer.playAllButton.buttonRenderer.navigationEndpoint.watchPlaylistEndpoint.playlistId;
+        }).catch(err => {
+            ipcClient.request('log', {
+                level: 'ERROR',
+                text: `Failed to fetch channel videos videos from "${channelId}" / ${err.toString()}.`
+            });
         });
 
     // Return playlist videos
