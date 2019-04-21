@@ -143,7 +143,7 @@
                     return;
                 }
 
-                // Check if it's valid and the user choosed a type if both are available
+                // Check if it's valid and the user choosed a type if both are available youtube
                 if (this.videoAndPlaylist) {
                     if (type === 'video') {
                         playlistId = null;
@@ -152,42 +152,27 @@
                     }
                 }
 
-                // Shorthand to show an error dialog
-                const err = title => {
-                    if (!content) {
-                        this.video = this.playlist = null;
-                        this.$store.commit('dialogbox/show', {
-                            type: 'error',
-                            title,
-                            text: 'Be sure to have an active internet connection, entered a valid video id and the video itself is public.',
-                            buttons: [
-                                {type: 'accept', text: 'Okay'}
-                            ]
-                        });
-                    }
-                };
-
                 if (videoId) {
                     this.type = this.type || 'video';
                     ipcClient.request('getVideoInfo', videoId).then(res => {
                         this.video = res;
                         this.playlist = null;
                         content && (this.input = content);
-                    }).catch(() => err('Can\'t fetch video details')).finally(() => this.loading = false);
+                    }).finally(() => this.loading = false);
                 } else if (playlistId) {
                     this.type = this.type || 'playlist';
                     this.$store.dispatch('youtube/resolvePlaylist', {playlistId}).then(res => {
                         this.playlist = res;
                         this.video = null;
                         content && (this.input = content);
-                    }).catch(() => err('Can\'t fetch playlist videos')).finally(() => this.loading = false);
+                    }).finally(() => this.loading = false);
                 } else if (channelId) {
                     this.type = 'channel';
                     this.$store.dispatch('youtube/resolveChannelVideos', {channelId}).then(res => {
                         this.playlist = res;
                         this.video = null;
                         content && (this.input = content);
-                    }).catch(() => err('Can\'t fetch channel videos')).finally(() => this.loading = false);
+                    }).finally(() => this.loading = false);
                 }
             }
         }
