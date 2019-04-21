@@ -5,8 +5,8 @@
 
         <!-- Videos -->
         <div class="snippets">
-            <video-snippet-card v-for="video of playlist.videos" 
-                                :video="video" 
+            <video-snippet-card v-for="video of playlist.videos"
+                                :video="video"
                                 :key="video.video_id"/>
         </div>
 
@@ -53,10 +53,6 @@
             margin-top: 1em;
             overflow: auto hidden;
             max-width: 100%;
-
-            .video-snippet-card {
-                padding-bottom: 1em;
-            }
         }
 
         &::after {

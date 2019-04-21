@@ -21,6 +21,9 @@ module.exports = {
         const info = await ytdl.getBasicInfo(`https://www.youtube.com/watch?v=${videoid}`);
         const resolvedFormats = [];
 
+        // Replace thumbnail url with higher quality
+        info.thumbnail_url = `https://img.youtube.com/vi/${info.video_id}/0.jpg`;
+
         // Resolve itags
         for (const {itag, clen, url} of info.formats) {
             const format = itag && id3tags[itag];

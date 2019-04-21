@@ -51,6 +51,7 @@
 
             img {
                 border-radius: 0.15em;
+                max-height: 9em;
             }
 
             span {
