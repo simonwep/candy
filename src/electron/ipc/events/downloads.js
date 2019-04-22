@@ -9,8 +9,7 @@ const fs = require('fs');
 
 // Holds downloadid - actions references
 const activeDownloads = {};
-
-module.exports = {
+const downloads = {
 
     /**
      * Fetches all available informations (including available streams) of a video
@@ -48,15 +47,13 @@ module.exports = {
      * @param format Media container
      * @param video The videos basic info gathered by getVideoInfo
      * @param sources Channels
+     * @param downloadId
      * @param sender
      * @returns {Promise<string>}
      */
-    async startDownload({playlist, format, video, sources}, {sender}) {
+    async startDownload({playlist, format, video, sources, downloadId = createUID()}, {sender}) {
         const settings = await getSettings();
         let {temporaryDirectory, downloadDirectory} = settings;
-
-        // Create download id and start timestamp
-        const downloadId = createUID();
 
         // Check if an additional directory with the author's name should be made for this video
         if (settings.createChannelDirectory) {
@@ -84,13 +81,7 @@ module.exports = {
             progress: 0,
             status: 'progress',
             startTimestamp: Date.now(),
-            video: {
-                url: video.video_url,
-                thumbnailUrl: video.thumbnail_url,
-                duration: Number(video.length_seconds),
-                title: video.title,
-                author: video.author
-            }
+            video
         });
 
         // Create throttled update event handler
@@ -187,7 +178,7 @@ module.exports = {
             cancel() {
                 log('INFO', `Download ${downloadId}: Cancelled`);
                 sourceStreams.forEach(s => s.destroy('cancelled'));
-                fs.unlinkSync(destinationFile);
+                fs.existsSync(destinationFile) && fs.unlinkSync(destinationFile);
                 update({status: 'cancelled'});
             },
 
@@ -201,6 +192,11 @@ module.exports = {
                 log('INFO', `Download ${downloadId}: Resumed`);
                 sourceStreams.forEach(s => s.isPaused() && s.resume());
                 update({status: 'progress'});
+            },
+
+            retry() {
+                log('INFO', `Download ${downloadId}: Retry`);
+                downloads.startDownload({playlist, format, video, sources, downloadId}, {sender});
             }
         };
 
@@ -239,5 +235,18 @@ module.exports = {
         const item = activeDownloads[downloadId];
         item && item.resume();
         return 'ok';
+    },
+
+    /**
+     * Restarts a download
+     * @param downloadId
+     * @returns {Promise<string>}
+     */
+    async retryDownload({downloadId}) {
+        const item = activeDownloads[downloadId];
+        item && item.retry();
+        return 'ok';
     }
 };
+
+module.exports = downloads;

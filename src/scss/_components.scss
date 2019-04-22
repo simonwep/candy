@@ -1,3 +1,9 @@
+$buttons: (
+    (color: $palette-bright-red, class: action-red),
+    (color: $palette-nature-orange, class: action-orange),
+    (color: $palette-cloud-blue, class: action-blue)
+);
+
 button[class*='action'] {
     @include font(600, 0.75em);
     padding: 0.5em 1em;
@@ -7,23 +13,17 @@ button[class*='action'] {
     border-radius: 0.15em;
     margin-left: 0.75em;
 
-    &.action-cancel {
-        color: $palette-bright-red;
-        border-color: $palette-bright-red;
+    @each $btn in $buttons {
+        $color: map_get($btn, 'color');
 
-        &:hover {
-            background: $palette-bright-red;
-            color: $palette-theme-tertiary;
-        }
-    }
+        &.#{map_get($btn, 'class')} {
+            color: $color;
+            border-color: $color;
 
-    &.action-pause {
-        color: $palette-nature-orange;
-        border-color: $palette-nature-orange;
-
-        &:hover {
-            background: $palette-nature-orange;
-            color: $palette-theme-tertiary;
+            &:hover {
+                background: $color;
+                color: $palette-theme-tertiary;
+            }
         }
     }
 }

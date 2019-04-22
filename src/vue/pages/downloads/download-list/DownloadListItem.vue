@@ -13,7 +13,7 @@
         </div>
 
         <!-- Video info -->
-        <img :src="download.video.thumbnailUrl"
+        <img :src="download.video.thumbnail_url"
              alt="Thumbnail"
              class="thumbnail">
 
@@ -46,8 +46,8 @@
         <div class="actions">
 
             <template v-if="['progress', 'paused'].includes(download.status)">
-                <button class="action-cancel" @click="cancelDownload">Cancel</button>
-                <button class="action-pause" @click="pauseOrResumeDownload">{{ download.status === 'paused' ? 'Resume' : 'Pause' }}</button>
+                <button class="action-red" @click="cancelDownload">Cancel</button>
+                <button class="action-orange" @click="pauseOrResumeDownload">{{ download.status === 'paused' ? 'Resume' : 'Pause' }}</button>
             </template>
 
             <template v-if="download.status === 'finish'">
@@ -57,6 +57,10 @@
                 <button class="afterward" @click="openDestinationFile">
                     <i class="fas fa-fw fa-play-circle"></i>
                 </button>
+            </template>
+
+            <template v-if="['errored', 'cancelled'].includes(download.status)">
+                <button class="action-blue" @click="retryDownload">Retry</button>
             </template>
 
         </div>
@@ -130,6 +134,10 @@
                     download.status === 'paused' ? 'resumeDownload' : 'pauseDownload',
                     {downloadId: download.id}
                 );
+            },
+
+            retryDownload() {
+                ipcClient.request('retryDownload', {downloadId: this.download.id});
             },
 
             openDestinationDirectory() {

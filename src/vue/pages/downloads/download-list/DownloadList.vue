@@ -8,8 +8,8 @@
                 <p>Downloads</p>
 
                 <div :class="{actions: 1, visible: someInProgress || somePaused}">
-                    <button class="action-cancel" @click="cancelAll">Cancel all</button>
-                    <button class="action-pause" @click="pauseOrResumeAll">
+                    <button class="action-red" @click="cancelAll">Cancel all</button>
+                    <button class="action-orange" @click="pauseOrResumeAll">
                         {{ somePaused ? 'Resume all' : 'Pause all' }}
                     </button>
                 </div>

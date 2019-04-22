@@ -7,7 +7,16 @@ export const downloads = {
     mutations: {
 
         add(state, video) {
-            state.push(video);
+            const existing = state.find(v => v.id === video.id);
+
+            // Override if already loaded
+            if (existing) {
+                Object.assign(existing, video);
+            } else {
+                state.push(video);
+                sortVideos(state);
+            }
+
             sortVideos(state);
         },
 
