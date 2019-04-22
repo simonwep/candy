@@ -153,6 +153,7 @@
                 }
 
                 if (videoId) {
+                    this.loading = true;
                     this.type = this.type || 'video';
                     ipcClient.request('getVideoInfo', videoId).then(res => {
                         this.video = res;
@@ -160,6 +161,7 @@
                         content && (this.input = content);
                     }).finally(() => this.loading = false);
                 } else if (playlistId) {
+                    this.loading = true;
                     this.type = this.type || 'playlist';
                     this.$store.dispatch('youtube/resolvePlaylist', {playlistId}).then(res => {
                         this.playlist = res;
@@ -167,6 +169,7 @@
                         content && (this.input = content);
                     }).finally(() => this.loading = false);
                 } else if (channelId) {
+                    this.loading = true;
                     this.type = 'channel';
                     this.$store.dispatch('youtube/resolveChannelVideos', {channelId}).then(res => {
                         this.playlist = res;
