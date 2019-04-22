@@ -58,6 +58,20 @@ module.exports = {
         // Create download id and start timestamp
         const downloadId = createUID();
 
+        // Check if an additional directory with the author's name should be made for this video
+        if (settings.createChannelDirectory) {
+            downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, video.author.name));
+        }
+
+        // Check if an additional directory with the playlist name is requested
+        if (playlist) {
+            downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, playlist.title));
+        }
+
+        // Build destination path
+        const filteredTitle = video.title.replace(/[/\\?%*:|"<>]/g, ' ').replace(/ +/g, ' ');
+        const destinationFile = path.join(downloadDirectory, `${filteredTitle}.${format}`);
+
         // Log
         await log('INFO', `Download ${downloadId}: Initiated`);
 
@@ -131,21 +145,7 @@ module.exports = {
                         status: 'convert'
                     });
 
-                    // Build destination path
-                    const filteredTitle = video.title.replace(/[/\\?%*:|"<>]/g, ' ').replace(/ +/g, ' ');
-
-                    // Check if an additional directory with the author's name should be made for this video
-                    if (settings.createChannelDirectory) {
-                        downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, video.author.name));
-                    }
-
-                    // Check if an additional directory with the playlist name is requested
-                    if (playlist) {
-                        downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, playlist.title));
-                    }
-
                     // Start appropriate conversion
-                    const destinationFile = path.join(downloadDirectory, `${filteredTitle}.${format}`);
                     const sourceFiles = sources.length === 1 ? tmpFile : tmpFiles;
                     encoder[sources.length === 1 ? 'convert' : 'merge'](sourceFiles, destinationFile).then(() => {
                         update({
@@ -187,6 +187,7 @@ module.exports = {
             cancel() {
                 log('INFO', `Download ${downloadId}: Cancelled`);
                 sourceStreams.forEach(s => s.destroy('cancelled'));
+                fs.unlinkSync(destinationFile);
                 update({status: 'cancelled'});
             },
 
