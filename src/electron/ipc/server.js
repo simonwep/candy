@@ -9,7 +9,7 @@ for (const [key, val] of Object.entries(events)) {
 
     // Validate
     /* eslint-disable no-console */
-    if (typeof key !== 'string' || typeof val !== 'function') {
+    if (typeof key !== 'string' || !key || typeof val !== 'function') {
         console.error('[IPC-SERVER] Invalid construct: ', key, val);
     }
 

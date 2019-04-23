@@ -5,22 +5,14 @@ import * as _        from '../../js/utils';
 const map = {};
 
 ipcRenderer.on('response', (event, {error = false, id, data}) => {
-    const {resolve, reject} = map[id];
+    const receiver = map[id];
 
     /* eslint-disable no-console */
-    if (!resolve || !reject) {
+    if (!receiver) {
         console.error('[IPC-CLIENT] Cannot resolve request', event, id, data);
     }
 
-    if (!data) {
-        console.error('[IPC-CLIENT] No data received', event, id, data);
-    }
-
-    if (error) {
-        reject(data);
-    } else {
-        resolve(data);
-    }
+    receiver[error ? 'reject' : 'resolve'](data);
 });
 
 ipcRenderer.on('add-download', (event, data) => store.commit('downloads/add', data));
