@@ -7,9 +7,11 @@ import store  from './store';
 import 'typeface-open-sans';
 
 import * as _ from '../js/utils';
+import config from '../../config/config';
 
 Vue.config.productionTip = false;
 Vue.prototype.utils = _;
+Vue.prototype.config = config;
 
 new Vue({
     render: h => h(App),

@@ -25,7 +25,7 @@
 
         <article class="contributors">
             <h2>Contributors</h2>
-            <template v-for="con of contributors">
+            <template v-for="con of config.contributors">
                 <browser-link v-if="con.github" :href="con.github">{{ con.name }}</browser-link>
                 <span v-else>{{ con.name }}</span>
             </template>
@@ -40,16 +40,12 @@
     // Components
     import BrowserLink from '../../ui/specific/BrowserLink';
 
-    // Config stuff
-    import {contributors} from '../../../../config/config';
 
     export default {
         components: {BrowserLink},
 
         data() {
-            return {
-                contributors
-            };
+            return {};
         }
     };
 

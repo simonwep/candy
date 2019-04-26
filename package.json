@@ -1,8 +1,8 @@
 {
     "name": "candy",
-    "version": "0.0.1",
+    "version": "1.0.0-beta",
     "private": true,
-    "description": "",
+    "description": "Refined YouTube channel, playlist and video downloader / converter.",
     "author": "Simon Reinisch",
     "keywords": [],
     "license": "MIT",
@@ -41,7 +41,6 @@
         "electron": "^4.1.4",
         "electron-builder": "^20.39.0",
         "electron-debug": "^2.2.0",
-        "electron-devtools-installer": "^2.2.4",
         "node-sass": "^4.11.0",
         "sass-loader": "^7.1.0",
         "sassyfication": "^0.1.1",
