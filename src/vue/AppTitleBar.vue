@@ -1,6 +1,6 @@
 <template>
     <div class="title-bar">
-        <p class="title">Candy YouTube Downloader</p>
+        <p class="title">Candy YouTube Downloader <span>- v{{ config.version }}</span></p>
 
         <div class="drag"></div>
 
@@ -58,6 +58,10 @@
         @include font(600, 0.8em);
         margin-left: 0.25em;
         color: $palette-snow-white;
+
+        span {
+            opacity: 0.7;
+        }
     }
 
     .drag {

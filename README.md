@@ -5,12 +5,14 @@
 <p align="center">
     <a href="https://github.com/Simonwep/Candy/tree/master"><img alt="Stable Branch" src="https://img.shields.io/badge/Stable%20Branch-master-3FB27F.svg"/></a>
     <a href="https://github.com/Simonwep/Candy/tree/dev"><img alt="Development Branch" src="https://img.shields.io/badge/Dev%20Branch-dev-3eacb2.svg"/></a>
-    <img alt="Product state: Alpha" src="https://img.shields.io/badge/State-alpha-3c71b2.svg"/>
+    <img alt="Product state: Beta" src="https://img.shields.io/badge/State-beta-3c71b2.svg"/>
     <a href="https://www.patreon.com/simonwep"><img alt="Support me" src="https://img.shields.io/badge/Patreon-support-553cb2.svg"></a>
 </p>
 
 Candy is a YouTube downloaded with focus of flexibility and design. Let every download be a pleasure. It's backed with [fluent-ffmpeg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg),
 [VueJS](https://vuejs.org/), [Electron](https://electronjs.org/) and [node-ytdl-core](https://github.com/fent/node-ytdl-core).
+
+![cb](https://user-images.githubusercontent.com/30767528/56775738-b63bc000-67c8-11e9-84e0-18004bac3dc3.PNG)
 
 ## Disclaimer
 Downloading videos or music directly won't pay the work which was done by these who made it.
@@ -41,6 +43,3 @@ some methods won't work anymore. [Open an issue](https://github.com/Simonwep/Can
 videos of this playlist. Candy won't take this into account so it's possible that some videos are missing._
 4. "Some downloads, mostly audio stuff, is especially slow?" - _Since it dosn't make sense to provide high bandwidth for most of YouTube's ressources (Streaming doesn't need that much) it takes longer
 than other, direct downloads. It's not possible to speed it up until YouTube rises his bandwidth._
-
-## Screenshots
-![image](https://user-images.githubusercontent.com/30767528/56439931-1376d380-62e8-11e9-80ce-5ce3754ab10a.png)
