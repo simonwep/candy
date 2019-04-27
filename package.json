@@ -38,7 +38,7 @@
         "@vue/cli-plugin-eslint": "^3.6.0",
         "@vue/cli-service": "^3.6.0",
         "cross-env": "^5.2.0",
-        "electron": "^4.1.4",
+        "electron": "^4.1.5",
         "electron-builder": "^20.39.0",
         "electron-debug": "^2.2.0",
         "node-sass": "^4.12.0",

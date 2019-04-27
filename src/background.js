@@ -1,6 +1,6 @@
-import {app, BrowserWindow, protocol}       from 'electron';
-import {createProtocol, installVueDevtools} from 'vue-cli-plugin-electron-builder/lib';
-import path                                 from 'path';
+import {app, BrowserWindow} from 'electron';
+import {installVueDevtools} from 'vue-cli-plugin-electron-builder/lib';
+import path                 from 'path';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -8,11 +8,8 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
-// Standard scheme must be registered before the app is ready
-protocol.registerStandardSchemes(['app'], {secure: true});
-
 /* eslint-disable */
-function createWindow() {
+async function createWindow() {
     win = new BrowserWindow({
         width: 900,
         height: 700,
@@ -30,10 +27,9 @@ function createWindow() {
     });
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
-        win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+        await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
     } else {
-        createProtocol('app');
-        win.loadURL('app://./index.html');
+        await win.loadURL('app://./index.html');
     }
 
     if ((process.env.WEBPACK_DEV_SERVER_URL || process.argv.includes('--debug')) && !process.env.IS_TEST) {
@@ -53,7 +49,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (win === null) {
-        createWindow();
+        return createWindow();
     }
 });
 
@@ -69,7 +65,7 @@ app.on('ready', async () => {
         }
     }
 
-    createWindow();
+    await createWindow();
     require('./electron/ipc/server');
 });
 
