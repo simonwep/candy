@@ -8,7 +8,7 @@
         </div>
 
         <p v-if="!channelIds.length" class="placeholder">
-            Empty here huh? Go to
+            Empty here, huh? Go to
             <router-link to="/settings">settings</router-link>
             to add
             channels
@@ -86,7 +86,7 @@
                     this.$store.commit('dialogbox/show', {
                         type: 'error',
                         title: 'Whoops',
-                        text: 'Cannot fetch latetest videos. Try again alter',
+                        text: 'Cannot fetch latest videos. Try again later.',
                         buttons: [
                             {type: 'accept', text: 'Okay'}
                         ]
