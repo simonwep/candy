@@ -36,7 +36,7 @@ See [GitHub Projects](https://github.com/Simonwep/candy/projects) for the curren
 
 ## FAQ
 1. "Downloads don't work anymore!" - _It's always a race between the maintainer of such applications and YouTube. YouTube doesn't provide
-free access to many of these informations Candy provides so everything is accomplished with small hacks. If YouTube changes something
+free access to many of these informations Candy provides, so everything is accomplished with small hacks. If YouTube changes something
 some methods won't work anymore. [Open an issue](https://github.com/Simonwep/candy/issues/new) if so._
 2. "What about other platforms?" - _For now Candy should and will only be a downloader for YouTube._
 3. "The number of playlist / channel items is not equal to these on YouTube?!" - _YouTube counts private and removed videos in a playlist as 

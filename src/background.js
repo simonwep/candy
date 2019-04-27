@@ -9,7 +9,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 let win;
 
 // Standard scheme must be registered before the app is ready
-protocol.registerStandardSchemes(['app'], {secure: true});
+protocol.registerStandardSchemes(['app'], {secure: false});
 
 /* eslint-disable */
 function createWindow() {

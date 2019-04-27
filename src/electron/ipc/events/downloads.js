@@ -148,6 +148,10 @@ const downloads = {
 
                         /* eslint-disable no-console */
                         console.error(e);
+
+                        // Log
+                        log('ERROR', `Encoding ${downloadId}: Errored ${e.message} / ${e.toString()}`);
+
                         update({status: 'errored'});
                     }).finally(() => {
 
