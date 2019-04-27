@@ -9,7 +9,7 @@
     "main": "background.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Simonwep/Candy"
+        "url": "https://github.com/Simonwep/candy"
     },
     "scripts": {
         "lint": "vue-cli-service lint ./src",

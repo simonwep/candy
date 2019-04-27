@@ -3,8 +3,9 @@
 </h3>
 
 <p align="center">
-    <a href="https://github.com/Simonwep/Candy/tree/master"><img alt="Stable Branch" src="https://img.shields.io/badge/Stable%20Branch-master-3FB27F.svg"/></a>
-    <a href="https://github.com/Simonwep/Candy/tree/dev"><img alt="Development Branch" src="https://img.shields.io/badge/Dev%20Branch-dev-3eacb2.svg"/></a>
+    <a href="https://github.com/Simonwep/candy/tree/master"><img alt="Stable Branch" src="https://img.shields.io/badge/Stable%20Branch-master-3FB27F.svg"/></a>
+    <a href="https://github.com/Simonwep/candy/tree/dev"><img alt="Development Branch" src="https://img.shields.io/badge/Dev%20Branch-dev-3eacb2.svg"/></a>
+    <a href="https://travis-ci.org/Simonwep/candy/"><img alt="Build Status" src="https://travis-ci.org/Simonwep/candy.svg?branch=master"/></a>
     <img alt="Product state: Beta" src="https://img.shields.io/badge/State-beta-3c71b2.svg"/>
     <a href="https://www.patreon.com/simonwep"><img alt="Support me" src="https://img.shields.io/badge/Patreon-support-553cb2.svg"></a>
 </p>
@@ -20,11 +21,10 @@ Please consider supporting the artists and creators if you really like their wor
 or similar donation possibilities which can be used to directly giving them something back - it's even better than watching their videos on youtube.
 
 ## Features
+The current version ([1.0.0-beta](https://github.com/Simonwep/candy/releases/tag/1.0.0-beta)) is only build for windows. To use it on mac / linux clone this repo and run `npm run electron:build`.
+Sorry for the inconvenience.
 
-Candy is currently only build for windows, linux and MacOS support is in progress - but if anyone want to use it now it's possible to clone
-this repo and build it with `electron:build` for the current platform.
-
-See [GitHub Projects](https://github.com/Simonwep/Candy/projects) for the current roadmap.
+See [GitHub Projects](https://github.com/Simonwep/candy/projects) for the current roadmap.
 
 #### Currently: 
 * Cross-platform and enjoyable UI.
@@ -37,7 +37,7 @@ See [GitHub Projects](https://github.com/Simonwep/Candy/projects) for the curren
 ## FAQ
 1. "Downloads don't work anymore!" - _It's always a race between the maintainer of such applications and YouTube. YouTube doesn't provide
 free access to many of these informations Candy provides so everything is accomplished with small hacks. If YouTube changes something
-some methods won't work anymore. [Open an issue](https://github.com/Simonwep/Candy/issues/new) if so._
+some methods won't work anymore. [Open an issue](https://github.com/Simonwep/candy/issues/new) if so._
 2. "What about other platforms?" - _For now Candy should and will only be a downloader for YouTube._
 3. "The number of playlist / channel items is not equal to these on YouTube?!" - _YouTube counts private and removed videos in a playlist as 
 videos of this playlist. Candy won't take this into account so it's possible that some videos are missing._

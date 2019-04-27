@@ -12,13 +12,13 @@
             and is published under the
             <browser-link href="https://choosealicense.com/licenses/mit/">MIT License</browser-link>
             on
-            <browser-link href="https://github.com/Simonwep/Candy">GitHub</browser-link>
+            <browser-link href="https://github.com/Simonwep/candy">GitHub</browser-link>
             .
         </article>
 
         <article>
             Everyone can submit their ideas, suggenstions, bugs or whatsoever
-            <browser-link href="https://github.com/Simonwep/Candy/issues/new">here</browser-link>
+            <browser-link href="https://github.com/Simonwep/candy/issues/new">here</browser-link>
             .
             Every contributor get's listed below if he's ok with that.
         </article>
