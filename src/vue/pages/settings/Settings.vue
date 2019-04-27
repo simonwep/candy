@@ -5,8 +5,15 @@
         <section class="paths">
             <h1>Paths</h1>
 
-            <text-input-field v-model="current.downloadDirectory" placeholder="Download path"/>
-            <text-input-field v-model="current.temporaryDirectory" placeholder="Temporary path"/>
+            <div class="field">
+                <text-input-field v-model="current.downloadDirectory" placeholder="Download path"/>
+                <button class="action-green" @click="openFolder(current.downloadDirectory)">Open Folder</button>
+            </div>
+
+            <div class="field">
+                <text-input-field v-model="current.temporaryDirectory" placeholder="Temporary path"/>
+                <button class="action-green" @click="openFolder(current.temporaryDirectory)">Open Folder</button>
+            </div>
 
             <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
         </section>
@@ -52,6 +59,9 @@
 
     // IPC Client
     import ipcClient from '../../ipc/client';
+
+    // Electron stuff
+    import {shell} from 'electron';
 
     // UI Components
     import Checkbox       from '../../ui/input/Checkbox';
@@ -122,6 +132,10 @@
                     this.original = {...res};
                     this.current = {...res};
                 });
+            },
+
+            openFolder(dir) {
+                shell.openItem(dir);
             }
         }
     };
@@ -195,9 +209,16 @@
         }
     }
 
-    .paths {s
-        .text-input-field {
-            margin-bottom: 0.75em;
+    .paths {
+
+        .field {
+            @include flex(row, center);
+
+            .text-input-field {
+                margin-bottom: 0.75em;
+                margin-left: 1em;
+                flex-grow: 1;
+            }
         }
     }
 

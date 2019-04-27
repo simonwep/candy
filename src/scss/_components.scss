@@ -1,7 +1,8 @@
 $buttons: (
     (color: $palette-bright-red, class: action-red),
     (color: $palette-nature-orange, class: action-orange),
-    (color: $palette-cloud-blue, class: action-blue)
+    (color: $palette-cloud-blue, class: action-blue),
+    (color: $palette-turquoise, class: action-green)
 );
 
 button[class*='action'] {
