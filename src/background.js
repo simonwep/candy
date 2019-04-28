@@ -1,6 +1,6 @@
-import {app, BrowserWindow} from 'electron';
-import {installVueDevtools} from 'vue-cli-plugin-electron-builder/lib';
-import path                 from 'path';
+import {app, BrowserWindow, protocol}       from 'electron';
+import {createProtocol, installVueDevtools} from 'vue-cli-plugin-electron-builder/lib';
+import path                                 from 'path';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -32,6 +32,7 @@ async function createWindow() {
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
     } else {
+        createProtocol('app');
         await win.loadURL('app://./index.html');
     }
 
