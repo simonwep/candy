@@ -6,7 +6,7 @@
     "author": "Simon Reinisch",
     "keywords": [],
     "license": "MIT",
-    "main": "background.js",
+    "main": "./src/background.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/Simonwep/candy"
