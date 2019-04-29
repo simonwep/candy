@@ -214,7 +214,7 @@ module.exports.resolveYouTubeUrl = str => {
 
     const isId = str.match(/^[\w-]+$/);
     const playlistId = isId && strl > 30 ? str : match(str, /.*list=(.*?)(&|$)/, 1);
-    const videoId = isId && strl <= 11 ? str : match(str, /watch\?v=(.*?)(&|$)/, 1);
+    const videoId = isId && strl <= 11 ? str : match(str, /(watch\?v=|youtu\.be\/)(.*?)(&|$)/, 2);
     const channelId = isId && (strl > 20 && strl < 30) ? str : match(str, /(channel|user)\/(.*?)(\/|&|$)/, 2);
 
     return {
