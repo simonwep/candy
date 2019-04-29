@@ -10,8 +10,8 @@ if (process.env.NODE_ENV !== 'production') {
     ffmpegStatic.path = path.resolve(ffmpegStatic.path.replace('dist_electron', 'node_modules/ffmpeg-static'));
     ffprobeStatic.path = path.resolve(ffprobeStatic.path.replace('dist_electron', 'node_modules/ffmpeg-static'));
 } else {
-    ffmpegStatic.path = path.resolve(ffmpegStatic.path.replace(/app.*?([\/\\])/, 'node_modules/ffmpeg-static/'));
-    ffprobeStatic.path = path.resolve(ffprobeStatic.path.replace(/app.*?([\/\\])/, 'node_modules/ffprobe-static/'));
+    ffmpegStatic.path = path.resolve(ffmpegStatic.path.replace(/app.*?([/\\])/, 'node_modules/ffmpeg-static/'));
+    ffprobeStatic.path = path.resolve(ffprobeStatic.path.replace(/app.*?([/\\])/, 'node_modules/ffprobe-static/'));
 }
 
 ffmpeg.setFfmpegPath(ffmpegStatic.path);

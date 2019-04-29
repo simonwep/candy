@@ -22,7 +22,9 @@
                 <h1>{{ channel.info.title }}</h1>
 
                 <div class="videos">
-                    <video-snippet-card v-for="video of channel.videos" :video="video"/>
+                    <video-snippet-card v-for="video of channel.videos" 
+                                        :video="video" 
+                                        :key="video.csn"/>
                 </div>
             </div>
         </div>

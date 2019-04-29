@@ -18,6 +18,7 @@
             <!-- Download list -->
             <div class="list">
                 <download-item v-for="download of downloads"
+                               :key="download.id"
                                :card-size="cardSize"
                                :download="download"/>
             </div>
