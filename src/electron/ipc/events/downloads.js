@@ -1,5 +1,5 @@
 const id3tags = require('../../../../config/id3tags');
-const {createUID, throttleEvent, mkdirIfNotPresent} = require('../../../js/utils');
+const {createUID, throttleEvent, mkdirIfNotPresent, maskFilename} = require('../../../js/utils');
 const {getSettings} = require('./settings');
 const {log} = require('./log');
 const encoder = require('../encoder');
@@ -57,17 +57,16 @@ const downloads = {
 
         // Check if an additional directory with the author's name should be made for this video
         if (settings.createChannelDirectory) {
-            downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, video.author.name));
+            downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, maskFilename(video.author.name)));
         }
 
         // Check if an additional directory with the playlist name is requested
         if (playlist) {
-            downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, playlist.title));
+            downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, maskFilename(playlist.title)));
         }
 
         // Build destination path
-        const filteredTitle = video.title.replace(/[/\\?%*:|"<>]/g, ' ').replace(/ +/g, ' ');
-        const destinationFile = path.join(downloadDirectory, `${filteredTitle}.${format}`);
+        const destinationFile = path.join(downloadDirectory, `${maskFilename(video.title)}.${format}`);
 
         // Log
         await log('INFO', `Download ${downloadId}: Initiated`);

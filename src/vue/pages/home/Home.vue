@@ -16,14 +16,14 @@
 
         <!-- Video cards -->
         <div v-if="channelIds.length && !loading" class="video-snippets">
-            <h1>You subscribed to {{ channelIds.length }} channels</h1>
+            <h1>You're subscribed to {{ channelIds.length }} channels</h1>
 
             <div v-for="channel of channels" class="channel">
                 <h1>{{ channel.info.title }}</h1>
 
                 <div class="videos">
-                    <video-snippet-card v-for="video of channel.videos" 
-                                        :video="video" 
+                    <video-snippet-card v-for="video of channel.videos"
+                                        :video="video"
                                         :key="video.csn"/>
                 </div>
             </div>

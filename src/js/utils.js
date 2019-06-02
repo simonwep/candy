@@ -225,3 +225,12 @@ module.exports.resolveYouTubeUrl = str => {
         videoId
     };
 };
+
+/**
+ * Replaces invalid characters of a filename
+ * @param str
+ * @returns {*}
+ */
+module.exports.maskFilename = str => {
+    return str.replace(/[/\\?%*:|"<>]/g, ' ').replace(/ +/g, ' ');
+};
