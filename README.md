@@ -21,7 +21,7 @@ Please consider supporting the artists and creators if you really like their wor
 or similar donation possibilities which can be used to directly giving them something back - it's even better than watching their videos on youtube.
 
 ## Features
-The current version ([1.0.0-beta](https://github.com/Simonwep/candy/releases/tag/1.0.0-beta)) is only build for windows and linux. To use it on mac clone this repo and run `npm run electron:build`.
+The current version ([1.0.0](https://github.com/Simonwep/candy/releases/tag/1.0.0)) is only build for windows. To use it on mac / linux clone this repo and run `npm run electron:build`.
 Sorry for the inconvenience.
 
 See [GitHub Projects](https://github.com/Simonwep/candy/projects) for the current roadmap.
