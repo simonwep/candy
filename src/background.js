@@ -8,9 +8,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
-// Standard scheme must be registered before the app is ready
-protocol.registerStandardSchemes(['app'], {secure: false});
-
 /* eslint-disable */
 async function createWindow() {
     win = new BrowserWindow({
@@ -25,7 +22,8 @@ async function createWindow() {
         webPreferences: {
 
             // Allow CORS Requests
-            webSecurity: false
+            webSecurity: false,
+            nodeIntegration: true
         }
     });
 
