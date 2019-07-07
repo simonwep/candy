@@ -7,7 +7,7 @@
             <folding-rectangles/>
         </div>
 
-        <p v-if="!channelIds.length" class="placeholder">
+        <p v-if="!channelIds.length && !loading" class="placeholder">
             Empty here, huh? Go to
             <router-link to="/settings">settings</router-link>
             to add
