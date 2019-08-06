@@ -102,7 +102,6 @@
         },
 
         mounted() {
-
             let lastText = null;
             this.clipboardInterval = setInterval(() => {
                 const text = clipboard.readText();
