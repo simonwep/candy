@@ -5,14 +5,12 @@
         <img src="../../../assets/icons/512x512.png" alt="Logo">
         <div class="divider"></div>
 
-        <nav-item title="Home" to="/"/>
-
         <!-- Downloads -->
         <nav-item v-slot="{item}"
                   :subs="downloadSubs"
                   class="downloads"
                   title="Downloads"
-                  to="/downloads">
+                  to="/">
 
             <p :data-text="item.text" class="list-item">
                 <span class="text">{{ item.text }}</span>

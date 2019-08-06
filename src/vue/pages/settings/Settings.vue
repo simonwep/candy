@@ -41,17 +41,6 @@
             <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
         </section>
 
-        <section class="front-page">
-            <h1>Frontpage</h1>
-
-            <!-- Edit shown channels -->
-            <h3>Channels which should be shown on your front-page</h3>
-            <tag-input-field v-model="current.homeVideoChannels"
-                             placeholder="Add channel id"/>
-
-            <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
-        </section>
-
     </div>
 </template>
 

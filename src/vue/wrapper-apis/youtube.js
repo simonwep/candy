@@ -42,36 +42,6 @@ function extractYTInitialData(html) {
 }
 
 /**
- * Resolves the latest 30 videos from a channel
- * @param channelId
- * @returns {Promise<[any, any, any, any, any, any, any, any, any, any] | never>}
- */
-export async function getLatestVideosByChannel(channelId) {
-    return fetchText(`https://www.youtube.com/channel/${channelId}/videos`)
-        .catch(() => fetchText(`https://www.youtube.com/user/${channelId}/videos`))
-        .then(async html => {
-            const ytInitialData = extractYTInitialData(html);
-            const {microformatDataRenderer} = ytInitialData.microformat;
-            const {items} = ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[1].tabRenderer.content.sectionListRenderer.contents[0].itemSectionRenderer.contents[0].gridRenderer;
-            const videos = [];
-
-            for (const {gridVideoRenderer: rv} of items) {
-                videos.push(ipcClient.request('getVideoInfo', rv.videoId));
-            }
-
-            return {
-                info: microformatDataRenderer,
-                videos: await Promise.all(videos)
-            };
-        }).catch(err => {
-            ipcClient.request('log', {
-                level: 'ERROR',
-                text: `Failed to fetch latest videos from channel "${channelId}" / ${err.toString()}.`
-            });
-        });
-}
-
-/**
  * Resolves all playlistitems
  * @param playlistId
  * @returns {Promise<void>}
