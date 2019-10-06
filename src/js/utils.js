@@ -98,11 +98,11 @@ module.exports.formatSeconds = (duration = 0) => {
     let res = '';
 
     if (h) {
-        res += String(h).padStart(2, '0') + ':';
+        res += `${String(h).padStart(2, '0')}:`;
     }
 
     if (m || h) {
-        res += String(m).padStart(2, '0') + ':';
+        res += `${String(m).padStart(2, '0')}:`;
     }
 
     if (s || m || h) {
@@ -129,9 +129,9 @@ module.exports.readableByteCount = (bytes, mapValue = v => v) => {
     }
 
     for (let i = 1; i <= 6; i++) {
-        if (block < Math.pow(unit, i)) {
-            const size = Number((block / Math.pow(unit, i - 1)).toFixed(2));
-            const desc = ' ' + (si ? 'kMGTPEB' : 'kMGTPEiB').charAt(i - 1) + (si ? '' : 'i') + 'B';
+        if (block < (unit ** i)) {
+            const size = Number((block / (unit ** i - 1)).toFixed(2));
+            const desc = ` ${(si ? 'kMGTPEB' : 'kMGTPEiB').charAt(i - 1)}${si ? '' : 'i'}B`;
             return mapValue(size) + desc;
         }
     }

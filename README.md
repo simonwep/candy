@@ -3,10 +3,7 @@
 </h3>
 
 <p align="center">
-    <a href="https://github.com/Simonwep/candy/tree/master"><img alt="Stable Branch" src="https://img.shields.io/badge/Stable%20Branch-master-3FB27F.svg"/></a>
-    <a href="https://github.com/Simonwep/candy/tree/dev"><img alt="Development Branch" src="https://img.shields.io/badge/Dev%20Branch-dev-3eacb2.svg"/></a>
     <a href="https://travis-ci.org/Simonwep/candy/"><img alt="Build Status" src="https://travis-ci.org/Simonwep/candy.svg?branch=master"/></a>
-    <img alt="Product state: Beta" src="https://img.shields.io/badge/State-beta-3c71b2.svg"/>
     <a href="https://www.patreon.com/simonwep"><img alt="Support me" src="https://img.shields.io/badge/Patreon-support-553cb2.svg"></a>
 </p>
 
@@ -32,7 +29,7 @@ See [GitHub Projects](https://github.com/Simonwep/candy/projects) for the curren
 * Many container formats are supportet, thanks to [ffmpeg](https://ffmpeg.org/).
 * Donwload video, audio or combine a video quality with the audio you want.
 * Frontpage with list of latest videos by the channels you choose.
-* *No APIKey or similar required - just install 'n use*
+* *No APIKey or similar required - just install and use it*
 
 ## FAQ
 1. "Downloads don't work anymore!" - _It's always a race between the maintainer of such applications and YouTube. YouTube doesn't provide

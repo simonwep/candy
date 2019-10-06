@@ -4,9 +4,9 @@ function fetchText(url) {
     return fetch(url).then(res => {
         if (res.ok) {
             return res.text();
-        } else {
-            throw res;
         }
+        throw res;
+
     });
 }
 
@@ -31,12 +31,12 @@ function extractYTInitialData(html) {
     if (targetScriptString) {
         const returnObjectString = targetScriptString.replace(/^[ \t\r\n]+window\["ytInitialData"] *= */, '');
         return new Function(`return ${returnObjectString}`)();
-    } else {
-        ipcClient.request('log', {
-            level: 'ERROR',
-            text: `Failed to extract ytInitialData.`
-        });
     }
+    ipcClient.request('log', {
+        level: 'ERROR',
+        text: `Failed to extract ytInitialData.`
+    });
+
 
     return null;
 }

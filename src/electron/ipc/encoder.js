@@ -20,7 +20,7 @@ ffmpeg.setFfprobePath(ffprobeStatic.path);
 // Promise queue
 const request = (() => {
     let active = 0;
-    let chain = [];
+    const chain = [];
 
     return async () => {
         active >= ac && await new Promise(resolve => chain.push(resolve));

@@ -137,7 +137,7 @@
         overflow-y: auto;
 
         .download-item {
-            margin: 1em 2em;
+            margin: 0.5em 1em;
             flex-shrink: 0;
         }
     }

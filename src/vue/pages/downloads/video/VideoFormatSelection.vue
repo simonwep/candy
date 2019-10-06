@@ -77,9 +77,9 @@
             extensions() {
                 if (this.content.includes('video')) {
                     return ['mp4', '3gp', 'ogg', 'wmv', 'webm', 'flv', 'avi', 'vob'];
-                } else {
-                    return ['mp3', 'oog', 'aac', 'wma'];
                 }
+                return ['mp3', 'oog', 'aac', 'wma'];
+
             },
 
             sources() {

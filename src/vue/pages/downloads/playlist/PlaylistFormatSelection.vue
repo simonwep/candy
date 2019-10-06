@@ -69,9 +69,9 @@
             extensions() {
                 if (this.content.includes('video')) {
                     return ['mp4', '3gp', 'ogg', 'wmv', 'webm', 'flv', 'avi', 'vob'];
-                } else {
-                    return ['mp3', 'oog', 'aac', 'wma'];
                 }
+                return ['mp3', 'oog', 'aac', 'wma'];
+
             }
         },
 
@@ -112,7 +112,8 @@
                 } = this;
 
                 const priorities = {
-                    resolution: ['72p', '144p', '144p60', '180p', '240p', '240p60', '270p', '360p', '360p60', '480p', '480p60', '720p', '720p60', '1080p', '1080p60', '1440p', '1440p60', '2160p', '2160p60', '3072p', '4320p'],
+                    resolution: ['72p', '144p', '144p60', '180p', '240p', '240p60', '270p', '360p', '360p60', '480p', '480p60', '720p', '720p60', '1080p',
+                        '1080p60', '1440p', '1440p60', '2160p', '2160p60', '3072p', '4320p'],
                     bitrate: ['48kbps', '128kbps', '256kbps', '50kbps', '70kbps', '160kbps']
                 };
 
