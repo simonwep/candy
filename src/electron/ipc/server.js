@@ -1,7 +1,6 @@
 const {ipcMain} = require('electron');
 const events = {
     ...require('./events/downloads'),
-    ...require('./events/settings'),
     ...require('./events/log')
 };
 

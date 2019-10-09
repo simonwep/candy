@@ -46,11 +46,12 @@
 
 <script>
 
-    // IPC Client
-    import ipcClient from '../../ipc/client';
-
     // Electron stuff
-    import {shell} from 'electron';
+    import {shell}  from 'electron';
+    import settings from 'electron-settings';
+    import path     from 'path';
+    import os       from 'os';
+    import fs       from 'fs';
 
     // UI Components
     import Checkbox       from '../../ui/input/Checkbox';
@@ -63,64 +64,75 @@
 
         data() {
             return {
+                hasChanged: false,
                 original: {},
                 current: {
-                    createPlaylistDirectory: false,
-                    createChannelDirectory: false,
+                    createPlaylistDirectory: true,
+                    createChannelDirectory: true,
                     deleteDownloadEntriesIfDone: false,
-                    downloadDirectory: null,
-                    temporaryDirectory: null,
-                    lockDownloadSettings: false,
+                    downloadDirectory: path.resolve(os.homedir(), 'Downloads'),
+                    temporaryDirectory: path.resolve(os.tmpdir(), 'candy'),
                     homeVideoChannels: []
                 }
             };
         },
 
-        computed: {
+        watch: {
+            current: {
+                deep: true,
+                handler() {
+                    const {original, current} = this;
 
-            hasChanged() {
-                const {original, current} = this;
-
-                for (const [prop, value] of Object.entries(original)) {
-                    if (current[prop] !== value) {
-                        return true;
+                    for (const [prop, value] of Object.entries(original)) {
+                        if (current[prop] !== value) {
+                            this.hasChanged = true;
+                            return;
+                        }
                     }
-                }
 
-                return false;
+                    this.hasChanged = false;
+                }
             }
         },
 
         mounted() {
-            this.fetchSettings();
+            const cs = settings.getAll();
+
+            // Check if this is the initial startup
+            if (!Object.keys(cs).length) {
+                this.applySettings();
+            }
+
+            Object.assign(this.current, cs);
+            Object.assign(this.original, cs);
         },
 
         methods: {
 
             applySettings() {
-                const {current} = this;
+                const {downloadDirectory, temporaryDirectory} = this.current;
 
-                ipcClient.request('applySettings', current)
-                    .then(this.fetchSettings)
-                    .catch(() => {
+                // Validate paths
+                for (const dir of [downloadDirectory, temporaryDirectory]) {
+                    if (!fs.existsSync(dir)) {
 
                         // Show error dialog
                         this.$store.commit('dialogbox/show', {
                             type: 'error',
-                            title: 'Whoops',
-                            text: 'Failed to save settings, be sure to enter a valid path.',
+                            title: 'Invalid directory',
+                            text: `${dir} does not exist.`,
                             buttons: [
                                 {type: 'accept', text: 'Okay'}
                             ]
                         });
-                    });
-            },
 
-            fetchSettings() {
-                ipcClient.request('getSettings').then(res => {
-                    this.original = {...res};
-                    this.current = {...res};
-                });
+                        return;
+                    }
+                }
+
+                settings.setAll(this.current);
+                Object.assign(this.original, this.current);
+                this.hasChanged = false;
             },
 
             openFolder(dir) {

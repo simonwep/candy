@@ -1,6 +1,6 @@
 const id3tags = require('../../../../config/id3tags');
 const {createUID, throttleEvent, mkdirIfNotPresent, maskFilename} = require('../../../js/utils');
-const {getSettings} = require('./settings');
+const settings = require('electron-settings');
 const {log} = require('./log');
 const encoder = require('../encoder');
 const ytdl = require('ytdl-core');
@@ -52,11 +52,11 @@ const downloads = {
      * @returns {Promise<string>}
      */
     async startDownload({playlist, format, video, sources, downloadId = createUID()}, {sender}) {
-        const settings = await getSettings();
-        let {temporaryDirectory, downloadDirectory} = settings;
+        let temporaryDirectory = settings.get('temporaryDirectory');
+        let downloadDirectory = settings.get('downloadDirectory');
 
         // Check if an additional directory with the author's name should be made for this video
-        if (settings.createChannelDirectory) {
+        if (settings.get('createChannelDirectory')) {
             downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, maskFilename(video.author.name)));
         }
 

@@ -1,8 +1,0 @@
-{
-    "downloadDirectory": "",
-    "temporaryDirectory": "",
-    "createChannelDirectory": true,
-    "createPlaylistDirectory": true,
-    "deleteDownloadEntriesIfDone": true,
-    "lockDownloadSettings": true
-}
