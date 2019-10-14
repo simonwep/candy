@@ -7,12 +7,12 @@
 
             <div class="field">
                 <text-input-field v-model="current.downloadDirectory" placeholder="Download path"/>
-                <button class="action-green" @click="openFolder(current.downloadDirectory)">Open Folder</button>
+                <button class="action-green" @click="selectFolder('downloadDirectory')">Select Folder</button>
             </div>
 
             <div class="field">
                 <text-input-field v-model="current.temporaryDirectory" placeholder="Temporary path"/>
-                <button class="action-green" @click="openFolder(current.temporaryDirectory)">Open Folder</button>
+                <button class="action-green" @click="selectFolder('temporaryDirectory')">Select Folder</button>
             </div>
 
             <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
@@ -32,12 +32,6 @@
                 <span>Create a direcotry with playlist's name.</span>
             </div>
 
-            <!-- TODO: Implement -->
-            <!--<div class="item">
-                <checkbox v-model="current.lockDownloadSettings"/>
-                <span>Remember last download settings and apply these to the next one.</span>
-            </div>-->
-
             <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
         </section>
 
@@ -47,12 +41,12 @@
 <script>
 
     // Electron stuff
-    import {shell}  from 'electron';
-    import settings from 'electron-settings';
-    import path     from 'path';
-    import os       from 'os';
-    import fs       from 'fs';
-
+    import settings       from 'electron-settings';
+    import path           from 'path';
+    import os             from 'os';
+    import fs             from 'fs';
+    // IPC Client
+    import ipcClient      from '../../ipc/client';
     // UI Components
     import Checkbox       from '../../ui/input/Checkbox';
     import TagInputField  from '../../ui/input/TagInputField';
@@ -120,7 +114,7 @@
                         this.$store.commit('dialogbox/show', {
                             type: 'error',
                             title: 'Invalid directory',
-                            text: `${dir} does not exist.`,
+                            text: `Please enter a valid path.`,
                             buttons: [
                                 {type: 'accept', text: 'Okay'}
                             ]
@@ -135,8 +129,12 @@
                 this.hasChanged = false;
             },
 
-            openFolder(dir) {
-                shell.openItem(dir);
+            selectFolder(prop) {
+                ipcClient.request('chooseFolder').then(res => {
+                    if (res) {
+                        this.current[prop] = res;
+                    }
+                });
             }
         }
     };

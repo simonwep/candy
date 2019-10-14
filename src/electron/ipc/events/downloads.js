@@ -1,7 +1,7 @@
-const id3tags = require('../../../../config/id3tags');
 const {createUID, throttleEvent, mkdirIfNotPresent, maskFilename} = require('../../../js/utils');
-const settings = require('electron-settings');
 const {log} = require('./log');
+const id3tags = require('../../../../config/id3tags');
+const settings = require('electron-settings');
 const encoder = require('../encoder');
 const ytdl = require('ytdl-core');
 const path = require('path');
