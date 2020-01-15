@@ -1,4 +1,6 @@
 module.exports = {
+    lintOnSave: false,
+
     pages: {
         index: {
             entry: 'src/vue/main.js'
