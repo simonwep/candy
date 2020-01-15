@@ -7,8 +7,6 @@
             <h2>About us</h2>
             Candy is developed and maintained by
             <browser-link href="https://github.com/Simonwep">Simon Reinisch</browser-link>
-            and
-            <browser-link href="https://github.com/MathiasWickenhagen">Mathias Wickenhagen</browser-link>
             and is published under the
             <browser-link href="https://choosealicense.com/licenses/mit/">MIT License</browser-link>
             on
