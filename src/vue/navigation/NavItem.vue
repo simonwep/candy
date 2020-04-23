@@ -1,8 +1,9 @@
 <template>
     <div :class="{'nav-item': 1, active: $route.path === to}">
-
         <!-- Topic header -->
-        <router-link :to="to" class="topic">{{ title }}</router-link>
+        <router-link :to="to" class="topic">
+            {{ title }}
+        </router-link>
 
         <!-- Expandable link secion -->
         <ul v-if="subs.length && $scopedSlots.default" class="items">

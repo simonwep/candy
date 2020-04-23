@@ -1,6 +1,5 @@
 <template>
     <div id="app">
-
         <!-- Customiued title bar -->
         <app-title-bar/>
 
@@ -14,7 +13,6 @@
 
         <!-- Static content -->
         <dialog-box/>
-
     </div>
 </template>
 

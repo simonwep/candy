@@ -22,10 +22,25 @@
         "vue/require-v-for-key": "off",
         "vue/valid-v-for": "off",
         "vue/html-indent": [
-            "error",
-            4,
-            {
-                "closeBracket": 1
+            "error", 4, {
+                "attribute": 1,
+                "baseIndent": 1,
+                "closeBracket": 0,
+                "alignAttributesVertically": true,
+                "ignores": []
+            }
+        ],
+        "vue/html-closing-bracket-spacing": [
+            "error", {
+                "startTag": "never",
+                "endTag": "never",
+                "selfClosingTag": "never"
+            }
+        ],
+        "vue/html-closing-bracket-newline": [
+            "error", {
+                "singleline": "never",
+                "multiline": "never"
             }
         ],
         "vue/html-self-closing": [

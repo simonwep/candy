@@ -1,22 +1,29 @@
 <template>
     <div class="about">
-
         <img src="../../../../assets/icons/512x512.png" alt="Logo">
 
         <article>
             <h2>About us</h2>
             Candy is developed and maintained by
-            <browser-link href="https://github.com/Simonwep">Simon Reinisch</browser-link>
+            <browser-link href="https://github.com/Simonwep">
+                Simon Reinisch
+            </browser-link>
             and is published under the
-            <browser-link href="https://choosealicense.com/licenses/mit/">MIT License</browser-link>
+            <browser-link href="https://choosealicense.com/licenses/mit/">
+                MIT License
+            </browser-link>
             on
-            <browser-link href="https://github.com/Simonwep/candy">GitHub</browser-link>
+            <browser-link href="https://github.com/Simonwep/candy">
+                GitHub
+            </browser-link>
             .
         </article>
 
         <article>
             Everyone can submit their ideas, suggenstions, bugs or whatsoever
-            <browser-link href="https://github.com/Simonwep/candy/issues/new">here</browser-link>
+            <browser-link href="https://github.com/Simonwep/candy/issues/new">
+                here
+            </browser-link>
             .
             Every contributor get's listed below if he's ok with that.
         </article>
@@ -24,12 +31,12 @@
         <article class="contributors">
             <h2>Contributors</h2>
             <template v-for="con of config.contributors">
-                <browser-link v-if="con.github" :href="con.github">{{ con.name }}</browser-link>
+                <browser-link v-if="con.github" :href="con.github">
+                    {{ con.name }}
+                </browser-link>
                 <span v-else>{{ con.name }}</span>
             </template>
         </article>
-
-
     </div>
 </template>
 

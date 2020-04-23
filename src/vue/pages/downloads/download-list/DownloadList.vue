@@ -1,14 +1,14 @@
 <template>
     <div class="download-list">
-
         <template v-if="downloads.length">
-
             <!-- Header -->
             <div class="header">
                 <p>Downloads</p>
 
                 <div :class="{actions: 1, visible: someInProgress || somePaused}">
-                    <button class="action-red" @click="cancelAll">Cancel all</button>
+                    <button class="action-red" @click="cancelAll">
+                        Cancel all
+                    </button>
                     <button class="action-orange" @click="pauseOrResumeAll">
                         {{ somePaused ? 'Resume all' : 'Pause all' }}
                     </button>

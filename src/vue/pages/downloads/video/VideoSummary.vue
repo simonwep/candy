@@ -1,6 +1,5 @@
 <template>
     <section class="video-summary">
-
         <!-- Thumbnail and duration -->
         <div class="thumnail">
             <img :src="video.thumbnail_url">
@@ -11,13 +10,17 @@
         <div class="video-details">
             <h1>{{ video.title }}</h1>
 
-            <p class="date">Published on the {{ utils.formatDate('DD. MMMM YYYY', video.published) }}</p>
+            <p class="date">
+                Published on the {{ utils.formatDate('DD. MMMM YYYY', video.published) }}
+            </p>
 
             <div class="author">
                 <img :src="video.author.avatar">
 
                 <div class="channel">
-                    <p class="name">{{ video.author.name }}</p>
+                    <p class="name">
+                        {{ video.author.name }}
+                    </p>
                     <i v-if="video.author.verified" class="fas fa-fw fa-check"></i>
                 </div>
             </div>

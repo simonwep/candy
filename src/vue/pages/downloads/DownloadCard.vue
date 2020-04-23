@@ -1,6 +1,5 @@
 <template>
     <div v-if="video || playlist" class="download-card">
-
         <!-- Summary types -->
         <video-summary v-if="video" :video="video"/>
         <playlist-summary v-else :playlist="playlist"/>
@@ -10,7 +9,6 @@
         <!-- Video types -->
         <video-format-selection v-if="video" :video="video"/>
         <playlist-format-selection v-else :playlist="playlist"/>
-
     </div>
 </template>
 

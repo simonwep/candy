@@ -1,22 +1,23 @@
 <template>
     <div :class="{'dialog-box': 1, open: dialogbox.open}">
-
         <div class="content">
             <div class="header">
                 <i :class="`fas fa-fw fa-${icon}`"></i>
                 <h1> {{ dialogbox.title }}</h1>
             </div>
 
-            <p v-if="dialogbox.text">{{ dialogbox.text }}</p>
+            <p v-if="dialogbox.text">
+                {{ dialogbox.text }}
+            </p>
 
             <div class="actions">
                 <button v-for="(btn, index) of dialogbox.buttons"
                         :class="btn.type"
-                        @click="close(index)">{{ btn.text }}
+                        @click="close(index)">
+                    {{ btn.text }}
                 </button>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -46,6 +47,8 @@
                         return 'times-circle';
                     }
                 }
+
+                return 'question-circle';
             }
         },
 

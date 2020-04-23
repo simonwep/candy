@@ -1,41 +1,39 @@
 <template>
     <div class="format-selection">
-
         <!-- Video codec and format -->
-        <drop-down-selection :item-value-filter="contentFilter"
+        <drop-down-selection v-model="content"
+                             :item-value-filter="contentFilter"
                              :items="video.formats"
                              :title="content || 'choose format'"
-                             v-model="content"
                              item-value="content"/>
 
         <!-- If video - quality  -->
         <drop-down-selection v-if="['video', 'audio/video'].includes(content)"
+                             v-model="resolution"
                              :item-value-filter="qualityFilter"
                              :items="videoResolutions"
                              :title="resolution || 'choose quality'"
-                             v-model="resolution"
                              item-value="resolution"/>
 
         <!-- If audio - bitrate -->
         <drop-down-selection v-if="['audio', 'audio/video'].includes(content)"
+                             v-model="bitrate"
                              :items="audioBitrates"
                              :title="bitrate || 'choose bitrate'"
-                             v-model="bitrate"
                              item-value="bitrate"/>
 
         <!-- Container format -->
         <drop-down-selection v-if="content"
+                             v-model="format"
                              :item-value-filter="extensionsFilter"
                              :items="extensions"
-                             :title="format || 'choose file format'"
-                             v-model="format"/>
+                             :title="format || 'choose file format'"/>
 
         <!-- Start download -->
         <button v-if="sources" @click="startDownload">
             <span>Download</span>
             <span v-if="sources.clen" class="size">({{ utils.readableByteCount(Number(sources.clen)) }})</span>
         </button>
-
     </div>
 </template>
 
@@ -106,6 +104,8 @@
                         return video ? [video] : null;
                     }
                 }
+
+                return null;
             }
         },
 

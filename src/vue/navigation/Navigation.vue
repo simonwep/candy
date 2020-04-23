@@ -1,6 +1,5 @@
 <template>
     <section class="navigation">
-
         <!-- Logo and content divider -->
         <img src="../../../assets/icons/512x512.png" alt="Logo">
         <div class="divider"></div>
@@ -11,7 +10,6 @@
                   class="downloads"
                   title="Downloads"
                   to="/">
-
             <p :data-text="item.text" class="list-item">
                 <span class="text">{{ item.text }}</span>
                 <span class="value">{{ item.value || '/' }}</span>
@@ -21,7 +19,6 @@
         <!-- More menu links -->
         <nav-item title="Settings" to="/settings"/>
         <nav-item title="About" to="/about"/>
-
     </section>
 </template>
 

@@ -1,9 +1,7 @@
 <template>
     <div class="downloads">
-
         <!-- Header with url - input field -->
         <div class="header">
-
             <!-- Url input -->
             <div class="url-input">
                 <i class="fas fa-fw fa-search"></i>
@@ -15,8 +13,12 @@
 
             <!-- Choose between video and audio if both avaiable -->
             <div v-if="videoAndPlaylist && !loading" class="recognition-type">
-                <button :class="{active: type === 'video'}" @click="chooseType('video')">Video</button>
-                <button :class="{active: type === 'playlist'}" @click="chooseType('playlist')">Playlist</button>
+                <button :class="{active: type === 'video'}" @click="chooseType('video')">
+                    Video
+                </button>
+                <button :class="{active: type === 'playlist'}" @click="chooseType('playlist')">
+                    Playlist
+                </button>
             </div>
 
             <!-- Loading spinner -->
@@ -54,7 +56,6 @@
 
         <!-- Download list -->
         <download-list :card-size="viewType"/>
-
     </div>
 </template>
 

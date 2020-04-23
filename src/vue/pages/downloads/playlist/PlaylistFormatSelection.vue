@@ -1,39 +1,37 @@
 <template>
     <div class="format-selection">
-
         <!-- Video codec and format -->
-        <drop-down-selection :item-value-filter="contentFilter"
+        <drop-down-selection v-model="content"
+                             :item-value-filter="contentFilter"
                              :items="availableContent"
-                             :title="content || 'choose format'"
-                             v-model="content"/>
+                             :title="content || 'choose format'"/>
 
         <!-- Video codec and format -->
         <drop-down-selection v-if="['video', 'audio/video'].includes(content)"
+                             v-model="videoQuality"
                              :item-value-filter="videoQualityFilter"
                              :items="availableQualities"
-                             :title="videoQuality || 'choose video quality'"
-                             v-model="videoQuality"/>
+                             :title="videoQuality || 'choose video quality'"/>
 
         <!-- Video codec and format -->
         <drop-down-selection v-if="['audio', 'audio/video'].includes(content)"
+                             v-model="audioQuality"
                              :item-value-filter="audioQualityFilter"
                              :items="availableQualities"
-                             :title="audioQuality || 'choose audio quality'"
-                             v-model="audioQuality"/>
+                             :title="audioQuality || 'choose audio quality'"/>
 
 
         <!-- Container format -->
         <drop-down-selection v-if="content"
+                             v-model="format"
                              :item-value-filter="extensionFilter"
                              :items="extensions"
-                             :title="format || 'choose file format'"
-                             v-model="format"/>
+                             :title="format || 'choose file format'"/>
 
         <!-- Start download -->
         <button v-if="content && format" @click="startDownload">
             <span>Download</span>
         </button>
-
     </div>
 </template>
 

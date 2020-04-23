@@ -1,11 +1,9 @@
 <template>
     <div :class="{checkbox: 1, checked: value}" @click="$emit('input', !value)">
-
         <!-- Check icon -->
         <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
             <path d="M7,25L17.571,38,44,12"></path>
         </svg>
-
     </div>
 </template>
 

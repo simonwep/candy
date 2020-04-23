@@ -1,20 +1,20 @@
 const ffmpeg = require('fluent-ffmpeg/lib/fluent-ffmpeg');
-const ffmpegStatic = require('ffmpeg-static');
 const ffprobeStatic = require('ffprobe-static');
+let ffmpegStaticPath = require('ffmpeg-static');
 const path = require('path');
 const os = require('os');
 const ac = os.cpus().length - 2; // Thread limit
 
 // Apply static paths
 if (process.env.NODE_ENV !== 'production') {
-    ffmpegStatic.path = path.resolve(ffmpegStatic.path.replace('dist_electron', 'node_modules/ffmpeg-static'));
+    ffmpegStaticPath = path.resolve(ffmpegStaticPath.replace('dist_electron', 'node_modules/ffmpeg-static'));
     ffprobeStatic.path = path.resolve(ffprobeStatic.path.replace('dist_electron', 'node_modules/ffmpeg-static'));
 } else {
-    ffmpegStatic.path = path.resolve(ffmpegStatic.path.replace(/app.*?([/\\])/, 'node_modules/ffmpeg-static/'));
+    ffmpegStaticPath = path.resolve(ffmpegStaticPath.replace(/app.*?([/\\])/, 'node_modules/ffmpeg-static/'));
     ffprobeStatic.path = path.resolve(ffprobeStatic.path.replace(/app.*?([/\\])/, 'node_modules/ffprobe-static/'));
 }
 
-ffmpeg.setFfmpegPath(ffmpegStatic.path);
+ffmpeg.setFfmpegPath(ffmpegStaticPath);
 ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 // Promise queue

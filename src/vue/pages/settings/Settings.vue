@@ -1,21 +1,26 @@
 <template>
     <div class="settings">
-
         <!-- All string based settings -->
         <section class="paths">
             <h1>Paths</h1>
 
             <div class="field">
                 <text-input-field v-model="current.downloadDirectory" placeholder="Download path"/>
-                <button class="action-green" @click="selectFolder('downloadDirectory')">Select Folder</button>
+                <button class="action-green" @click="selectFolder('downloadDirectory')">
+                    Select Folder
+                </button>
             </div>
 
             <div class="field">
                 <text-input-field v-model="current.temporaryDirectory" placeholder="Temporary path"/>
-                <button class="action-green" @click="selectFolder('temporaryDirectory')">Select Folder</button>
+                <button class="action-green" @click="selectFolder('temporaryDirectory')">
+                    Select Folder
+                </button>
             </div>
 
-            <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
+            <button :class="{visible: hasChanged}" @click="applySettings">
+                Apply
+            </button>
         </section>
 
         <!-- All boolean based settings -->
@@ -32,9 +37,10 @@
                 <span>Create a direcotry with playlist's name.</span>
             </div>
 
-            <button :class="{visible: hasChanged}" @click="applySettings">Apply</button>
+            <button :class="{visible: hasChanged}" @click="applySettings">
+                Apply
+            </button>
         </section>
-
     </div>
 </template>
 
@@ -45,16 +51,17 @@
     import path           from 'path';
     import os             from 'os';
     import fs             from 'fs';
+
     // IPC Client
     import ipcClient      from '../../ipc/client';
+
     // UI Components
     import Checkbox       from '../../ui/input/Checkbox';
-    import TagInputField  from '../../ui/input/TagInputField';
     import TextInputField from '../../ui/input/TextInputField';
 
     export default {
 
-        components: {Checkbox, TagInputField, TextInputField},
+        components: {Checkbox, TextInputField},
 
         data() {
             return {

@@ -1,6 +1,5 @@
 <template>
     <div :data-card-size="cardSize" class="download-item">
-
         <!-- Colored status bar -->
         <div :data-status="download.status" class="status-bar">
             <i v-if="download.status === 'progress'" class="fas fa-fw fa-angle-down"></i>
@@ -24,7 +23,6 @@
 
         <!-- Download progress -->
         <div class="progress">
-
             <div class="info-text">
                 <span v-if="download.status === 'progress'">
                     <b>{{ utils.readableByteCount(download.progress) }}</b>
@@ -44,10 +42,13 @@
 
         <!-- Actions -->
         <div class="actions">
-
             <template v-if="['progress', 'paused'].includes(download.status)">
-                <button class="action-red" @click="cancelDownload">Cancel</button>
-                <button class="action-orange" @click="pauseOrResumeDownload">{{ download.status === 'paused' ? 'Resume' : 'Pause' }}</button>
+                <button class="action-red" @click="cancelDownload">
+                    Cancel
+                </button>
+                <button class="action-orange" @click="pauseOrResumeDownload">
+                    {{ download.status === 'paused' ? 'Resume' : 'Pause' }}
+                </button>
             </template>
 
             <template v-if="download.status === 'finish'">
@@ -60,11 +61,11 @@
             </template>
 
             <template v-if="['errored', 'cancelled'].includes(download.status)">
-                <button class="action-blue" @click="retryDownload">Retry</button>
+                <button class="action-blue" @click="retryDownload">
+                    Retry
+                </button>
             </template>
-
         </div>
-
     </div>
 </template>
 
@@ -109,6 +110,8 @@
                     case 'paused':
                         return 'Download paused.';
                 }
+
+                return 'Unknown';
             },
 
             percentualProgress() {

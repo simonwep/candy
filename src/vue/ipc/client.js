@@ -19,10 +19,11 @@ ipcRenderer.on('add-download', (event, data) => store.commit('downloads/add', da
 ipcRenderer.on('update-download', (event, data) => store.commit('downloads/update', data));
 
 export default {
-
     async request(channel, data) {
-        const id = _.createUID();
-        ipcRenderer.send(channel, {data, id});
-        return new Promise((resolve, reject) => map[id] = {resolve, reject});
+        return new Promise((resolve, reject) => {
+            const id = _.createUID();
+            map[id] = {resolve, reject};
+            ipcRenderer.send(channel, {data, id});
+        });
     }
 };

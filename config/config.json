@@ -1,5 +1,4 @@
 {
-    "version": "1.0.2",
     "binaryPrefix": true,
     "channelPreloadAmount": 10,
     "contributors": [

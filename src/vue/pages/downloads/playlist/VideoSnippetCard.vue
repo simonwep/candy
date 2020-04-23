@@ -1,16 +1,18 @@
 <template>
     <div class="video-snippet-card">
-
         <div class="thumbnail">
-            <h2 class="author">{{ video.author.name }}</h2>
+            <h2 class="author">
+                {{ video.author.name }}
+            </h2>
             <img :src="video.thumbnail_url" alt="">
         </div>
 
         <div class="info">
             <img :src="video.author.avatar" alt="">
-            <p class="title">{{ video.title }}</p>
+            <p class="title">
+                {{ video.title }}
+            </p>
         </div>
-
     </div>
 </template>
 

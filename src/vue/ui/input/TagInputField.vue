@@ -1,6 +1,5 @@
 <template>
     <div class="tag-input-field">
-
         <!-- Tag list -->
         <div v-for="tag of value" class="tag">
             <span>{{ tag }}</span>
@@ -12,7 +11,6 @@
                :placeholder="placeholder"
                type="text"
                @keydown.enter="addTag">
-
     </div>
 </template>
 

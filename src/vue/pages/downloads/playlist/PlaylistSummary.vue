@@ -1,15 +1,13 @@
 <template>
     <section class="playlist-summary">
-
         <h1>{{ playlist.info.title }} <span>/ {{ playlist.videos.length }} Videos</span></h1>
 
         <!-- Videos -->
         <div class="snippets">
             <video-snippet-card v-for="video of playlist.videos"
-                                :video="video"
-                                :key="video.video_id"/>
+                                :key="video.video_id"
+                                :video="video"/>
         </div>
-
     </section>
 </template>
 

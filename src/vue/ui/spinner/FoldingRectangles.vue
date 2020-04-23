@@ -1,6 +1,5 @@
 <template>
     <div class="folding-rectangles">
-
         <div class="box-grid">
             <div></div>
             <div></div>
@@ -12,7 +11,6 @@
             <div></div>
             <div></div>
         </div>
-
     </div>
 </template>
 

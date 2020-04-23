@@ -1,14 +1,13 @@
 <template>
     <div :class="{'text-input-field': 1, focused}">
-
         <!-- Placeholder, will be moved if input contains text -->
         <label :class="{placeholder: 1, moved: value || focused}" :for="labelId">{{ placeholder }}</label>
 
         <div class="field">
-            <input ref="input"
+            <input :id="labelId"
+                   ref="input"
                    :autofocus="autofocus ? 'autofocus' : ''"
                    :class="{empty: !value}"
-                   :id="labelId"
                    :type="password && !showPwd ? 'password' : 'text'"
                    :value="value"
                    spellcheck="false"
@@ -30,7 +29,6 @@
 
         <!-- Colored border to show focus -->
         <span class="border"></span>
-
     </div>
 </template>
 

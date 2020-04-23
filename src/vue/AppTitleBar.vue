@@ -1,6 +1,8 @@
 <template>
     <div class="title-bar">
-        <p class="title">Candy YouTube Downloader <span>- v{{ config.version }}</span></p>
+        <p class="title">
+            Candy YouTube Downloader <span>- v{{ version }}</span>
+        </p>
 
         <div class="drag"></div>
 
@@ -14,12 +16,13 @@
 
 <script>
 
-    import {remote} from 'electron';
+    import {remote}  from 'electron';
+    import {version} from '../../package.json';
 
     export default {
 
         data() {
-            return {};
+            return {version};
         },
 
         methods: {

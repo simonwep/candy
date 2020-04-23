@@ -1,15 +1,15 @@
 <template>
     <div :class="{'drop-down-selection': 1, open}">
-
         <button ref="activator">
             <i class="fas fa-fw fa-angle-down"></i>
             <span>{{ value ? (itemValueFilter ? itemValueFilter(value) : value) : title }}</span>
         </button>
 
         <div ref="items" class="items">
-            <p v-for="item of preparedItems" @click="select(item)">{{ item.modified }}</p>
+            <p v-for="item of preparedItems" @click="select(item)">
+                {{ item.modified }}
+            </p>
         </div>
-
     </div>
 </template>
 
