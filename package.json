@@ -23,33 +23,33 @@
         "postuninstall": "electron-builder install-app-deps"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.12.0",
+        "@fortawesome/fontawesome-free": "^5.13.0",
         "electron-settings": "^3.2.0",
-        "ffmpeg-static": "^2.7.0",
+        "ffmpeg-static": "^4.1.1",
         "ffprobe-static": "^3.0.0",
         "fluent-ffmpeg": "^2.1.2",
         "normalize.css": "^8.0.1",
         "typeface-open-sans": "^0.0.75",
         "vue": "^2.6.11",
-        "vue-router": "^3.1.5",
-        "vuex": "^3.1.2",
-        "ytdl-core": "^1.0.6"
+        "vue-router": "^3.1.6",
+        "vuex": "^3.2.0",
+        "ytdl-core": "^2.1.0"
     },
     "devDependencies": {
-        "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
-        "@vue/cli-plugin-babel": "^4.1.2",
-        "@vue/cli-plugin-eslint": "^4.1.2",
-        "@vue/cli-service": "^4.1.2",
-        "cross-env": "^6.0.3",
-        "electron": "^5.0.13",
-        "electron-builder": "^22.2.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
+        "@vue/cli-plugin-babel": "^4.3.1",
+        "@vue/cli-plugin-eslint": "^4.3.1",
+        "@vue/cli-service": "^4.3.1",
+        "cross-env": "^7.0.2",
+        "electron": "^8.2.3",
+        "electron-builder": "^22.5.1",
         "electron-debug": "^3.0.1",
         "eslint": "^6.8.0",
-        "eslint-plugin-vue": "^6.1.2",
-        "node-sass": "^4.13.0",
+        "eslint-plugin-vue": "^6.2.2",
+        "node-sass": "^4.13.1",
         "sass-loader": "^8.0.2",
         "sassyfication": "^0.2.0",
-        "vue-cli-plugin-electron-builder": "^1.4.4",
+        "vue-cli-plugin-electron-builder": "^1.4.6",
         "vue-template-compiler": "^2.6.11"
     }
 }
