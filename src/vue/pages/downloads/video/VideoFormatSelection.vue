@@ -32,7 +32,7 @@
         <!-- Start download -->
         <button v-if="sources" @click="startDownload">
             <span>Download</span>
-            <span v-if="sources.clen" class="size">({{ utils.readableByteCount(Number(sources.clen)) }})</span>
+            <span v-if="sources.clen" class="size">({{ prettyBytes(Number(sources.clen)) }})</span>
         </button>
     </div>
 </template>
@@ -44,6 +44,8 @@
 
     // IPC Client
     import ipcClient from '../../../ipc/client';
+
+    import prettyBytes from 'pretty-bytes';
 
     export default {
 
@@ -116,6 +118,8 @@
         },
 
         methods: {
+            prettyBytes,
+
             contentFilter(v) {
                 return ({
                     'video': 'Video only',

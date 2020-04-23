@@ -25,9 +25,9 @@
         <div class="progress">
             <div class="info-text">
                 <span v-if="download.status === 'progress'">
-                    <b>{{ utils.readableByteCount(download.progress) }}</b>
+                    <b>{{ prettyBytes(download.progress) }}</b>
                     /
-                    <b>{{ utils.readableByteCount(download.size) }} ({{ percentualProgress }}) - </b>
+                    <b>{{ prettyBytes(download.size) }} ({{ percentualProgress }}) - </b>
                 </span>
 
                 <b>{{ statusText }}</b>
@@ -76,6 +76,8 @@
 
     // Electron stuff
     import {shell} from 'electron';
+
+    import prettyBytes from 'pretty-bytes';
 
     export default {
 
@@ -126,6 +128,7 @@
         },
 
         methods: {
+            prettyBytes,
 
             cancelDownload() {
                 ipcClient.request('cancelDownload', {downloadId: this.download.id});

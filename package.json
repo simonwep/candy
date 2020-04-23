@@ -29,6 +29,7 @@
         "ffprobe-static": "^3.0.0",
         "fluent-ffmpeg": "^2.1.2",
         "normalize.css": "^8.0.1",
+        "pretty-bytes": "^5.3.0",
         "typeface-open-sans": "^0.0.75",
         "vue": "^2.6.11",
         "vue-router": "^3.1.6",
