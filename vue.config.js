@@ -27,21 +27,21 @@ module.exports = {
                 mac: {
                     icon: 'assets/icons/512x512.png',
                     extraResources: [
-                        './node_modules/ffmpeg-static/bin/darwin/x64',
+                        './node_modules/ffmpeg-static',
                         './node_modules/ffprobe-static/bin/darwin/x64'
                     ],
                 },
                 win: {
                     icon: 'assets/icons/512x512.png',
                     extraResources: [
-                        './node_modules/ffmpeg-static/bin/win32/x64',
+                        './node_modules/ffmpeg-static',
                         './node_modules/ffprobe-static/bin/win32/x64'
                     ],
                 },
                 linux: {
                     icon: 'assets/icons/256x256.png',
                     extraResources: [
-                        './node_modules/ffmpeg-static/bin/linux/x64',
+                        './node_modules/ffmpeg-static',
                         './node_modules/ffprobe-static/bin/linux/x64'
                     ],
                 }
