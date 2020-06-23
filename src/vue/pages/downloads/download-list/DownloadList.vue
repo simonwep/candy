@@ -37,7 +37,7 @@
     import {mapState} from 'vuex';
 
     // IPC Client
-    import ipcClient from '../../../ipc/client';
+    import ipcClient from '../../../ipc';
 
     // Components
     import DownloadItem from './DownloadListItem';

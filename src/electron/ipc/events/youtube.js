@@ -1,4 +1,5 @@
-import ipcClient from '../ipc/client';
+const {getVideoInfo} = require('./downloads');
+const {log} = require('./log');
 
 function fetchText(url) {
     return fetch(url).then(res => {
@@ -32,21 +33,18 @@ function extractYTInitialData(html) {
         const returnObjectString = targetScriptString.replace(/^[ \t\r\n]+window\["ytInitialData"] *= */, '');
         return new Function(`return ${returnObjectString}`)();
     }
-    ipcClient.request('log', {
-        level: 'ERROR',
-        text: `Failed to extract ytInitialData.`
-    });
 
-
+    log('ERROR', `Failed to extract ytInitialData.`);
     return null;
 }
+
 
 /**
  * Resolves all playlistitems
  * @param playlistId
  * @returns {Promise<void>}
  */
-export async function getPlaylistVideos(playlistId) {
+async function getPlaylistVideos(playlistId) {
     const triedIds = [];
 
     // Fetch first raw page
@@ -62,8 +60,7 @@ export async function getPlaylistVideos(playlistId) {
                 v => {
                     const {videoId} = v.playlistVideoRenderer;
                     triedIds.push(videoId);
-                    return ipcClient.request('getVideoInfo', videoId)
-                        .catch(() => null);
+                    return getVideoInfo(videoId).catch(() => null);
                 }
             ))
         };
@@ -95,9 +92,7 @@ export async function getPlaylistVideos(playlistId) {
             for (const {playlistPanelVideoRenderer: {videoId}} of contents) {
                 if (!triedIds.find(v => v === videoId)) {
                     triedIds.push(videoId);
-                    promises.push(
-                        ipcClient.request('getVideoInfo', videoId).catch(() => null)
-                    );
+                    promises.push(getVideoInfo(videoId).catch(() => null));
                 }
             }
 
@@ -113,10 +108,7 @@ export async function getPlaylistVideos(playlistId) {
 
         return {videos, info};
     }).catch(err => {
-        ipcClient.request('log', {
-            level: 'ERROR',
-            text: `Failed to fetch playlist videos from "${playlistId}" / ${err.toString()}.`
-        });
+        log('ERROR', `Failed to fetch playlist videos from "${playlistId}" / ${err.toString()}.`);
     });
 }
 
@@ -125,7 +117,7 @@ export async function getPlaylistVideos(playlistId) {
  * @param channelId
  * @returns {Promise<void>}
  */
-export async function getChannelVideos(channelId) {
+async function getChannelVideos(channelId) {
 
     // Fetch playlist id
     const playlistid = await fetchText(`https://www.youtube.com/channel/${channelId}/videos`)
@@ -133,12 +125,14 @@ export async function getChannelVideos(channelId) {
             const ytInitialData = extractYTInitialData(html);
             return ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[1].tabRenderer.content.sectionListRenderer.subMenu.channelSubMenuRenderer.playAllButton.buttonRenderer.navigationEndpoint.watchPlaylistEndpoint.playlistId;
         }).catch(err => {
-            ipcClient.request('log', {
-                level: 'ERROR',
-                text: `Failed to fetch channel videos videos from "${channelId}" / ${err.toString()}.`
-            });
+            log('ERROR', `Failed to fetch channel videos videos from "${channelId}" / ${err.toString()}.`);
         });
 
     // Return playlist videos
     return getPlaylistVideos(playlistid);
 }
+
+module.exports = {
+    getPlaylistVideos,
+    getChannelVideos
+};

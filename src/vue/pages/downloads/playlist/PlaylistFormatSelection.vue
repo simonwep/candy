@@ -41,7 +41,7 @@
     import DropDownSelection from '../../../ui/input/DropDownSelection';
 
     // IPC Client
-    import ipcClient from '../../../ipc/client';
+    import ipcClient from '../../../ipc';
 
     export default {
 

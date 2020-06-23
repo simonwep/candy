@@ -72,7 +72,7 @@
 <script>
 
     // IPC Client
-    import ipcClient from '../../../ipc/client';
+    import ipcClient from '../../../ipc';
 
     // Electron stuff
     import {shell} from 'electron';

@@ -62,7 +62,7 @@
 <script>
 
     // IPC Client and electron stuff
-    import ipcClient   from '../../ipc/client';
+    import ipcClient   from '../../ipc';
     import {clipboard} from 'electron';
 
     // Components
@@ -152,8 +152,8 @@
                     }
                 }
 
+                this.loading = true;
                 if (videoId) {
-                    this.loading = true;
                     this.type = this.type || 'video';
                     ipcClient.request('getVideoInfo', videoId).then(res => {
                         this.video = res;
@@ -161,17 +161,15 @@
                         content && (this.input = content);
                     }).finally(() => this.loading = false);
                 } else if (playlistId) {
-                    this.loading = true;
                     this.type = this.type || 'playlist';
-                    this.$store.dispatch('youtube/resolvePlaylist', {playlistId}).then(res => {
+                    ipcClient.request('getPlaylistVideos', playlistId).then(res => {
                         this.playlist = res;
                         this.video = null;
                         content && (this.input = content);
                     }).finally(() => this.loading = false);
                 } else if (channelId) {
-                    this.loading = true;
                     this.type = 'channel';
-                    this.$store.dispatch('youtube/resolveChannelVideos', {channelId}).then(res => {
+                    ipcClient.request('getChannelVideos', channelId).then(res => {
                         this.playlist = res;
                         this.video = null;
                         content && (this.input = content);

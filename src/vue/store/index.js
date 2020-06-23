@@ -3,7 +3,6 @@ import Vue  from 'vue';
 
 // Modules
 import {downloads} from './modules/downloads';
-import {youtube}   from './modules/youtube';
 import {dialogbox} from './modules/dialogbox';
 
 Vue.use(Vuex);
@@ -13,9 +12,6 @@ export default new Vuex.Store({
 
         // Holds current downloads
         downloads,
-
-        // YouTube api related stuff
-        youtube,
 
         // Dialog box content
         dialogbox

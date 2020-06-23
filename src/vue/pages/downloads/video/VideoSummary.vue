@@ -3,25 +3,25 @@
         <!-- Thumbnail and duration -->
         <div class="thumnail">
             <img :src="video.thumbnail_url">
-            <span>{{ utils.formatSeconds(Number(video.length_seconds)) }}</span>
+            <span>{{ utils.formatSeconds(Number(video.videoDetails.lengthSeconds)) }}</span>
         </div>
 
         <!-- Video details -->
         <div class="video-details">
-            <h1>{{ video.title }}</h1>
+            <h1>{{ video.videoDetails.title }}</h1>
 
             <p class="date">
                 Published on the {{ utils.formatDate('DD. MMMM YYYY', video.published) }}
             </p>
 
             <div class="author">
-                <img :src="video.author.avatar">
+                <img :src="video.videoDetails.author.avatar">
 
                 <div class="channel">
                     <p class="name">
-                        {{ video.author.name }}
+                        {{ video.videoDetails.ownerChannelName }}
                     </p>
-                    <i v-if="video.author.verified" class="fas fa-fw fa-check"></i>
+                    <i v-if="video.videoDetails.author.verified" class="fas fa-fw fa-check"></i>
                 </div>
             </div>
         </div>

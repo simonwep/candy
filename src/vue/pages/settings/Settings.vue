@@ -47,13 +47,13 @@
 <script>
 
     // Electron stuff
-    import settings       from 'electron-settings';
-    import path           from 'path';
-    import os             from 'os';
-    import fs             from 'fs';
+    import settings from 'electron-settings';
+    import path     from 'path';
+    import os       from 'os';
+    import fs       from 'fs';
 
     // IPC Client
-    import ipcClient      from '../../ipc/client';
+    import ipcClient from '../../ipc';
 
     // UI Components
     import Checkbox       from '../../ui/input/Checkbox';
@@ -65,7 +65,6 @@
 
         data() {
             return {
-                hasChanged: false,
                 original: {},
                 current: {
                     createPlaylistDirectory: true,
@@ -78,26 +77,14 @@
             };
         },
 
-        watch: {
-            current: {
-                deep: true,
-                handler() {
-                    const {original, current} = this;
-
-                    for (const [prop, value] of Object.entries(original)) {
-                        if (current[prop] !== value) {
-                            this.hasChanged = true;
-                            return;
-                        }
-                    }
-
-                    this.hasChanged = false;
-                }
+        computed: {
+            hasChanged() {
+                return JSON.stringify(this.current) !== JSON.stringify(this.original);
             }
         },
 
         mounted() {
-            const cs = settings.getAll();
+            const cs = settings.getSync();
 
             // Check if this is the initial startup
             if (!Object.keys(cs).length) {
@@ -117,23 +104,13 @@
                 for (const dir of [downloadDirectory, temporaryDirectory]) {
                     if (!fs.existsSync(dir)) {
 
-                        // Show error dialog
-                        this.$store.commit('dialogbox/show', {
-                            type: 'error',
-                            title: 'Invalid directory',
-                            text: `Please enter a valid path.`,
-                            buttons: [
-                                {type: 'accept', text: 'Okay'}
-                            ]
-                        });
-
-                        return;
+                        // TODO: What should happen in case of errors?
+                        fs.mkdirSync(dir, {recursive: true});
                     }
                 }
 
-                settings.setAll(this.current);
+                settings.setSync(this.current);
                 Object.assign(this.original, this.current);
-                this.hasChanged = false;
             },
 
             selectFolder(prop) {
@@ -141,7 +118,7 @@
                     if (res) {
                         this.current[prop] = res;
                     }
-                });
+                }).catch(console.error);
             }
         }
     };

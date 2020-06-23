@@ -20,10 +20,8 @@ async function createWindow() {
         icon: path.resolve(__dirname, '../', 'assets/icons/512x512.png'),
 
         webPreferences: {
-
-            // Allow CORS Requests
-            webSecurity: false,
-            nodeIntegration: true
+            nodeIntegration: true,
+            enableRemoteModule: true
         }
     });
 

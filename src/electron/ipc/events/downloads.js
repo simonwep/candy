@@ -1,7 +1,7 @@
 const {createUID, throttleEvent, mkdirIfNotPresent, maskFilename} = require('../../../js/utils');
 const {log} = require('./log');
 const id3tags = require('../../../../config/id3tags');
-const settings = require('electron-settings');
+const settings = require('electron-settings').default;
 const encoder = require('../encoder');
 const ytdl = require('ytdl-core');
 const path = require('path');
@@ -52,12 +52,12 @@ const downloads = {
      * @returns {Promise<string>}
      */
     async startDownload({playlist, format, video, sources, downloadId = createUID()}, {sender}) {
-        let temporaryDirectory = settings.get('temporaryDirectory');
-        let downloadDirectory = settings.get('downloadDirectory');
+        let temporaryDirectory = await settings.get('temporaryDirectory');
+        let downloadDirectory = await settings.get('downloadDirectory');
 
         // Check if an additional directory with the author's name should be made for this video
-        if (settings.get('createChannelDirectory')) {
-            downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, maskFilename(video.author.name)));
+        if (await settings.get('createChannelDirectory')) {
+            downloadDirectory = mkdirIfNotPresent(path.resolve(downloadDirectory, maskFilename(video.videoDetails.ownerChannelName)));
         }
 
         // Check if an additional directory with the playlist name is requested
@@ -66,7 +66,7 @@ const downloads = {
         }
 
         // Build destination path
-        const destinationFile = path.join(downloadDirectory, `${maskFilename(video.title)}.${format}`);
+        const destinationFile = path.join(downloadDirectory, `${maskFilename(video.videoDetails.title)}.${format}`);
 
         // Log
         await log('INFO', `Download ${downloadId}: Initiated`);
@@ -94,7 +94,7 @@ const downloads = {
         const sourceStreams = [];
         for (const {itag, container} of sources) {
             const tmpFile = path.join(temporaryDirectory, `${createUID()}.${container}`);
-            const sourceStream = ytdl(video.video_url, {
+            const sourceStream = ytdl(video.videoDetails.video_url, {
                 quality: itag,
                 highWaterMark: 16384
             });
