@@ -79,7 +79,7 @@
         $icon-color: rgba($palette-snow-white, 0.85);
 
         div {
-            @include size(100%, 1em);
+            @include size(1em, 100%);
             position: relative;
             padding: 0 0.8em 0 0.7em;
             margin-left: 0.25em;
@@ -99,7 +99,7 @@
         }
 
         .minimize::before {
-            @include size(2px, 0.75em);
+            @include size(0.75em, 2px);
             background: $icon-color;
             top: 9px;
         }

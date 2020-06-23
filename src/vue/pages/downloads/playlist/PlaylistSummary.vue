@@ -60,7 +60,7 @@
         &::after {
             @include pseudo();
             @include position(0, 0, 0.5em, auto);
-            @include size(auto, 5em);
+            @include size(5em, auto);
             background: linear-gradient(to left, $palette-theme-secondary, transparent);
         }
     }

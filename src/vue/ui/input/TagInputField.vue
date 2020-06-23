@@ -94,7 +94,7 @@
             &::after {
                 @include pseudo();
                 @include position(0, 0, 0, 10px);
-                @include size(2px, 100%);
+                @include size(100%, 2px);
                 background: $palette-turquoise;
                 margin: auto;
                 border-radius: 100em;

@@ -81,13 +81,13 @@
     .border {
         position: absolute;
         @include position(auto, 0, 0, 0);
-        @include size(1px, 100%);
+        @include size(100%, 1px);
         opacity: 0.75;
 
         &::before,
         &::after {
             @include pseudo();
-            @include size(1px, 100%);
+            @include size(100%, 1px);
             background: $palette-theme-tertiary;
         }
 

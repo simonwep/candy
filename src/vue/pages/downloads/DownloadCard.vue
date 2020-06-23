@@ -51,7 +51,7 @@
     }
 
     .divider {
-        @include size(2px, 98%);
+        @include size(98%, 2px);
         margin: 1em auto;
         background: rgba(black, 0.1);
     }

@@ -71,7 +71,7 @@
     }
 
     .divider {
-        @include size(1px, 60%);
+        @include size(60%, 1px);
         background: rgba($palette-snow-white, 0.1);
         margin: 0.5em 0 1em;
     }

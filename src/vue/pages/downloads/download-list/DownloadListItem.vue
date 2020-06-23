@@ -315,7 +315,7 @@
         }
 
         .progress-bar {
-            @include size(5px, 100%);
+            @include size(100%, 5px);
             position: relative;
             background: $palette-theme-tertiary;
             border-radius: 5em;

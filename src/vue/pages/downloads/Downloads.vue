@@ -291,7 +291,7 @@
 
             > div {
                 @include flex(row, center, center);
-                @include size(100%, 2.5em);
+                @include size(2.5em, 100%);
                 transition: all 0.3s;
                 cursor: pointer;
                 border: 1px solid $palette-theme-tertiary;
