@@ -4,12 +4,12 @@ on: ["push", "pull_request"]
 
 jobs:
     build:
-
-        runs-on: ubuntu-latest
-
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [macos-latest, windows-latest, ubuntu-18.04]
         steps:
             -   uses: actions/checkout@v2
-
             -   name: Use Node.js 12.x
                 uses: actions/setup-node@v1
                 with:
