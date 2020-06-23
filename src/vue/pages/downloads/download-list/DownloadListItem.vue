@@ -18,7 +18,7 @@
 
         <div class="video-info">
             <h1>{{ download.video.title }}</h1>
-            <p><span v-for="source of download.sources">{{ source.bitrate || source.resolution }}</span></p>
+            <p><span v-for="source of download.sources" :key="source">{{ source.bitrate || source.resolution }}</span></p>
         </div>
 
         <!-- Download progress -->

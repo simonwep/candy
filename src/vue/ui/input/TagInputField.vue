@@ -1,7 +1,9 @@
 <template>
     <div class="tag-input-field">
         <!-- Tag list -->
-        <div v-for="tag of value" class="tag">
+        <div v-for="tag of value"
+             :key="tag"
+             class="tag">
             <span>{{ tag }}</span>
             <div @click="removeTag(tag)"></div>
         </div>

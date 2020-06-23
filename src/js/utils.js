@@ -10,7 +10,9 @@ function eventListener(method, elements, events, fn, options = {}) {
         elements = [elements];
     }
 
-    if (!Array.isArray(events)) events = [events];
+    if (!Array.isArray(events)) {
+        events = [events];
+    }
 
     for (const element of elements) {
         for (const event of events) {
@@ -18,7 +20,7 @@ function eventListener(method, elements, events, fn, options = {}) {
         }
     }
 
-    return Array.prototype.slice.call(arguments, 1);
+    return [elements, events, fn, options];
 }
 
 /**

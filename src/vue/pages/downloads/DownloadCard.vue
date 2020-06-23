@@ -16,9 +16,9 @@
 
     // Components
     import PlaylistFormatSelection from './playlist/PlaylistFormatSelection';
-    import PlaylistSummary         from './playlist/PlaylistSummary';
-    import VideoFormatSelection    from './video/VideoFormatSelection';
-    import VideoSummary            from './video/VideoSummary';
+    import PlaylistSummary from './playlist/PlaylistSummary';
+    import VideoFormatSelection from './video/VideoFormatSelection';
+    import VideoSummary from './video/VideoSummary';
 
     export default {
 

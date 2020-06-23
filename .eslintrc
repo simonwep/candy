@@ -8,7 +8,8 @@
         "plugin:vue/recommended",
         "plugin:vue/base",
         "plugin:vue/essential",
-        "plugin:vue/strongly-recommended"
+        "plugin:vue/strongly-recommended",
+        "simon"
     ],
     "plugins": [
         "vue"
@@ -17,10 +18,22 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
+    "overrides": [
+        {
+            "files": ["*.vue"],
+            "rules": {
+                "indent": "off",
+                "vue/script-indent": [
+                    "error", 4, {
+                        "baseIndent": 1,
+                        "switchCase": 1,
+                        "ignores": []
+                    }
+                ]
+            }
+        }
+    ],
     "rules": {
-        "no-cond-assign": "off",
-        "vue/require-v-for-key": "off",
-        "vue/valid-v-for": "off",
         "vue/html-indent": [
             "error", 4, {
                 "attribute": 1,

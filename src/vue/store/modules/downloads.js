@@ -1,3 +1,8 @@
+function sortVideos(state) {
+    const sortMap = ['finish', 'convert', 'progress', 'paused', 'errored', 'cancelled'];
+    state.sort((a, b) => sortMap.indexOf(b.status) - sortMap.indexOf(a.status));
+}
+
 export const downloads = {
 
     namespaced: true,
@@ -37,8 +42,3 @@ export const downloads = {
         }
     }
 };
-
-function sortVideos(state) {
-    const sortMap = ['finish', 'convert', 'progress', 'paused', 'errored', 'cancelled'];
-    state.sort((a, b) => sortMap.indexOf(b.status) - sortMap.indexOf(a.status));
-}

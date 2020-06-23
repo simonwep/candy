@@ -48,15 +48,15 @@
 
     // Electron stuff
     import settings from 'electron-settings';
-    import path     from 'path';
-    import os       from 'os';
-    import fs       from 'fs';
+    import path from 'path';
+    import os from 'os';
+    import fs from 'fs';
 
     // IPC Client
     import ipcClient from '../../ipc';
 
     // UI Components
-    import Checkbox       from '../../ui/input/Checkbox';
+    import Checkbox from '../../ui/input/Checkbox';
     import TextInputField from '../../ui/input/TextInputField';
 
     export default {
@@ -118,7 +118,7 @@
                     if (res) {
                         this.current[prop] = res;
                     }
-                }).catch(console.error);
+                });
             }
         }
     };

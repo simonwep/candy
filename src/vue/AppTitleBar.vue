@@ -16,7 +16,7 @@
 
 <script>
 
-    import {remote}  from 'electron';
+    import {remote} from 'electron';
     import {version} from '../../package.json';
 
     export default {

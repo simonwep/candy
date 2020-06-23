@@ -1,6 +1,6 @@
-import {app, BrowserWindow}                 from 'electron';
+import {app, BrowserWindow} from 'electron';
 import {createProtocol, installVueDevtools} from 'vue-cli-plugin-electron-builder/lib';
-import path                                 from 'path';
+import path from 'path';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 

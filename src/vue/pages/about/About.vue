@@ -31,10 +31,12 @@
         <article class="contributors">
             <h2>Contributors</h2>
             <template v-for="con of config.contributors">
-                <browser-link v-if="con.github" :href="con.github">
+                <browser-link v-if="con.github"
+                              :key="con.name"
+                              :href="con.github">
                     {{ con.name }}
                 </browser-link>
-                <span v-else>{{ con.name }}</span>
+                <span v-else :key="con.name">{{ con.name }}</span>
             </template>
         </article>
     </div>

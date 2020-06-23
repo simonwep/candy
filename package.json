@@ -17,6 +17,7 @@
     },
     "scripts": {
         "lint": "vue-cli-service lint ./src",
+        "lint:fix": "vue-cli-service lint ./src --fix",
         "electron:build": "vue-cli-service electron:build",
         "electron:serve": "vue-cli-service electron:serve",
         "postinstall": "electron-builder install-app-deps",
@@ -46,6 +47,7 @@
         "electron-builder": "^22.7.0",
         "electron-debug": "^3.1.0",
         "eslint": "^7.3.1",
+        "eslint-config-simon": "^2.1.0",
         "eslint-plugin-vue": "^6.2.2",
         "node-sass": "^4.14.1",
         "sass-loader": "^8.0.2",

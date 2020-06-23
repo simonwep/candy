@@ -23,7 +23,7 @@ module.exports = {
 
         // Validate log level
         if (!['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'].includes(level)) {
-            throw 'Unknown log level';
+            throw new Error('Unknown log level');
         }
 
         // Build log text

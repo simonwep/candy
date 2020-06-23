@@ -52,7 +52,7 @@ const downloads = {
      * @returns {Promise<string>}
      */
     async startDownload({playlist, format, video, sources, downloadId = createUID()}, {sender}) {
-        let temporaryDirectory = await settings.get('temporaryDirectory');
+        const temporaryDirectory = await settings.get('temporaryDirectory');
         let downloadDirectory = await settings.get('downloadDirectory');
 
         // Check if an additional directory with the author's name should be made for this video

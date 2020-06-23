@@ -6,7 +6,9 @@
         </button>
 
         <div ref="items" class="items">
-            <p v-for="item of preparedItems" @click="select(item)">
+            <p v-for="item of preparedItems"
+               :key="item.modified"
+               @click="select(item)">
                 {{ item.modified }}
             </p>
         </div>

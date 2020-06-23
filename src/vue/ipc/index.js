@@ -1,6 +1,6 @@
 import {ipcRenderer} from 'electron';
-import store         from '../store/index';
-import * as _        from '../../js/utils';
+import store from '../store/index';
+import * as _ from '../../js/utils';
 
 const map = {};
 

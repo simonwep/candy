@@ -34,7 +34,7 @@ function extractYTInitialData(html) {
         return new Function(`return ${returnObjectString}`)();
     }
 
-    log('ERROR', `Failed to extract ytInitialData.`);
+    log('ERROR', 'Failed to extract ytInitialData.');
     return null;
 }
 
@@ -80,7 +80,7 @@ async function getPlaylistVideos(playlistId) {
             const nextPage = await fetchText(`https://www.youtube.com/watch?v=${nextLink}&list=${playlistId}`);
 
             if (!nextPage) {
-                throw 'Failed to fetch ids';
+                throw new Error('Failed to fetch ids');
             }
 
             // Extract playlist ids

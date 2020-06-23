@@ -7,8 +7,8 @@
 
         <!-- Expandable link secion -->
         <ul v-if="subs.length && $scopedSlots.default" class="items">
-            <li v-for="item of subs">
-                <slot :item="item"></slot>
+            <li v-for="item of subs" :key="item">
+                <slot :key="item"></slot>
             </li>
         </ul>
     </div>

@@ -62,13 +62,13 @@
 <script>
 
     // IPC Client and electron stuff
-    import ipcClient   from '../../ipc';
+    import ipcClient from '../../ipc';
     import {clipboard} from 'electron';
 
     // Components
     import DualRingSpinner from '../../ui/spinner/DualRingSpinner';
-    import DownloadList    from './download-list/DownloadList';
-    import DownloadCard    from './DownloadCard';
+    import DownloadList from './download-list/DownloadList';
+    import DownloadCard from './DownloadCard';
 
     export default {
 
