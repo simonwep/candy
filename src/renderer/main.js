@@ -4,7 +4,7 @@ import App from './App';
 import router from './router';
 import store from './store';
 
-import 'typeface-open-sans';
+// import 'typeface-open-sans';
 
 import * as _ from '../js/utils';
 import config from '../../config/config';

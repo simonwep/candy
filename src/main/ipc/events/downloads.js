@@ -1,6 +1,6 @@
 const {createUID, throttleEvent, mkdirIfNotPresent, maskFilename} = require('../../../js/utils');
 const {log} = require('./log');
-const id3tags = require('../../../../config/id3tags');
+const id3tags = require('../../../../config/id3tags.json');
 const settings = require('electron-settings').default;
 const encoder = require('../encoder');
 const ytdl = require('ytdl-core');
@@ -21,7 +21,7 @@ const downloads = {
         const resolvedFormats = [];
 
         // Replace thumbnail url with higher quality
-        info.thumbnail_url = `https://img.youtube.com/vi/${info.video_id}/0.jpg`;
+        info.thumbnail_url = `https://img.youtube.com/vi/${info.videoDetails.videoId}/0.jpg`;
 
         // Resolve itags
         for (const {itag, clen, url} of info.formats) {
@@ -36,7 +36,6 @@ const downloads = {
 
         // Log
         await log('INFO', `Get video info from ${videoid}`);
-
         info.formats = resolvedFormats;
         return info;
     },

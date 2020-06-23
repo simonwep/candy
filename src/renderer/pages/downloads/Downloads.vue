@@ -117,6 +117,8 @@
                     lastText = text;
                 }
             }, 500);
+
+            this.checkDownloadAvailability('https://www.youtube.com/watch?v=2W3Y9KMgNw0');
         },
 
         destroyed() {

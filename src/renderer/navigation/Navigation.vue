@@ -1,7 +1,7 @@
 <template>
     <section class="navigation">
         <!-- Logo and content divider -->
-        <img src="../../../assets/icons/512x512.png" alt="Logo">
+        <img :src="logo" alt="Logo">
         <div class="divider"></div>
 
         <!-- Downloads -->
@@ -26,6 +26,7 @@
 
     // Components
     import NavItem from './NavItem';
+    import logo from '../../assets/icons/512x512.png';
 
     // Vuex stuff
     import {mapState} from 'vuex';
@@ -35,7 +36,7 @@
         components: {NavItem},
 
         data() {
-            return {};
+            return {logo};
         },
 
         computed: {

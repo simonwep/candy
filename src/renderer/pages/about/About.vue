@@ -1,6 +1,6 @@
 <template>
     <div class="about">
-        <img src="../../../../assets/icons/512x512.png" alt="Logo">
+        <img src="../../../assets/icons/512x512.png" alt="Logo">
 
         <article>
             <h2>About us</h2>

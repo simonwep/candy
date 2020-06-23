@@ -18,10 +18,6 @@
 
 <script>
 
-    // Font-awesome and normalize.css
-    import '@fortawesome/fontawesome-free/css/all.css';
-    import 'normalize.css';
-
     // Components
     import AppTitleBar from './AppTitleBar';
     import Navigation from './navigation/Navigation';
@@ -38,8 +34,13 @@
 
 </script>
 
-<style lang="scss" scoped>
+<style>
+    @import '~@fortawesome/fontawesome-free/css/all.css';
+    @import '~normalize.css';
+    @import './scss/_reset.scss';
+</style>
 
+<style lang="scss" scoped>
     #app {
         position: fixed;
         @include position(0, 0, 0, 0);
