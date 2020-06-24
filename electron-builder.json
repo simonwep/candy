@@ -3,10 +3,15 @@
     "appId": "com.candy.candy",
     "asar": true,
     "publish": null,
+    "files": [
+        "!**/ffmpeg-static/**/*",
+        "!**/ffprobe-static/**/*"
+    ],
     "mac": {
         "icon": "static/icons/512x512.png",
         "extraResources": [
             "node_modules/ffmpeg-static",
+            "node_modules/ffprobe-static/index.js",
             "node_modules/ffprobe-static/bin/darwin/x64"
         ]
     },
@@ -14,6 +19,7 @@
         "icon": "static/icons/512x512.png",
         "extraResources": [
             "node_modules/ffmpeg-static",
+            "node_modules/ffprobe-static/index.js",
             "node_modules/ffprobe-static/bin/win32/x64"
         ]
     },
@@ -21,6 +27,7 @@
         "icon": "static/icons/256x256.png",
         "extraResources": [
             "node_modules/ffmpeg-static",
+            "node_modules/ffprobe-static/index.js",
             "node_modules/ffprobe-static/bin/linux/x64"
         ]
     }
