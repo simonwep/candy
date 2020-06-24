@@ -4,7 +4,7 @@
             <h2 class="author">
                 {{ video.author.name }}
             </h2>
-            <img :src="video.thumbnail_url" alt="">
+            <img :src="video.thumbnail" alt="">
         </div>
 
         <div class="info">

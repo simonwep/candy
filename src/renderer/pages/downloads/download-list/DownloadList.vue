@@ -17,10 +17,10 @@
 
             <!-- Download list -->
             <div class="list">
-                <download-item v-for="download of downloads"
-                               :key="download.id"
-                               :card-size="cardSize"
-                               :download="download"/>
+                <download-list-item v-for="download of downloads"
+                                    :key="download.id"
+                                    :card-size="cardSize"
+                                    :download="download"/>
             </div>
         </template>
 
@@ -40,10 +40,10 @@
     import ipcClient from '../../../ipc';
 
     // Components
-    import DownloadItem from './DownloadListItem';
+    import DownloadListItem from './DownloadListItem';
 
     export default {
-        components: {DownloadItem},
+        components: {DownloadListItem},
 
         props: {
             cardSize: {type: String, default: 'big'}

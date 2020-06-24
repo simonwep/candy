@@ -2,7 +2,7 @@
     <section class="video-summary">
         <!-- Thumbnail and duration -->
         <div class="thumnail">
-            <img :src="video.thumbnail_url">
+            <img :src="video.thumbnail">
             <span>{{ utils.formatSeconds(Number(video.videoDetails.lengthSeconds)) }}</span>
         </div>
 

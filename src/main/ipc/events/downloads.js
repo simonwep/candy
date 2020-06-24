@@ -20,9 +20,6 @@ const downloads = {
         const info = await ytdl.getBasicInfo(`https://www.youtube.com/watch?v=${videoid}`);
         const resolvedFormats = [];
 
-        // Replace thumbnail url with higher quality
-        info.thumbnail_url = `https://img.youtube.com/vi/${info.videoDetails.videoId}/0.jpg`;
-
         // Resolve itags
         for (const {itag, clen, url} of info.formats) {
             const format = itag && id3tags[itag];
@@ -36,7 +33,14 @@ const downloads = {
 
         // Log
         await log('INFO', `Get video info from ${videoid}`);
+
+        // TODO: Prefix custom properties
         info.formats = resolvedFormats;
+
+        // Extract best thumbnail
+        const {thumbnails} = info.videoDetails.thumbnail;
+        info.thumbnail = thumbnails.length ? thumbnails[thumbnails.length - 1].url : null;
+
         return info;
     },
 
