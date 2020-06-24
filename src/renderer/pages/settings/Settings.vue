@@ -83,18 +83,6 @@
             }
         },
 
-        mounted() {
-            const cs = settings.getSync();
-
-            // Check if this is the initial startup
-            if (!Object.keys(cs).length) {
-                this.applySettings();
-            }
-
-            Object.assign(this.current, cs);
-            Object.assign(this.original, cs);
-        },
-
         methods: {
 
             applySettings() {
