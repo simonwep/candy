@@ -19,7 +19,8 @@
         "lint": "eslint ./src/**/*.{js,vue}",
         "lint:fix": "eslint ./src/**/*.{js,vue} --fix",
         "electron:serve": "electron-webpack dev",
-        "electron:build": "electron-webpack && electron-builder"
+        "electron:build": "electron-webpack && electron-builder",
+        "postinstall": "electron-builder install-app-deps"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.13.1",
@@ -29,6 +30,7 @@
         "fluent-ffmpeg": "^2.1.2",
         "normalize.css": "^8.0.1",
         "pretty-bytes": "^5.3.0",
+        "source-map-support": "^0.5.19",
         "typeface-open-sans": "^0.0.75",
         "vue": "^2.6.11",
         "vue-router": "^3.3.4",

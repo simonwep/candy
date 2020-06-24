@@ -21,7 +21,7 @@
     // Components
     import AppTitleBar from './AppTitleBar';
     import Navigation from './navigation/Navigation';
-    import DialogBox from './static/DialogBox';
+    import DialogBox from './ui/DialogBox';
 
     export default {
 

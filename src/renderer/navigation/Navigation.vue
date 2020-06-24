@@ -26,7 +26,7 @@
 
     // Components
     import NavItem from './NavItem';
-    import logo from '../../assets/icons/512x512.png';
+    import logo from '../../../static/icons/512x512.png';
 
     // Vuex stuff
     import {mapState} from 'vuex';

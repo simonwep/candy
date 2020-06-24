@@ -16,7 +16,7 @@ function createMainWindow() {
         minHeight: 600,
         frame: false,
         title: 'Candy YouTube Downloader',
-        icon: path.resolve(__dirname, '..', 'assets/icons/512x512.png'),
+        icon: path.join(__static, 'icons/512x512.png'),
         webPreferences: {
             nodeIntegration: true
         }
@@ -38,13 +38,6 @@ function createMainWindow() {
 
     window.on('closed', () => {
         mainWindow = null;
-    });
-
-    window.webContents.on('devtools-opened', () => {
-        window.focus();
-        setImmediate(() => {
-            window.focus();
-        });
     });
 
     return window;

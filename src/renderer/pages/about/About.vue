@@ -25,7 +25,7 @@
 
     // Components
     import BrowserLink from '../../ui/specific/BrowserLink';
-    import logo from '../../../assets/icons/512x512.png';
+    import logo from '../../../../static/icons/512x512.png';
 
     export default {
         components: {BrowserLink},
