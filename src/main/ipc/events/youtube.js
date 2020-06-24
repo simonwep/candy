@@ -1,15 +1,16 @@
 const {getVideoInfo} = require('./downloads');
 const {log} = require('./log');
+const fetch = require('node-fetch').default;
+// TODO: Refactor, this whole thing is chaotic
 
-function fetchText(url) {
-    return fetch(url).then(res => {
-        if (res.ok) {
-            return res.text();
-        }
-        throw res;
+const fetchText = url => fetch(url, {
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4180.0 Safari/537.36'
+    }
+}).then(res => res.ok ? res.text() : Promise.reject(res));
 
-    });
-}
+const PLAYLIST_CHANNEL_REGEX = /playlist\?list=([\w-]+)/i;
+const YT_INITIAL_DATA_REGEX = /.*ytInitialData".*?({.*?);[\s]+window/gm;
 
 /**
  * All youtube pages come with some pre-defined content saved in a object named
@@ -19,25 +20,15 @@ function fetchText(url) {
  * @returns {*}
  */
 function extractYTInitialData(html) {
+    const match = YT_INITIAL_DATA_REGEX.exec(html);
 
-    // Extract script elements
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-
-    // Find script tag with ytInitialData
-    const scripts = Array.from(tmp.querySelectorAll('script'));
-    const targetScriptString = scripts.map(v => v.innerHTML)
-        .find(v => v.trim().match(/^window\["ytInitialData"]/));
-
-    if (targetScriptString) {
-        const returnObjectString = targetScriptString.replace(/^[ \t\r\n]+window\["ytInitialData"] *= */, '');
-        return new Function(`return ${returnObjectString}`)();
+    try {
+        return JSON.parse(match[1]);
+    } catch (e) {
+        log('ERROR', 'Failed to extract ytInitialData.');
+        return null;
     }
-
-    log('ERROR', 'Failed to extract ytInitialData.');
-    return null;
 }
-
 
 /**
  * Resolves all playlistitems
@@ -45,7 +36,7 @@ function extractYTInitialData(html) {
  * @returns {Promise<void>}
  */
 async function getPlaylistVideos(playlistId) {
-    const triedIds = [];
+    const checkedVideoIds = [];
 
     // Fetch first raw page
     return fetchText(`https://www.youtube.com/playlist?list=${playlistId}`).then(async html => {
@@ -59,56 +50,52 @@ async function getPlaylistVideos(playlistId) {
             videos: await Promise.all(playlistItems.map(
                 v => {
                     const {videoId} = v.playlistVideoRenderer;
-                    triedIds.push(videoId);
+                    checkedVideoIds.push(videoId);
                     return getVideoInfo(videoId).catch(() => null);
                 }
             ))
         };
     }).then(async ({info, videos}) => {
-
-        // Youtube renders at least 99 items on the first page. If so it's not required to fetch the next pages
-        if (videos.length < 99 && !videos.length) {
-            return videos;
-        }
-
         videos = videos.filter(Boolean); // Remove dead links
 
-        let nextLink = videos[videos.length - 1].video_id;
-        while (nextLink) {
+        // Youtube renders at least 99 items on the first page. If so it's not required to fetch the next pages
+        if (videos.length === 99) {
+            let nextLink = checkedVideoIds[videos.length - 1];
 
-            // Fetch playlist-video pages html content
-            const nextPage = await fetchText(`https://www.youtube.com/watch?v=${nextLink}&list=${playlistId}`);
+            while (nextLink) {
 
-            if (!nextPage) {
-                throw new Error('Failed to fetch ids');
-            }
+                // Fetch playlist-video pages html content
+                const nextPage = await fetchText(`https://www.youtube.com/watch?v=${nextLink}&list=${playlistId}`);
 
-            // Extract playlist ids
-            const ytInitialData = extractYTInitialData(nextPage);
-            const {contents} = ytInitialData.contents.twoColumnWatchNextResults.playlist.playlist;
-
-            // Resolve ids and add these to the current list
-            const promises = [];
-            for (const {playlistPanelVideoRenderer: {videoId}} of contents) {
-                if (!triedIds.find(v => v === videoId)) {
-                    triedIds.push(videoId);
-                    promises.push(getVideoInfo(videoId).catch(() => null));
+                if (!nextPage) {
+                    throw new Error('Failed to fetch ids');
                 }
-            }
 
-            // Check if something new has been added
-            if (promises.length) {
-                videos.push(...(await Promise.all(promises)));
-                videos = videos.filter(Boolean); // Remove dead links
-                nextLink = videos[videos.length - 1].video_id;
-            } else {
-                nextLink = null;
+                // Extract playlist ids
+                const ytInitialData = extractYTInitialData(nextPage);
+                const {contents} = ytInitialData.contents.twoColumnWatchNextResults.playlist.playlist;
+
+                // Resolve ids and add these to the current list
+                const promises = [];
+                for (const {playlistPanelVideoRenderer: {videoId}} of contents) {
+                    if (!checkedVideoIds.includes(videoId)) {
+                        checkedVideoIds.push(videoId);
+                        promises.push(getVideoInfo(videoId).catch(() => null));
+                    }
+                }
+
+                // Check if something new has been added
+                if (promises.length) {
+                    videos.push(...(await Promise.all(promises)));
+                    videos = videos.filter(Boolean); // Remove dead links
+                    nextLink = checkedVideoIds[videos.length - 1];
+                } else {
+                    nextLink = null;
+                }
             }
         }
 
         return {videos, info};
-    }).catch(err => {
-        log('ERROR', `Failed to fetch playlist videos from "${playlistId}" / ${err.toString()}.`);
     });
 }
 
@@ -120,16 +107,23 @@ async function getPlaylistVideos(playlistId) {
 async function getChannelVideos(channelId) {
 
     // Fetch playlist id
-    const playlistid = await fetchText(`https://www.youtube.com/channel/${channelId}/videos`)
-        .catch(() => fetchText(`https://www.youtube.com/user/${channelId}/videos`)).then(async html => {
-            const ytInitialData = extractYTInitialData(html);
-            return ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs[1].tabRenderer.content.sectionListRenderer.subMenu.channelSubMenuRenderer.playAllButton.buttonRenderer.navigationEndpoint.watchPlaylistEndpoint.playlistId;
-        }).catch(err => {
-            log('ERROR', `Failed to fetch channel videos videos from "${channelId}" / ${err.toString()}.`);
-        });
+    const content = await fetchText(`https://www.youtube.com/channel/${channelId}/videos`)
+        .catch(() => fetchText(`https://www.youtube.com/user/${channelId}/videos`))
+        .catch(() => null);
+
+    if (!content) {
+        log('ERROR', 'Failed to fetch channel or user.');
+        return null;
+    }
+
+    const playlistMatch = PLAYLIST_CHANNEL_REGEX.exec(content);
+    if (!playlistMatch) {
+        log('ERROR', 'Failed to extract channel / user playlist id.');
+        return null;
+    }
 
     // Return playlist videos
-    return getPlaylistVideos(playlistid);
+    return getPlaylistVideos(playlistMatch[1]);
 }
 
 module.exports = {

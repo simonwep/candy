@@ -2,13 +2,13 @@
     <div class="video-snippet-card">
         <div class="thumbnail">
             <h2 class="author">
-                {{ video.author.name }}
+                {{ video.videoDetails.author.name }}
             </h2>
             <img :src="video.thumbnail" alt="">
         </div>
 
         <div class="info">
-            <img :src="video.author.avatar" alt="">
+            <img :src="video.videoDetails.author.avatar" alt="">
             <p class="title">
                 {{ video.title }}
             </p>
