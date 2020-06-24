@@ -1,9 +1,9 @@
 <template>
     <div class="about">
-        <img src="../../../assets/icons/512x512.png" alt="Logo">
+        <img :src="logo" alt="Logo">
 
         <article>
-            <h2>About us</h2>
+            <h2>Candy YT Downloader</h2>
             Candy is developed and maintained by
             <browser-link href="https://github.com/Simonwep">
                 Simon Reinisch
@@ -18,27 +18,6 @@
             </browser-link>
             .
         </article>
-
-        <article>
-            Everyone can submit their ideas, suggenstions, bugs or whatsoever
-            <browser-link href="https://github.com/Simonwep/candy/issues/new">
-                here
-            </browser-link>
-            .
-            Every contributor get's listed below if he's ok with that.
-        </article>
-
-        <article class="contributors">
-            <h2>Contributors</h2>
-            <template v-for="con of config.contributors">
-                <browser-link v-if="con.github"
-                              :key="con.name"
-                              :href="con.github">
-                    {{ con.name }}
-                </browser-link>
-                <span v-else :key="con.name">{{ con.name }}</span>
-            </template>
-        </article>
     </div>
 </template>
 
@@ -46,13 +25,13 @@
 
     // Components
     import BrowserLink from '../../ui/specific/BrowserLink';
-
+    import logo from '../../../assets/icons/512x512.png';
 
     export default {
         components: {BrowserLink},
 
         data() {
-            return {};
+            return {logo};
         }
     };
 
@@ -77,20 +56,12 @@
         font-size: 1.1em;
         text-align: center;
         margin: 0.75em 0 0.5em;
-        line-height: 1.25em;
+        line-height: 1.45em;
         text-shadow: 0 0.1em 0.2em rgba(black, 0.1);
 
         > h2 {
             @include font(600, 1.2em);
             margin-bottom: 0.25em;
-        }
-
-        &.contributors {
-
-            a, span {
-                font-size: 0.9em;
-                margin-left: 0.5em;
-            }
         }
     }
 

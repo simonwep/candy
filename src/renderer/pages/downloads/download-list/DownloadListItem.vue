@@ -265,7 +265,7 @@
     }
 
     .thumbnail {
-        width: 5em;
+        height: 4em;
         border-radius: 0.15em;
         margin-left: 0.5em;
     }

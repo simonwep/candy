@@ -1,10 +1,4 @@
 {
     "binaryPrefix": true,
-    "channelPreloadAmount": 10,
-    "contributors": [
-        {
-            "name": "Simon Reinisch",
-            "github": "https://github.com/Simonwep"
-        }
-    ]
+    "channelPreloadAmount": 10
 }
