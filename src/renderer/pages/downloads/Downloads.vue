@@ -215,7 +215,7 @@
             }
 
             > input {
-                font-family: 'Source Sans Pro';
+                font-family: $font-family;
                 flex-grow: 1;
                 @include font(400, 0.9em);
 

@@ -24,6 +24,7 @@ p {
 button,
 input,
 textarea {
+    font-family: $font-family;
     border: unset;
     background: unset;
     color: unset;

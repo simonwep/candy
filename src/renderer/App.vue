@@ -35,6 +35,7 @@
 </script>
 
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
     @import '~@fortawesome/fontawesome-free/css/all.css';
     @import '~normalize.css';
     @import './scss/_reset.scss';
@@ -45,7 +46,7 @@
         position: fixed;
         @include position(0, 0, 0, 0);
         @include flex(column);
-        font-family: 'Open Sans', sans-serif;
+        font-family: $font-family;
         background: $palette-theme-tertiary;
         user-select: none;
     }

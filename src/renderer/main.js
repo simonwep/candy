@@ -8,9 +8,6 @@ import config from '../../config/config';
 import path from 'path';
 import os from 'os';
 
-// TODO: Fonts?
-// import 'typeface-open-sans';
-
 Vue.config.productionTip = false;
 Vue.prototype.utils = _;
 Vue.prototype.config = config;
