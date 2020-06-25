@@ -4,7 +4,7 @@
 
         <article>
             <h2>Candy YT Downloader</h2>
-            Candy is developed and maintained by
+            Candy is developed / maintained by
             <browser-link href="https://github.com/Simonwep">
                 Simon Reinisch
             </browser-link>

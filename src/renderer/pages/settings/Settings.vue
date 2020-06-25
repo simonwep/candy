@@ -34,7 +34,7 @@
 
             <div class="item">
                 <checkbox v-model="current.createPlaylistDirectory"/>
-                <span>Create a direcotry with playlist's name.</span>
+                <span>Create a direcotry for each playlist.</span>
             </div>
 
             <button :class="{visible: hasChanged}" @click="applySettings">

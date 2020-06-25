@@ -21,12 +21,13 @@ Downloading videos or music directly won't pay the work which was done by these 
 Please consider supporting the artists and creators if you really like their work, most of these have [patreon](https://www.patreon.com/)
 or similar donation possibilities which can be used to directly giving them something back - it's even better than watching their videos on youtube.
 
-### Features: 
+> Code-dislaimer: I started this project in my "early" days, don't expect clean code.
+
+### Features:
 * Cross-platform and enjoyable UI.
 * Playlist, video and channel download support.
 * Many container formats are supportet, thanks to [ffmpeg](https://ffmpeg.org/).
 * Download video, audio or merge audio / video streams independely.
-* Frontpage with list of the latest videos by the channels you choose.
 * *No APIKey or similar required - just install and use it*
 
 ### FAQ
@@ -34,7 +35,7 @@ or similar donation possibilities which can be used to directly giving them some
 free access to many of these information Candy provides, so everything is accomplished with small hacks. If YouTube changes something
 some methods won't work anymore. [Open an issue](https://github.com/Simonwep/candy/issues/new) if so._
 2. "What about other platforms?" - _For now Candy should and will only be a downloader for YouTube._
-3. "The number of playlist / channel items is not equal to these on YouTube?!" - _YouTube counts private and removed videos in a playlist as 
+3. "The number of playlist / channel items is not equal to these on YouTube?!" - _YouTube counts private and removed videos in a playlist as
 videos of this playlist. Candy won't take this into account, so it's possible that some videos are missing._
 4. "Some downloads, mostly audio stuff, is especially slow?" - _Since it dosn't make sense to provide high bandwidth for most of YouTube's ressources (Streaming doesn't need that much) it takes longer
 than other, direct downloads. It's not possible to speed it up until YouTube rises his bandwidth._
