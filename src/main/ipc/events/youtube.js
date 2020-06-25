@@ -1,6 +1,7 @@
 const {getVideoInfo} = require('./downloads');
 const {log} = require('./log');
 const fetch = require('node-fetch').default;
+
 // TODO: Refactor, this whole thing is chaotic
 
 const fetchText = url => fetch(url, {

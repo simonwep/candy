@@ -152,6 +152,7 @@
             transition: all 0.3s;
             cursor: pointer;
             text-transform: capitalize;
+            min-width: 5em;
 
             &:hover {
                 background: rgba(black, 0.075);

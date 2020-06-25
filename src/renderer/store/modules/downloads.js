@@ -11,6 +11,14 @@ export const downloads = {
 
     mutations: {
 
+        remove(state, id) {
+            const index = state.findIndex(v => v.id === id);
+
+            if (~index) {
+                state.splice(index, 1);
+            }
+        },
+
         add(state, video) {
             const existing = state.find(v => v.id === video.id);
 

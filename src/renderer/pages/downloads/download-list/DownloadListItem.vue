@@ -51,11 +51,12 @@
                 </button>
             </template>
 
+            <!-- TODO: finish should be finished -->
             <template v-if="download.status === 'finish'">
-                <button class="afterward" @click="openDestinationDirectory">
+                <button class="circular" @click="openDestinationDirectory">
                     <i class="fas fa-fw fa-folder-open"></i>
                 </button>
-                <button class="afterward" @click="openDestinationFile">
+                <button class="circular" @click="openDestinationFile">
                     <i class="fas fa-fw fa-play-circle"></i>
                 </button>
             </template>
@@ -65,6 +66,12 @@
                     Retry
                 </button>
             </template>
+
+            <button v-if="['errored', 'cancelled', 'finish'].includes(download.status)"
+                    class="remove"
+                    @click="removeDownload">
+                <i class="fas fa-fw fa-times"></i>
+            </button>
         </div>
     </div>
 </template>
@@ -152,6 +159,10 @@
 
             openDestinationFile() {
                 shell.openItem(this.download.destinationFile);
+            },
+
+            removeDownload() {
+                this.$store.commit('downloads/remove', this.download.id);
             }
         }
     };
@@ -166,6 +177,7 @@
         padding: 0.5em;
         border-radius: 0.15em;
         box-shadow: 0 0.1em 0.5em rgba(black, 0.1);
+        position: relative;
 
         @include animate('0.15s ease-in-out') {
             from {
@@ -354,22 +366,38 @@
         @include flex(row, center);
         margin: 0 1.25em 0 1.25em;
 
-        button.afterward {
-            @include size(2.5em);
-            padding: 0;
-            border-radius: 100%;
-            color: rgba($palette-snow-white, 0.75);
-            border: 1px solid rgba($palette-snow-white, 0.75);
-            font-size: 0.8em;
-            transition: all 0.3s;
+        button {
 
-            &:hover {
-                color: $palette-turquoise;
-                border-color: $palette-turquoise;
+            &.circular {
+                @include size(2.5em);
+                padding: 0;
+                border-radius: 100%;
+                color: rgba($palette-snow-white, 0.75);
+                border: 2px solid rgba($palette-snow-white, 0.75);
+                font-size: 0.8em;
+                transition: all 0.3s;
+
+                &:hover {
+                    color: $palette-turquoise;
+                    border-color: $palette-turquoise;
+                }
+
+                &:not(:last-child) {
+                    margin-right: 0.75em;
+                }
             }
 
-            &:not(:last-child) {
-                margin-right: 0.75em;
+            &.remove {
+                position: absolute;
+                top: 0.5em;
+                right: 0.5em;
+                color: $palette-snow-white;
+                font-size: 0.8em;
+                transition: all 0.3s;
+
+                &:hover {
+                    color: $palette-bright-red;
+                }
             }
         }
     }
