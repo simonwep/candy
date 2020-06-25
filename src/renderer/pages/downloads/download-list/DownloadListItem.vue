@@ -2,7 +2,8 @@
     <div :data-card-size="cardSize" class="download-item">
         <!-- Colored status bar -->
         <div :data-status="download.status" class="status-bar">
-            <i v-if="download.status === 'progress'" class="fas fa-fw fa-angle-down"></i>
+            <i v-if="download.status === 'pending'" class="fas fa-fw fa-ellipsis-h"></i>
+            <i v-else-if="download.status === 'loading'" class="fas fa-fw fa-angle-down"></i>
             <i v-else-if="download.status === 'finish'" class="fas fa-fw fa-check"></i>
             <i v-else-if="download.status === 'convert'" class="fas fa-fw fa-cog"></i>
             <i v-else-if="download.status === 'cancelled'" class="fas fa-fw fa-eject"></i>
@@ -24,7 +25,8 @@
         <!-- Download progress -->
         <div class="progress">
             <div class="info-text">
-                <span v-if="download.status === 'progress'">
+                <!-- TODO: progess should be something like loading god dammit -->
+                <span v-if="download.status === 'loading' && download.progress">
                     <b>{{ prettyBytes(download.progress) }}</b>
                     /
                     <b>{{ prettyBytes(download.size) }} ({{ percentualProgress }}) - </b>
@@ -36,13 +38,14 @@
             </div>
 
             <div :data-status="download.status" class="progress-bar">
-                <div v-if="download.status !== 'cancelled'" :style="{width: `${(download.progress / download.size) * 100}%`}"></div>
+                <div v-if="download.status !== 'cancelled'"
+                     :style="{width: `${(download.progress / download.size) * 100}%`}"></div>
             </div>
         </div>
 
         <!-- Actions -->
         <div class="actions">
-            <template v-if="['progress', 'paused'].includes(download.status)">
+            <template v-if="['loading', 'paused'].includes(download.status)">
                 <button class="action-red" @click="cancelDownload">
                     Cancel
                 </button>
@@ -106,7 +109,9 @@
 
             statusText() {
                 switch (this.download.status) {
-                    case 'progress':
+                    case 'pending':
+                        return 'Pending...';
+                    case 'loading':
                         return 'Downloading...';
                     case 'finish':
                         return 'Done!';
@@ -228,7 +233,7 @@
             }
         }
 
-        &[data-status='progress'],
+        &[data-status='loading'],
         &[data-status='paused'] {
             > div {
                 background: $palette-nature-orange;
@@ -344,7 +349,7 @@
                 background: $palette-success-green;
             }
 
-            &[data-status='progress'] > div {
+            &[data-status='loading'] > div {
                 background: $palette-nature-orange;
             }
 

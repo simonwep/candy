@@ -79,9 +79,9 @@ const downloads = {
             destination: null,
             paused: false,
             sources,
-            size: 1, // Prevents trough zero divisions
+            size: 1,
             progress: 0,
-            status: 'progress',
+            status: 'pending',
             startTimestamp: Date.now(),
             video
         });
@@ -117,14 +117,14 @@ const downloads = {
             sourceStream.on('progress', (_, progress, size) => {
                 totalProgress += progress - lastProgress;
                 totalSize -= lastSize;
+                lastSize = size;
+                lastProgress = progress;
 
                 update({
                     progress: totalProgress,
-                    size: totalSize += size
+                    size: totalSize += size,
+                    status: 'loading'
                 });
-
-                lastSize = size;
-                lastProgress = progress;
             });
 
             sourceStream.on('end', () => {
@@ -197,7 +197,7 @@ const downloads = {
             resume() {
                 log('INFO', `Download ${downloadId}: Resumed`);
                 sourceStreams.forEach(s => s.isPaused() && s.resume());
-                update({status: 'progress'});
+                update({status: 'loading'});
             },
 
             retry() {

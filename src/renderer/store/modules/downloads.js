@@ -1,5 +1,5 @@
 function sortVideos(state) {
-    const sortMap = ['finish', 'convert', 'progress', 'paused', 'errored', 'cancelled'];
+    const sortMap = ['finish', 'convert', 'pending', 'loading', 'paused', 'errored', 'cancelled'];
     state.sort((a, b) => sortMap.indexOf(b.status) - sortMap.indexOf(a.status));
 }
 

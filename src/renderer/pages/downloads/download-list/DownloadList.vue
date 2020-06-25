@@ -24,7 +24,6 @@
             </div>
         </template>
 
-
         <p v-else class="placeholder">
             Currently no downloads active.
         </p>
@@ -61,7 +60,7 @@
             },
 
             someInProgress() {
-                return this.downloads.find(v => v.status === 'progress');
+                return this.downloads.find(v => v.status === 'loading');
             }
         },
 
