@@ -1,0 +1,60 @@
+name: Release
+
+on:
+    release:
+        types:
+            - published
+jobs:
+    release:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [macos-latest, windows-latest, ubuntu-latest]
+                include:
+                    -   os: macos-latest
+                        file: dmg
+                    -   os: windows-latest
+                        file: exe
+                    -   os: ubuntu-latest
+                        file: AppImage
+
+        steps:
+            -   uses: actions/checkout@v2
+            -   name: Use Node.js 12.x
+                uses: actions/setup-node@v1
+                with:
+                    node-version: 12.x
+
+            -   name: Build
+                shell: bash
+                run: |
+                    npm ci
+                    npm run electron:build
+
+            -   name: Upload asset
+                shell: bash
+                run: |
+
+                    # Resolve asset path and encode name
+                    # See https://stackoverflow.com/questions/62578702/mixing-curls-data-binary-and-the-ability-to-encode-url-search-params
+                    ASSET_PATH="$(find dist -maxdepth 1 -type f -name '*.${{ matrix.file }}')"
+                    ASSET_FILENAME="$(basename "$ASSET_PATH")"
+                    ASSET_FILENAME_ENCODED="$(node -p -e "encodeURIComponent('$ASSET_FILENAME')")"
+                    echo "Asset: '$ASSET_FILENAME' / '$ASSET_FILENAME_ENCODED' / ($ASSET_PATH)"
+
+                    # Extract tag and fetch release-id
+                    RELEASE_TAG="$(echo "$GITHUB_REF" | grep -o -E '[v0-9.]+')"
+                    RELEASE_ID="$(curl -sS "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG" \
+                          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+                        | grep -o -m 1 -E '"id": ([0-9]+)' \
+                        | grep -o -E '[0-9]+')"
+
+                    echo "Tag: $RELEASE_TAG"
+                    echo "ID: $RELEASE_ID"
+
+                    # Upload asset
+                    curl --request POST \
+                         --header 'Content-Type:application/octet-stream' \
+                         --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+                         --data-binary "@$ASSET_PATH" \
+                         "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID/assets?name=$ASSET_FILENAME_ENCODED"
