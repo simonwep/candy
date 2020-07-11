@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-Candy is a YouTube downloaded with focus of flexibility and design. Let every download be a pleasure. It's backed with  <a href="https://github.com/fluent-ffmpeg/node-fluent-ffmpeg">fluent-ffmpeg</a>, <a href="https://vuejs.org/">Vue</a> and <a href="https://github.com/fent/node-ytdl-core">node-ytdl-core</a>
+Candy is a YouTube downloader with focus of flexibility and design. Let every download be a pleasure. It's backed with  <a href="https://github.com/fluent-ffmpeg/node-fluent-ffmpeg">fluent-ffmpeg</a>, <a href="https://vuejs.org/">Vue</a> and <a href="https://github.com/fent/node-ytdl-core">node-ytdl-core</a>
 </p>
 
 ![cb](https://user-images.githubusercontent.com/30767528/56775738-b63bc000-67c8-11e9-84e0-18004bac3dc3.PNG)
@@ -21,7 +21,7 @@ Downloading videos or music directly won't pay the work which was done by these 
 Please consider supporting the artists and creators if you really like their work, most of these have [patreon](https://www.patreon.com/)
 or similar donation possibilities which can be used to directly giving them something back - it's even better than watching their videos on youtube.
 
-> Code-dislaimer: I started this project in my "early" days, don't expect clean code.
+> Code disclaimer: I started this project in my "early" days, don't expect clean code.
 
 ### Features:
 * Cross-platform and enjoyable UI.
