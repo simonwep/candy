@@ -28,7 +28,7 @@
         "ffmpeg-static": "^4.2.4",
         "ffprobe-static": "^3.0.0",
         "fluent-ffmpeg": "^2.1.2",
-        "node-fetch": "^2.6.0",
+        "node-fetch": "^2.6.1",
         "normalize.css": "^8.0.1",
         "pretty-bytes": "^5.3.0",
         "source-map-support": "^0.5.19",
