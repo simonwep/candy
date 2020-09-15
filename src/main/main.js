@@ -18,6 +18,7 @@ function createMainWindow() {
         title: 'Candy YouTube Downloader',
         icon: path.join(__static, 'icons/512x512.png'),
         webPreferences: {
+            enableRemoteModule: true,
             nodeIntegration: true
         }
     });

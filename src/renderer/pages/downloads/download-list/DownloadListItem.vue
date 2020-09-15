@@ -39,7 +39,7 @@
 
             <div :data-status="download.status" class="progress-bar">
                 <div v-if="download.status !== 'cancelled'"
-                     :style="{width: `${(download.progress / download.size) * 100}%`}"></div>
+                     :style="{width: `${download.status === 'loading' ? (download.progress / download.size) * 100 : 100}%`}"></div>
             </div>
         </div>
 

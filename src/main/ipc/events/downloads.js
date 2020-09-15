@@ -1,7 +1,7 @@
 const {createUID, throttleEvent, mkdirIfNotPresent, maskFilename} = require('../../../js/utils');
 const {log} = require('./log');
 const id3tags = require('../../../../config/id3tags.json');
-const settings = require('electron-settings').default;
+const settings = require('electron-settings');
 const encoder = require('../encoder');
 const ytdl = require('ytdl-core');
 const path = require('path');
@@ -55,8 +55,8 @@ const downloads = {
      * @returns {Promise<string>}
      */
     async startDownload({playlist, format, video, sources, downloadId = createUID()}, {sender}) {
-        const temporaryDirectory = await settings.get('temporaryDirectory');
-        let downloadDirectory = await settings.get('downloadDirectory');
+        const temporaryDirectory = mkdirIfNotPresent(await settings.get('temporaryDirectory'));
+        let downloadDirectory = mkdirIfNotPresent(await settings.get('downloadDirectory'));
 
         // Check if an additional directory with the author's name should be made for this video
         if (await settings.get('createChannelDirectory')) {
@@ -112,17 +112,20 @@ const downloads = {
             tmpFiles.push(tmpFile);
             sourceStreams.push(sourceStream);
 
-            let lastProgress = 0;
-            let lastSize = 0;
-            sourceStream.on('progress', (_, progress, size) => {
-                totalProgress += progress - lastProgress;
-                totalSize -= lastSize;
-                lastSize = size;
-                lastProgress = progress;
+            let sizeSaved = false;
+            sourceStream.on('progress', (chunkSize, _, size) => {
+                totalProgress += chunkSize;
+
+                if (!sizeSaved) {
+                    sizeSaved = true;
+
+                    // Size needs to be cased, see https://github.com/fent/node-ytdl-core/issues/707
+                    totalSize += +size;
+                }
 
                 update({
                     progress: totalProgress,
-                    size: totalSize += size,
+                    size: totalSize,
                     status: 'loading'
                 });
             });
