@@ -16,7 +16,7 @@ module.exports = {
                         loader: 'sass-loader',
                         options: {
                             sourceMap: true,
-                            prependData: '@import "@src/renderer/scss/_global.scss";'
+                            additionalData: '@import "@src/renderer/scss/_global.scss";'
                         }
                     }
                 ]
